@@ -1,13 +1,29 @@
-.form-section {
+.form-section, h2, button {
     display: flex;
     justify-content: center;
-    margin: 80px 0;
+    margin: 20px 0;
+    
 }
 
 .form-section form{
-    width: 70%;
-    background-color: #F2F2F2;
+    width: 40%;
+    /* background-color: #F2F2F2; */
+    background-color: #d6e8f5;
     border-radius: 20px;
     padding: 36px 64px;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);
 }
+
+button {
+    width: 100%;
+    font-size: 18px; /* Reduzi o tamanho da fonte do input para 18px */
+    padding: 12px; /* Reduzi o preenchimento para 12px */
+    box-sizing: border-box;
+    
+    border-radius: 5px; /* Ou qualquer valor desejado para arredondar o botão */
+    background-color: #4caf50; /* Adicione uma cor de fundo, se desejar */
+    color: white; /* Define a cor do texto para branco, para melhor legibilidade */
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+  }
