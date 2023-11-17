@@ -1,0 +1,16 @@
+.button {
+    width: 100%;
+    font-size: 18px; /* Reduzi o tamanho da fonte do input para 18px */
+    padding: 12px; /* Reduzi o preenchimento para 12px */
+    box-sizing: border-box;
+    
+    background-color: #4caf50; /* Adicione uma cor de fundo, se desejar */
+    color: white; /* Define a cor do texto para branco, para melhor legibilidade */
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+  }
+
+  .button:hover{
+    background-color: #2d8330;
+  }

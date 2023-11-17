@@ -1,7 +1,5 @@
 # Passo a passo de como foi feito esse tutorial
 
-## Frontend
-
 1. Primeiro foi necessário navegar até o diretório de instalação do projeto do tutorial 3 através do comando:
     ~~~bash
     cd tutoriais\tutorial-3
@@ -204,19 +202,44 @@
         padding: 36px 64px;
         box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);
     }
+    ~~~
+11. Para enviar o formulário, foi necessário criar componente botão chamado `Button`. Esse componente foi criado usando a mesma lógica dos outros, porém com um detalhe:
+    
+    Ele foi inserido dentro do componente `Form` assim como os demais, porém seguindo o estio de uma tag HTML que tem abertura e fechamento: `<Button>Cadastrar</Button>`. Dessa forma é possível adicionar qualquer coisa entre essas tags, como um ícone, por exemplo. Na hora de usar o contéudo que está entre as tags no componente `Button` é necessário usar `{props.children}`
 
-    button {
+    A estilização do botão adicionada a `Button.css` foi a seguinte:
+    ~~~css
+    .button {
         width: 100%;
-        font-size: 18px;
-        padding: 12px; 
-        box-sizing: border-box;   
-        border-radius: 5px;
-        background-color: #4caf50; 
-        color: white;
+        font-size: 18px; /* Reduzi o tamanho da fonte do input para 18px */
+        padding: 12px; /* Reduzi o preenchimento para 12px */
+        box-sizing: border-box;
+        
+        background-color: #4caf50; /* Adicione uma cor de fundo, se desejar */
+        color: white; /* Define a cor do texto para branco, para melhor legibilidade */
         padding: 10px;
         cursor: pointer;
         border: none;
-  }
+    }
+
+    .button:hover{
+        background-color: #2d8330;
+    }
     ~~~
+
+12. Para indicar o que a aplicação deve fazer quando for clicado em `Cadastrar`, foi necessário criar a função `sendForm`, que, nesse caso, exibe os dados do formulário no console e limpa os campos.
+    ~~~js
+    const sendForm = (event) => {
+        event.preventDefault();
+        console.log("Formulário enviado com sucesso")
+        console.log({user, name, email, password})
+        setUser('');
+        setName('');
+        setEmail('');
+        setPassword('');
+    }
+    ~~~
+
+    Para indicar que o formulário deve usar esas função, foi adicionao o seguinte parametro na tag `<form>`: `<form onSubmit={sendForm}>`
+
     ![imagem do formulário criado](frontend/form-cadastro.jpg)
-## Backend
