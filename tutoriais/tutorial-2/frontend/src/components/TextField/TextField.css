@@ -1,19 +1,19 @@
-.text-field{
-    margin: 24px 0;
+.text-field {
+    margin: 16px 0; /* Reduzi a margem superior e inferior para 16px */
 }
 
-.text-field label{
+.text-field label {
     display: block;
-    margin-bottom: 8px;
-    font-size: 24px
+    margin-bottom: 4px; /* Reduzi o espaçamento entre a label e o input */
+    font-size: 18px; /* Reduzi o tamanho da fonte da label para 18px */
 }
 
-.text-field input{
+.text-field input {
     background-color: white;
-    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.06); /* Reduzi o tamanho da sombra */
     width: 100%;
     border: none;
-    font-size: 24px;
-    padding: 24px;
+    font-size: 18px; /* Reduzi o tamanho da fonte do input para 18px */
+    padding: 12px; /* Reduzi o preenchimento para 12px */
     box-sizing: border-box;
 }
