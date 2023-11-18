@@ -50,14 +50,17 @@ class UploadViewSet(viewsets.ViewSet):
             file_uploaded = request.FILES.get('file_uploaded')
             content_type = file_uploaded.content_type
 
+            if not str(content_type).startswith('image'):
+                raise Exception('O arquivo selecionado não é uma imagem')
+
             if file_uploaded.size > self.MAX_FILE_SIZE_MB * 1024 * 1024:
-                raise Exception("File size exceeds the maximum limit of {} MB".format(self.MAX_FILE_SIZE_MB))
+                raise Exception('O tamanho máximo do arquivo é de {} MB'.format(self.MAX_FILE_SIZE_MB))
 
             # Save the file content using Djongo model
             uploaded_file = UploadedFile(file_content=file_uploaded.read(), content_type=content_type)
             uploaded_file.save()
 
-            response = "POST API and you have uploaded a {} file. File saved with id: {}".format(content_type, uploaded_file.id)
+            response = 'O arquivo foi enviado com sucesso.'
 
             return Response(response)
         except Exception as e:

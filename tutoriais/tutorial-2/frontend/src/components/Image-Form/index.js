@@ -11,6 +11,15 @@ const Image_Form = () => {
 
   const handleUpload = () => {
     if (selectedFile) {
+      if(!selectedFile.type.startsWith('image/')) {
+        alert('O arquivo selecionado não é uma imagem.');
+        return;
+      }
+      if(selectedFile.size > 1024 * 1024 * 10) {
+        alert('A imagem é muito grande. Selecione uma imagem com menos de 10MB.');
+        return;
+      }
+      console.log(selectedFile)
       const formData = new FormData();
       formData.append('file_uploaded', selectedFile);
 
