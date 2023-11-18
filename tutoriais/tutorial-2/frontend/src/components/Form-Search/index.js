@@ -1,45 +1,67 @@
-import './form.css'
-import TextField from "../TextField";
-// import Button from '../Button';
-import {useState, useEffect} from 'react';
+import './form.css';
+import TextField from '../TextField';
+import { useState, useEffect } from 'react';
 
 const Form_Search = (props) => {
+  const [search, setSearch] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
 
-    const [search, setSearch] = useState('');
-
-    useEffect(() => {
-        if(search.length > 2){
-        	console.log(`Realizando busca para '${search}'`)
-            // 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (search.length > 2) {
+        try {
+          // Clear the table by setting an empty array
+          setSearchResults([]);
+          
+          const response = await fetch(`http://localhost:8000/api/users/?username=${search}`);
+          const data = await response.json();
+          setSearchResults(data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
         }
-    }, [search])
+      } else {
+        // Clear the table if the search query is empty
+        setSearchResults([]);
+      }
+    };
 
-    // fetches the api for a list of users
-    const response = fetch('http://localhost:8000/api/users/', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    });
-    
-    // now we add all users into the page
-    // the api returns json with username and email
-    // so we display it in the page
+    fetchData();
+  }, [search]);
 
-    return (
-        <section className="form-section">
-            <form>
-                <h2>{props.title}</h2>
-                <TextField 
-                    label="Pesquisar" 
-                    placeholder="Digite o nome do usuário..." 
-                    type="text"
-                    value={search} 
-                    onChange={value => setSearch(value)}
-                />
-            </form>
-        </section>
-    )
-}
+  return (
+    <section className="form-section">
+      <form>
+        <h2>{props.title}</h2>
+        <TextField
+          label="Pesquisar"
+          placeholder="Digite o nome do usuário..."
+          type="text"
+          value={search}
+          onChange={(value) => setSearch(value)}
+        />
+        {searchResults.length > 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Full Name</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {searchResults.map((user) => (
+              <tr key={user.id}>
+                <td>{user.username}</td>
+                <td>{user.full_name}</td>
+                <td>{user.email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      </form>
+    </section>
+  );
+};
 
-export default Form_Search
+export default Form_Search;

@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from demoapp.models import User
-from rest_framework.serializers import Serializer, FileField
+from demoapp.models import User, UploadedFile
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
         # fields = ('id' ,'title', 'description', 'completed')
 
 # Serializers define the API representation.
-class UploadSerializer(Serializer):
-    file_uploaded = FileField()
+class UploadSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ['file_uploaded']
+        model = UploadedFile
+        fields = ['file_content', 'content_type']

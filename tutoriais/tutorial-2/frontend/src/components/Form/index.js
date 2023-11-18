@@ -33,10 +33,10 @@ const Form = (props) => {
             }
         });
 
-        // setUser('');
-        // setName('');
-        // setEmail('');
-        // setPassword('');
+        setUser('');
+        setName('');
+        setEmail('');
+        setPassword('');
     }
     return (
         <section className="form-section">

@@ -7,6 +7,9 @@ class User(models.Model):
     email = models.CharField(max_length=30, unique=True)
     senha = models.CharField(max_length=15)
     
+class UploadedFile(models.Model):
+    file_content = models.BinaryField()
+    content_type = models.CharField(max_length=255)
 
 class Item(models.Model):
     nome = models.CharField(max_length=100)
@@ -14,11 +17,3 @@ class Item(models.Model):
 
     def __str__(self):
         return self.nome
-
-# class Image(models.Model):
-#     title = models.CharField(max_length=255)
-#     image = models.ImageField(upload_to='images/')
-
-class UploadedFile(models.Model):
-    file_content = models.BinaryField()
-    content_type = models.CharField(max_length=255)
