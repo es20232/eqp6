@@ -48,6 +48,10 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:27017',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000"
+]
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
