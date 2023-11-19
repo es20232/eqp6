@@ -51,7 +51,7 @@ const Image_Form = () => {
         <h2>Image Upload</h2>
         <input type="file" accept="image/*" onChange={handleFileChange} />
         <button type="button" onClick={handleUpload} disabled={loading}>
-          {loading ? 'Enviando...' : 'Upload'}
+          {loading ? 'Enviando...' : 'Enviar'}
         </button>
         {selectedFile && (
           <section>

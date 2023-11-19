@@ -46,13 +46,13 @@ const Form_Search = (props) => {
           onChange={(value) => setSearch(value)}
         />
         {loading ? (
-          <p>Loading users...</p>
+          <p>Buscando usuários...</p>
         ) : searchResults.length > 0 ? (
           <table>
             <thead>
               <tr>
-                <th>Username</th>
-                <th>Full Name</th>
+                <th>Nome de Usuário</th>
+                <th>Nome Completo</th>
                 <th>Email</th>
               </tr>
             </thead>
@@ -67,7 +67,7 @@ const Form_Search = (props) => {
             </tbody>
           </table>
         ) : (
-          <p>No results found.</p>
+          <p>Nenhum usuário encontrado.</p>
         )}
       </form>
     </section>

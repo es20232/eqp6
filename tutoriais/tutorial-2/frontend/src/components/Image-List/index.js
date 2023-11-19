@@ -28,7 +28,7 @@ const Image_List = () => {
         <h2>Uploaded Images</h2>
         <section>
           {loading ? (
-            <p>Loading images...</p>
+            <p>Carregando imagens...</p>
           ) : (
             files.map((file, index) => (
               <section key={index}>
@@ -40,7 +40,7 @@ const Image_List = () => {
                     style={{ maxWidth: '100%', maxHeight: '300px' }}
                   />
                 ) : (
-                  <p>No file content available.</p>
+                  <p>Indisponível.</p>
                 )}
               </section>
             ))
