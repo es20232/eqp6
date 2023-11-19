@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 const Image_Form = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -19,7 +20,9 @@ const Image_Form = () => {
         alert('A imagem é muito grande. Selecione uma imagem com menos de 10MB.');
         return;
       }
-      console.log(selectedFile)
+
+      setLoading(true); // Set loading to true when starting the upload
+
       const formData = new FormData();
       formData.append('file_uploaded', selectedFile);
 
@@ -29,14 +32,16 @@ const Image_Form = () => {
       })
         .then(response => response.json())
         .then(data => {
-          alert('Imagem enviada!')
+          setLoading(false); // Set loading to false once the upload is complete
+          alert('Imagem enviada!');
           // Handle the response from the server if needed
         })
         .catch(error => {
-          alert('Ocorreu um erro ao enviar a imagem.\n' + error)
+          setLoading(false); // Set loading to false in case of an error
+          alert('Ocorreu um erro ao enviar a imagem.\n' + error);
         });
     } else {
-      alert('Selecione uma imagem antes de enviar.')
+      alert('Selecione uma imagem antes de enviar.');
     }
   };
 
@@ -45,7 +50,9 @@ const Image_Form = () => {
       <form>
         <h2>Image Upload</h2>
         <input type="file" accept="image/*" onChange={handleFileChange} />
-        <button type="button" onClick={handleUpload}>Upload</button>
+        <button type="button" onClick={handleUpload} disabled={loading}>
+          {loading ? 'Enviando...' : 'Upload'}
+        </button>
         {selectedFile && (
           <section>
             <p>Selected File: {selectedFile.name}</p>
