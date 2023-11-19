@@ -29,14 +29,14 @@ const Image_Form = () => {
       })
         .then(response => response.json())
         .then(data => {
-          console.log('Upload successful:', data);
+          alert('Imagem enviada!')
           // Handle the response from the server if needed
         })
         .catch(error => {
-          console.error('Error uploading image:', error);
+          alert('Ocorreu um erro ao enviar a imagem.\n' + error)
         });
     } else {
-      console.error('No file selected for upload.');
+      alert('Selecione uma imagem antes de enviar.')
     }
   };
 
