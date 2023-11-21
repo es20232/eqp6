@@ -1,9 +1,18 @@
-## Como rodar
+## Como rodar o Django
 
 Na pasta `tutoriais\tutorial-4-5` rodar os seguintes comandos para ativar o ambiente virtual
 ~~~bash
 python -m venv venv
+~~~
+
+Para ativar o ambiente virtual no `Windows`
+~~~bash
 venv\Scripts\activate
+~~~
+
+Para ativar ambiente virtual no `Linux/macOS`
+~~~bash
+source venv/bin/activate
 ~~~
 
 Instalar os módulos do projeto
