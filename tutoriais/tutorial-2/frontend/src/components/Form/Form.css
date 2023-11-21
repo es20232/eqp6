@@ -1,12 +1,14 @@
-.form-section {
+.form-section, h2, button {
     display: flex;
     justify-content: center;
-    margin: 80px 0;
+    margin: 20px 0;
+    
 }
 
 .form-section form{
-    width: 70%;
-    background-color: #F2F2F2;
+    width: 40%;
+    /* background-color: #F2F2F2; */
+    background-color: #d6e8f5;
     border-radius: 20px;
     padding: 36px 64px;
     box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);

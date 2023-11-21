@@ -1,7 +1,5 @@
 # Passo a passo de como foi feito esse tutorial
 
-## Frontend
-
 1. Primeiro foi necessário navegar até o diretório de instalação do projeto do tutorial 3 através do comando:
     ~~~bash
     cd tutoriais\tutorial-3
@@ -101,25 +99,26 @@
     No arquivo `TextField.css` foi adicionado o seguinte código:
 
     ~~~css
-    .text-field{
-        margin: 24px 0;
+    .text-field {
+        margin: 16px 0;
     }
 
-    .text-field label{
+    .text-field label {
         display: block;
-        margin-bottom: 8px;
-        font-size: 24px
+        margin-bottom: 4px;
+        font-size: 18px; 
     }
 
-    .text-field input{
+    .text-field input {
         background-color: white;
-        box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.06);
         width: 100%;
         border: none;
-        font-size: 24px;
-        padding: 24px;
+        font-size: 18px; 
+        padding: 12px;
         box-sizing: border-box;
     }
+    
     ~~~
 
     E no `input` que está no `index.js` do `TextField` foi adicionado um placeholder, resultado em `<input placeholder="Digite aqui o seu nome" />`
@@ -134,7 +133,7 @@
         return(
             <div className="text-field">
                 <label>{props.label}</label>
-                <input placeholder={props.placeholder} />
+                <input placeholder={props.placeholder} type={props.type} />
             </div>
         )
     }
@@ -142,9 +141,10 @@
 
     Dessa forma é possível reutilizar o componente várias vezes mudando somente os parâmetros:
     ~~~html
-    <TextField label="Nome" placeholder="Digite seu nome..."/>
-    <TextField label="E-mail" placeholder="Digite seu e-mail..."/>
-    <TextField label="Login" placeholder="Digite seu login..."/>
+        <TextField label="Usuário" placeholder="Digite seu usuário..." type="text" />
+        <TextField label="Nome Completo" placeholder="Digite seu nome completo..." type="text" />
+        <TextField label="E-mail" placeholder="Digite seu e-mail..." type="email" />
+        <TextField label="Senha" placeholder="Digite sua senha..." type="password"/>
     ~~~
 
 9. Para organizar melhor o projeto, foi criado um novo componente chamado Form, que vai conter os campos de texto que antes estavam colocados diretamente dentro de `App.js`. O novo componente vai seguir a mesma lógica do anterior:
@@ -173,9 +173,11 @@
             <section className="form-section">
                 <form>
                     <h2>{props.title}</h2>
-                    <TextField label="Nome" placeholder="Digite seu nome..." />
-                    <TextField label="E-mail" placeholder="Digite seu e-mail..." />
-                    <TextField label="Login" placeholder="Digite seu login..." />
+                        <TextField label="Usuário" placeholder="Digite seu usuário..." type="text" />
+                        <TextField label="Nome Completo" placeholder="Digite seu nome completo..." type="text" />
+                        <TextField label="E-mail" placeholder="Digite seu e-mail..." type="email" />
+                        <TextField label="Senha" placeholder="Digite sua senha..." type="password"/>
+                        <button className="cad-button">Cadastrar</button>
                 </form>
             </section>
         )
@@ -186,19 +188,58 @@
 
 10. Para estilizar o componente Form, foi utlizado o arquivo `Form.css`:
     ~~~css
-    .form-section {
+    .form-section, h2, button {
         display: flex;
         justify-content: center;
-        margin: 80px 0;
+        margin: 20px 0;   
     }
 
     .form-section form{
-        width: 70%;
-        background-color: #F2F2F2;
+        width: 40%;
+        /* background-color: #F2F2F2; */
+        background-color: #d6e8f5;
         border-radius: 20px;
         padding: 36px 64px;
         box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.08);
     }
     ~~~
+11. Para enviar o formulário, foi necessário criar componente botão chamado `Button`. Esse componente foi criado usando a mesma lógica dos outros, porém com um detalhe:
+    
+    Ele foi inserido dentro do componente `Form` assim como os demais, porém seguindo o estio de uma tag HTML que tem abertura e fechamento: `<Button>Cadastrar</Button>`. Dessa forma é possível adicionar qualquer coisa entre essas tags, como um ícone, por exemplo. Na hora de usar o contéudo que está entre as tags no componente `Button` é necessário usar `{props.children}`
 
-## Backend
+    A estilização do botão adicionada a `Button.css` foi a seguinte:
+    ~~~css
+    .button {
+        width: 100%;
+        font-size: 18px; /* Reduzi o tamanho da fonte do input para 18px */
+        padding: 12px; /* Reduzi o preenchimento para 12px */
+        box-sizing: border-box;
+        
+        background-color: #4caf50; /* Adicione uma cor de fundo, se desejar */
+        color: white; /* Define a cor do texto para branco, para melhor legibilidade */
+        padding: 10px;
+        cursor: pointer;
+        border: none;
+    }
+
+    .button:hover{
+        background-color: #2d8330;
+    }
+    ~~~
+
+12. Para indicar o que a aplicação deve fazer quando for clicado em `Cadastrar`, foi necessário criar a função `sendForm`, que, nesse caso, exibe os dados do formulário no console e limpa os campos.
+    ~~~js
+    const sendForm = (event) => {
+        event.preventDefault();
+        console.log("Formulário enviado com sucesso")
+        console.log({user, name, email, password})
+        setUser('');
+        setName('');
+        setEmail('');
+        setPassword('');
+    }
+    ~~~
+
+    Para indicar que o formulário deve usar esas função, foi adicionao o seguinte parametro na tag `<form>`: `<form onSubmit={sendForm}>`
+
+    ![imagem do formulário criado](frontend/form-cadastro.jpg)
