@@ -4,7 +4,7 @@ from demoapp.models import User, UploadedFile
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'full_name', 'email', 'senha')
+        fields = ('username', 'name', 'surname', 'email')
         #obs: a senha utilizada ilustra apenas um exemplo, ela não será guardada como string
         # fields = ('id' ,'title', 'description', 'completed')
 
