@@ -3,6 +3,7 @@
 **/.env
 **/node_modules
 **/venv
+**/migrations
 
 # React
 # dependencies
