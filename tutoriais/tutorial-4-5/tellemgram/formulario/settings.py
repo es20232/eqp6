@@ -101,18 +101,28 @@ WSGI_APPLICATION = "formulario.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "djongo",
-        "NAME": "Tellemgram",
-		#"ENFORCE_SCHEMA": False,
-		'CLIENT': {
-            'host': os.getenv("DB_HOST"),
-            'port': int(os.getenv("DB_PORT")),
-            'username': os.getenv("DB_USERNAME"),
-            'password': os.getenv("DB_PASSWORD"),
-            'authSource': 'admin',
-        }
+
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USERNAME"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),  # Set to the PostgreSQL server address
+        'PORT': os.getenv("DB_PORT"),       # Set to the PostgreSQL server port
     }
+
+    # "default": {
+    #     "ENGINE": "djongo",
+    #     "NAME": "Tellemgram",
+	# 	"ENFORCE_SCHEMA": False,
+	# 	'CLIENT': {
+    #         'host': os.getenv("DB_HOST"),
+    #         'port': int(os.getenv("DB_PORT")),
+    #         'username': os.getenv("DB_USERNAME"),
+    #         'password': os.getenv("DB_PASSWORD"),
+    #         'authSource': 'admin',
+    #     }
+    # }
 
     # 'default': {
     #     'ENGINE': 'django.db.backends.sqlite3',
@@ -178,3 +188,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_HTTPONLY':False
+} 
