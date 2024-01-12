@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'dj_rest_auth',
-    'dj_rest_auth.registration'
+    'dj_rest_auth.registration',
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -69,12 +69,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware'
 ]
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
-    ],
-}
 
 ROOT_URLCONF = "formulario.urls"
 
@@ -190,6 +184,28 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 
 REST_AUTH = {
+    # 'SESSION_LOGIN': True,
     'USE_JWT': True,
     'JWT_AUTH_HTTPONLY':False
-} 
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'formulario.serializers.CustomUserDetailsSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'formulario.serializers.CustomPasswordResetSerializer',
+}
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'formulario.serializers.CustomRegisterSerializer',
+}
+
+ACCOUNT_ADAPTER = 'formulario.adapter.CustomAccountAdapter'
+AUTH_USER_MODEL = 'demoapp.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}

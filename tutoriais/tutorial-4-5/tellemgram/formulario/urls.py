@@ -21,6 +21,7 @@ from demoapp import views
 from django.urls import path, re_path
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView
+from demoapp.views import CustomRegisterView
 
 router = routers.DefaultRouter()
 # router.register(r'upload', views.UploadViewSet, basename="upload")
@@ -28,12 +29,12 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path('api/', include(router.urls))
-    path('users/', views.UserList.as_view(), name='user-list'),
-    path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
+    path('api/users/', views.UserList.as_view(), name='user-list'),
+    path('api/users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
     
     path('account-confirm-email/<str:key>/', ConfirmEmailView.as_view()),
-    path('register/', RegisterView.as_view()),
-    path('login/', LoginView.as_view()),
+    path('register/', CustomRegisterView.as_view()),
+    path('users/login/', LoginView.as_view()),
     path('logout/', LogoutView.as_view()),
 
     path('verify-email/',

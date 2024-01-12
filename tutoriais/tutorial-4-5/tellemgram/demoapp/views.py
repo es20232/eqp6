@@ -1,11 +1,14 @@
 from django.shortcuts import render
-from formulario.serializers import UserSerializer, UploadSerializer 
+from formulario.serializers import UserSerializer 
 from rest_framework.renderers import JSONRenderer
 from rest_framework import viewsets, status  
 from rest_framework.response import Response  
 from rest_framework.generics import ListCreateAPIView,  RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from .models import User, UploadedFile            
+from formulario.serializers import CustomRegisterSerializer
+from dj_rest_auth.registration.views import RegisterView
+from rest_framework import permissions
 
 # class UserView(viewsets.ModelViewSet): 
 #     # renderer_classes = [JSONRenderer] # essa linha
@@ -31,52 +34,56 @@ from .models import User, UploadedFile
 #         return Response(serializer.data)
 
 class UserList(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
 
 class UserDetail(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-class UploadViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
-    serializer_class = UploadSerializer
-    MAX_FILE_SIZE_MB = 10  # Specify the maximum file size limit in megabytes
 
-    def list(self, request):
-        try:
-            # Query all uploaded files
-            uploaded_files = UploadedFile.objects.all()
+# class UploadViewSet(viewsets.ViewSet):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = UploadSerializer
+#     MAX_FILE_SIZE_MB = 10  # Specify the maximum file size limit in megabytes
 
-            # Serialize the data
-            serializer = UploadSerializer(uploaded_files, many=True)
+#     def list(self, request):
+#         try:
+#             # Query all uploaded files
+#             uploaded_files = UploadedFile.objects.all()
 
-            # Return the serialized data as JSON response
-            return Response(serializer.data)
-        except Exception as e:
-            # Handle exceptions appropriately
-            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#             # Serialize the data
+#             serializer = UploadSerializer(uploaded_files, many=True)
 
-    def create(self, request):
-        try:
-            file_uploaded = request.FILES.get('file_uploaded')
-            content_type = file_uploaded.content_type
+#             # Return the serialized data as JSON response
+#             return Response(serializer.data)
+#         except Exception as e:
+#             # Handle exceptions appropriately
+#             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            if not str(content_type).startswith('image'):
-                raise Exception('O arquivo selecionado não é uma imagem')
+#     def create(self, request):
+#         try:
+#             file_uploaded = request.FILES.get('file_uploaded')
+#             content_type = file_uploaded.content_type
 
-            if file_uploaded.size > self.MAX_FILE_SIZE_MB * 1024 * 1024:
-                raise Exception('O tamanho máximo do arquivo é de {} MB'.format(self.MAX_FILE_SIZE_MB))
+#             if not str(content_type).startswith('image'):
+#                 raise Exception('O arquivo selecionado não é uma imagem')
 
-            # Save the file content using Djongo model
-            uploaded_file = UploadedFile(file_content=file_uploaded.read(), content_type=content_type)
-            uploaded_file.save()
+#             if file_uploaded.size > self.MAX_FILE_SIZE_MB * 1024 * 1024:
+#                 raise Exception('O tamanho máximo do arquivo é de {} MB'.format(self.MAX_FILE_SIZE_MB))
 
-            response = 'O arquivo foi enviado com sucesso.'
+#             # Save the file content using Djongo model
+#             uploaded_file = UploadedFile(file_content=file_uploaded.read(), content_type=content_type)
+#             uploaded_file.save()
 
-            return Response(response)
-        except Exception as e:
-            # Handle exceptions appropriately
-            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+#             response = 'O arquivo foi enviado com sucesso.'
+
+#             return Response(response)
+#         except Exception as e:
+#             # Handle exceptions appropriately
+#             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class CustomRegisterView(RegisterView):
+    serializer_class = CustomRegisterSerializer
+    permission_classes = [permissions.AllowAny]
