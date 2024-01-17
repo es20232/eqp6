@@ -1,0 +1,39 @@
+body{
+    background-image: url("/public/assets/bailey-zindel-NRQV-hBF10M-unsplash.jpg");
+    background-size: cover; /* Ajusta o tamanho da imagem para cobrir todo o fundo */
+    background-position: center; /* Centraliza a imagem no fundo */
+    height: 100vh; /* Faz com que o fundo ocupe 100% da altura da tela */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff; /* Cor do texto para garantir visibilidade na imagem */
+}
+
+.content{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    color: black;
+}
+
+.auth-form-background{
+    background-color: white;
+    height: 100%;
+    width: 30%;
+    min-width: 400px;
+    box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    
+}
+
+.back-arrow{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    
+}
