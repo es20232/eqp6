@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 // Router
-import{ createBrowserRouter, RouterProvider } from 'react-router-dom';
+import{ createBrowserRouter, RouterProvider, Route, Routes, BrowserRouter, useLocation   } from 'react-router-dom';
 
 import Home from "./routes/Home"
 import SignIn from "./routes/SignIn"
@@ -13,6 +13,9 @@ import AuthPages from './routes/AuthPages';
 import SignUp from './routes/SignUp';
 import Recover from './routes/Recover';
 import ErrorPage from './routes/ErrorPage';
+
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
 
 
 const router = createBrowserRouter([
@@ -43,10 +46,35 @@ const router = createBrowserRouter([
 
 ])
 
+const RootComponent = () => {
+  const location = useLocation(); // Obter a localização atual
+
+  return (
+    <React.StrictMode>
+      <TransitionGroup>
+        <CSSTransition key={location.key} classNames="fade" timeout={300}>
+          <Routes>
+            <Route path="/auth/*" element={<AuthPages />} />
+            <Route path="/auth/entrar" element={<SignIn />} />
+            <Route path="/auth/cadastrar" element={<SignUp />} />
+            <Route path="/auth/recuperar" element={<Recover />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </CSSTransition>
+      </TransitionGroup>
+    </React.StrictMode>
+  );
+};
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/auth/*" element={<AuthPages />} />
+        <Route path="*" element={<App />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
