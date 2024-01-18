@@ -34,3 +34,29 @@ class CustomLoginSerializer(LoginSerializer):
     def get_cleaned_data(self):
         data_dict = super().get_cleaned_data()
         return data_dict
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=False)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'name', 'surname', 'email', 'password')
+        read_only_fields = ('id',)
+
+    def create(self, validated_data):
+        # Custom logic to create a user with a hashed password
+        password = validated_data.pop('password', None)
+        user = User.objects.create(**validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        # Custom logic to update a user with a hashed password
+        password = validated_data.pop('password', None)
+        instance = super().update(instance, validated_data)
+        if password:
+            instance.set_password(password)
+            instance.save()
+        return instance
