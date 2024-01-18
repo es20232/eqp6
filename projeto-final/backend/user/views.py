@@ -7,6 +7,8 @@ from rest_framework import permissions
 from user.models import User
 from tellemgram.serializers import UserSerializer, CustomLoginSerializer, CustomRegisterSerializer
 
+from .permissions import IsSelfOrReadOnly
+
 class UserList(ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -15,7 +17,7 @@ class UserList(ListCreateAPIView):
 class UserDetail(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsSelfOrReadOnly]
 
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
