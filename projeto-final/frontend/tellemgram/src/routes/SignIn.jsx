@@ -12,9 +12,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { motion } from "framer-motion";
 
+// Protected Routes
+import { useAuth } from './AuthContext';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 
 const SignIn = () => {
+    const { logIn } = useAuth();
+    const navigate = useNavigate();
+
     const[formData, setFormData] = useState({
         username: '',
         password: '',
@@ -51,7 +57,8 @@ const SignIn = () => {
           })
         .then(data => {
             console.log('Resposta do servidor:', data);
-            
+            logIn();
+            navigate("/dashboard/");
         })
         .catch(error => {
             setProcessing(false)
