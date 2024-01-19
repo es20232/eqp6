@@ -125,3 +125,9 @@ Juntamente com os detalhes do usuário retornado no login, temos 2 tokens retorn
 
 Token de acesso: este é o token que permite que você tenha acesso à API. Tem uma vida útil curta antes de expirar.
 Atualizar token: consiste nas informações que permitirão que você obtenha um novo token de acesso quando o anterior expirar.
+
+## Recurso de redefinição de senha
+
+Permitiremos que nossos usuários redefinam a senha quando esquecerem suas senhas. Estaremos adicionando os endpoints password-reset e password-reset-confirm' no arquivo urls.py global do projeto para que eles fiquem ativos.
+
+O endpoint de redefinição de senha é onde o usuário faz a solicitação para redefinir sua senha. dj-rest-auth chama o endpoint password-reset-confirm para o qual envia um email para o endereço de email do usuário. O corpo da mensagem de e-mail contém a confirmação de redefinição de senha que possui uma chave exclusiva para verificar apenas esse endereço de e-mail. Quando o usuário abrir o URL de redefinição de senha na mensagem de e-mail, ele será redirecionado para uma nova página para fornecer uma nova senha para sua conta.
