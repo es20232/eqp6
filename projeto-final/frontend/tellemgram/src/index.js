@@ -72,7 +72,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/auth/*" element={<AuthPages />} />
-        <Route path="*" element={<App />} />
+        <Route path="/*" element={<App />} /> 
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

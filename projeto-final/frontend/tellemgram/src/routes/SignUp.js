@@ -26,7 +26,7 @@ const SignUp = () => {
 
     const handleSubmit = () => {
         // Aqui você pode fazer a solicitação HTTP, por exemplo, usando fetch
-        fetch('http://127.0.0.1:8000/register/', {
+        fetch('http://127.0.0.1:8000/register/?format=json', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

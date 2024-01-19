@@ -44,7 +44,43 @@ body{
     
 }
 
-.form{
+.form-wrapper{
+    width: 100%;
+    max-width: 500px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.form-title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.form-title h2{
+    margin: 10px 0 0 0;
+}
+.icon-container{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    background-color: #634B7C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-alert{
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form{
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -58,15 +94,7 @@ body{
     gap: 16px
 }
 
-.icon-div{
-    height: 80px;
-    width: 80px;
-    border-radius: 50%;
-    background-color: #634B7C;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .signin-links{
     width: 100%;
