@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from user.models import User, UploadedFile
+from user.models import User, UserImage
 from dj_rest_auth.serializers import UserDetailsSerializer
 from django.conf import settings
+from rest_framework.serializers import Serializer, FileField
 
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import setup_user_email
@@ -60,3 +61,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
             instance.save()
         return instance
+
+class CustomUserImage(serializers.ModelSerializer):
+    class Meta:
+        model = UserImage
+        
+        fields = ['image', 'description', 'is_published']
+

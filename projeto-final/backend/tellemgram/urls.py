@@ -5,10 +5,10 @@ from user import views
 from django.urls import path, re_path
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView
-from user.views import CustomLoginView, CustomRegisterView
+from user.views import CustomLoginView, CustomRegisterView, CustomUploadViewSet
 
 router = routers.DefaultRouter()
-# router.register(r'upload', views.UploadViewSet, basename="upload")
+router.register(r'upload', CustomUploadViewSet, basename="upload")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -23,6 +23,8 @@ urlpatterns = [
     path('register/', CustomRegisterView.as_view()),
     path('login/', CustomLoginView.as_view()),
     path('logout/', LogoutView.as_view()),
+    
+    path('upload_image/', include(router.urls), name='upload'),
 
     path('verify-email/',
          VerifyEmailView.as_view(), name='rest_verify_email'),

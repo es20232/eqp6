@@ -119,11 +119,9 @@ EMAIL_PORT = 587
 
 # REST Framework Configuration
 REST_AUTH = {
-    
     'SESSION_LOGIN': True,
     'USE_JWT': True,
     'JWT_AUTH_HTTPONLY': False
-
 }
 
 
@@ -147,7 +145,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     ],
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',  # novo
+    ],
 }
 
 # Static files (CSS, JavaScript, Images)
