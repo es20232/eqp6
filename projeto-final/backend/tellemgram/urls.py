@@ -15,7 +15,10 @@ urlpatterns = [
     # path('api/', include(router.urls))
     path('api/users/', views.UserList.as_view(), name='user-list'),
     path('api/users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
-    
+
+    path('password-reset/', PasswordResetView.as_view()),
+    path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
     path('account-confirm-email/<str:key>/', ConfirmEmailView.as_view()),
     path('register/', CustomRegisterView.as_view()),
     path('login/', CustomLoginView.as_view()),

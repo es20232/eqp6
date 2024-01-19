@@ -119,10 +119,13 @@ EMAIL_PORT = 587
 
 # REST Framework Configuration
 REST_AUTH = {
+    
     'SESSION_LOGIN': True,
     'USE_JWT': True,
     'JWT_AUTH_HTTPONLY': False
+
 }
+
 
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'tellemgram.serializers.CustomUserDetailsSerializer',
