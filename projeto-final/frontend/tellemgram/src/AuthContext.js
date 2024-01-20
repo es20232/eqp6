@@ -45,7 +45,12 @@ export const AuthProvider = ({ children }) => {
   }, [accessToken, refreshToken]);
 
 
-  const logIn = () => setLoggedIn(true);
+  const logIn = () => {
+    setLoggedIn(true)
+    setAccessToken(Cookies.get('accessToken'))
+    setRefreshToken(Cookies.get('refreshToken'))
+  };
+
   const logOut  = () => {// Limpar os cookies e redefinir o estado
     Cookies.remove('accessToken');
     Cookies.remove('refreshToken');

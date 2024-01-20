@@ -56,9 +56,9 @@ const Login = () => {
           })
         .then(data => {
             console.log('Resposta do servidor:', data);
-            logIn();
             Cookies.set('accessToken', data.access, { expires: 7 });
             Cookies.set('refreshToken', data.refresh, { expires: 7 });
+            logIn();
             navigate("/");
         })
         .catch(error => {
