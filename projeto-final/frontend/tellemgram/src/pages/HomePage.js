@@ -27,13 +27,14 @@ const HomePage = () => {
           try {
             // Aqui você pode enviar a imagem para a API
             const response = await axios.post(
-                'http://127.0.0.1:8000/upload_image/upload/',
+                'http://127.0.0.1:8000/upload-image/upload/',
                 { image: selectedImage },
                 {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              }
+                    headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    },
+                }
             );
     
             console.log('Resposta da API:', response.data);
