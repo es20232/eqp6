@@ -7,6 +7,8 @@ from rest_framework import permissions, viewsets
 from rest_framework.parsers import MultiPartParser, FormParser
 from user.models import User, UserImage
 from tellemgram.serializers import CustomUserSerializer, UserSerializer, CustomLoginSerializer, CustomRegisterSerializer, CustomUserImage, UserVisibleSerializer
+from dj_rest_auth.views import PasswordChangeView
+from rest_framework import status
 
 from .permissions import IsSelfOrReadOnly
 
@@ -69,3 +71,17 @@ class CustomUploadViewSet(viewsets.ViewSet):
         except Exception as e:
             # Handle exceptions appropriately
             return Response(str(e))
+        
+class CustomPasswordChangeView(PasswordChangeView):
+    def post(self, request, *args, **kwargs):
+        old_password = request.data.get('old_password', None)
+
+        # Verificar se a senha antiga está presente na requisição
+        if old_password is None:
+            return Response({'detail': 'A senha antiga não foi fornecida.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Adicione lógica para validar a senha antiga
+        if not request.user.check_password(old_password):
+            return Response({'detail': 'Senha antiga incorreta.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return super().post(request, *args, **kwargs)

@@ -4,8 +4,8 @@ from rest_framework import routers
 from user import views
 from django.urls import path, re_path
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
-from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView
-from user.views import CustomLoginView, CustomRegisterView, CustomUploadViewSet
+from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
+from user.views import CustomLoginView, CustomRegisterView, CustomUploadViewSet, CustomPasswordChangeView
 
 router = routers.DefaultRouter()
 router.register(r'upload', CustomUploadViewSet, basename="upload")
@@ -19,12 +19,14 @@ urlpatterns = [
     path('password-reset/', PasswordResetView.as_view()),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
+    path('password/change/', CustomPasswordChangeView.as_view(), name='password_change'),
+
     path('account-confirm-email/<str:key>/', ConfirmEmailView.as_view()),
     path('register/', CustomRegisterView.as_view()),
     path('login/', CustomLoginView.as_view()),
     path('logout/', LogoutView.as_view()),
     
-    path('upload_image/', include(router.urls), name='upload'),
+    path('upload-image/', include(router.urls), name='upload'),
 
     path('verify-email/',
          VerifyEmailView.as_view(), name='rest_verify_email'),
