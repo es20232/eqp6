@@ -71,6 +71,5 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class CustomUserImage(serializers.ModelSerializer):
     class Meta:
         model = UserImage
-
         fields = ('image', 'description', 'is_published')
 

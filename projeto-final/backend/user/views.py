@@ -55,12 +55,14 @@ class CustomUploadViewSet(viewsets.ViewSet):
             # Retrieve the base64 string from the request data
             base64_string = request.data.get('image', '')
             user_id = request.data.get('user')
+            description = request.data.get('description')
+            is_published = request.data.get('is_published')
 
             # Convert base64 string to binary data
             binary_data = base64.b64decode(base64_string)
 
             current_user = request.user
-            uploaded_file = UserImage(user=current_user, image=binary_data)
+            uploaded_file = UserImage(user=current_user, image=binary_data, description=description, is_published=is_published)
             uploaded_file.save()
 
             response = 'O arquivo foi enviado com sucesso.'
