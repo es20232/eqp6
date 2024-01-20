@@ -22,6 +22,7 @@ pip install -r requirements.txt
 
 Para rodar o serivor, usar os seguintes comandos na pasta `tutoriais\tutorial-4-5\tellemgram`:
 ~~~bash
+python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ~~~

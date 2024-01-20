@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-9^wr()b9ttuinfec7*t-h%s*nd56#ml7=vv832#uu-auv-1#-6"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,9 +39,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
 	"demoapp",
 	'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
 ]
 
 CORS_ORIGIN_WHITELIST = [
@@ -61,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 ROOT_URLCONF = "formulario.urls"
@@ -88,18 +95,33 @@ WSGI_APPLICATION = "formulario.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "djongo",
-        "NAME": "ClusterTeste",
-		#"ENFORCE_SCHEMA": False,
-		'CLIENT': {
-            'host': os.getenv("DB_HOST"),
-            'port': int(os.getenv("DB_PORT")),
-            'username': os.getenv("DB_USERNAME"),
-            'password': os.getenv("DB_PASSWORD"),
-            'authSource': 'admin',
-        }
+
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USERNAME"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
+        'HOST': os.getenv("DB_HOST"),  # Set to the PostgreSQL server address
+        'PORT': os.getenv("DB_PORT"),       # Set to the PostgreSQL server port
     }
+
+    # "default": {
+    #     "ENGINE": "djongo",
+    #     "NAME": "Tellemgram",
+	# 	"ENFORCE_SCHEMA": False,
+	# 	'CLIENT': {
+    #         'host': os.getenv("DB_HOST"),
+    #         'port': int(os.getenv("DB_PORT")),
+    #         'username': os.getenv("DB_USERNAME"),
+    #         'password': os.getenv("DB_PASSWORD"),
+    #         'authSource': 'admin',
+    #     }
+    # }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / "db.sqlite3",
+    # }
 }
 
 
@@ -127,6 +149,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+SITE_ID = 1
+
+REST_USE_JWT = True
+
+JWT_AUTH_COOKIE = 'tellemgram-auth'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -137,3 +164,48 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+LOGIN_URL = os.getenv("LOGIN_URL")
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+
+REST_AUTH = {
+    # 'SESSION_LOGIN': True,
+    'USE_JWT': True,
+    'JWT_AUTH_HTTPONLY':False
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'formulario.serializers.CustomUserDetailsSerializer',
+    'PASSWORD_RESET_SERIALIZER': 'formulario.serializers.CustomPasswordResetSerializer',
+}
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'formulario.serializers.CustomRegisterSerializer',
+}
+
+ACCOUNT_ADAPTER = 'formulario.adapter.CustomAccountAdapter'
+AUTH_USER_MODEL = 'demoapp.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
