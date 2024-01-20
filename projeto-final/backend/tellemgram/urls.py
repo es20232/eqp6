@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from user import views
 from django.urls import path, re_path
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
@@ -27,6 +28,8 @@ urlpatterns = [
     path('logout/', LogoutView.as_view()),
     
     path('upload-image/', include(router.urls), name='upload'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('verify-email/',
          VerifyEmailView.as_view(), name='rest_verify_email'),
