@@ -1,6 +1,7 @@
 .large_button{
     width: 100%;
     background-color: #634B7C !important;
+    height: 3rem;;
 }
 
 .large_button:hover{

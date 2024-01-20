@@ -1,5 +1,4 @@
 import React from "react";
-import "./AuthPages.css"
 import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -12,7 +11,7 @@ const Recover = () => {
     return(
         <div className="form-container">
             <div className="back-arrow">
-                <Link to="/auth/entrar">
+                <Link to="/entrar">
                     <IconButton aria-label="delete">
                         <ArrowBackIcon style={{color: "#634B7C" }} />
                     </IconButton>

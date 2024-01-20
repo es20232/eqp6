@@ -1,15 +1,5 @@
-body{
-    background-image: url("/public/assets/bailey-zindel-NRQV-hBF10M-unsplash.jpg");
-    background-size: cover; /* Ajusta o tamanho da imagem para cobrir todo o fundo */
-    background-position: center; /* Centraliza a imagem no fundo */
-    height: 100vh; /* Faz com que o fundo ocupe 100% da altura da tela */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff; /* Cor do texto para garantir visibilidade na imagem */
-}
-
 .content{
+    background-image: url("/public/assets/bailey-zindel-NRQV-hBF10M-unsplash.jpg");
     height: 100vh;
     width: 100vw;
     display: flex;
@@ -17,7 +7,7 @@ body{
     color: black;
 }
 
-.auth-form-background{
+.auth-wrapper-container{
     background-color: white;
     height: 100%;
     width: 30%;
@@ -31,34 +21,32 @@ body{
     
 }
 
-.form-container{
-    width: 100%;
-    max-width: 500px;
-    padding: 32px;
-}
-
-.back-arrow{
+.backArrow-icon-container{
     position: absolute;
     top: 10px;
     left: 10px;
     
 }
 
-.form{
+.form-container{
+    width: 100%;
+    max-width: 500px;
+    padding: 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 16px;
 }
-
-.name-fields{
-    width: 100%;
-    max-width: 500px;
+.form-title{
     display: flex;
-    gap: 16px
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
-
-.icon-div{
+.form-title h2{
+    margin: 10px 0 0 0;
+}
+.page-icon-container{
     height: 80px;
     width: 80px;
     border-radius: 50%;
@@ -68,7 +56,29 @@ body{
     justify-content: center;
 }
 
-.signin-links{
+.form-alert{
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.name-fields-container{
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    gap: 16px
+}
+
+.login-links-container{
     width: 100%;
     display: flex;
     justify-content: space-between;
