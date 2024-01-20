@@ -1,24 +1,23 @@
 import React, { useState }  from "react"
-import "./AuthPages.css"
-import TextField from '@mui/material/TextField';
-import { Link, redirect  } from "react-router-dom"
-import styles from "./CustomComponentsStyles.module.css";
-import Button from '@mui/material/Button';
-import LockIcon from '@mui/icons-material/Lock';
 
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import CircularProgress from '@mui/material/CircularProgress';
-
+import { Link, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion";
 
+import TextField from '@mui/material/TextField';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
+import Button from '@mui/material/Button';
+import LockIcon from '@mui/icons-material/Lock';
+import styles from "./CustomComponentsStyles.module.css";
+
 // Protected Routes
-import { useAuth } from './AuthContext';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../AuthContext';
 
+// Cookie Settings
+import Cookies from 'js-cookie';
 
-const SignIn = () => {
-    const { logIn } = useAuth();
+const Login = () => {
+    const { logIn, loggedIn } = useAuth();
     const navigate = useNavigate();
 
     const[formData, setFormData] = useState({
@@ -58,7 +57,9 @@ const SignIn = () => {
         .then(data => {
             console.log('Resposta do servidor:', data);
             logIn();
-            navigate("/dashboard/");
+            Cookies.set('accessToken', data.access, { expires: 7 });
+            Cookies.set('refreshToken', data.refresh, { expires: 7 });
+            navigate("/");
         })
         .catch(error => {
             setProcessing(false)
@@ -84,9 +85,9 @@ const SignIn = () => {
 
 
     return(
-            <motion.div initial={{ opacity: 0}} animate={{ opacity: 1}} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="form-wrapper">
+            <motion.div initial={{ opacity: 0}} animate={{ opacity: 1}} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="form-container">
                 <div className="form-title">
-                    <div className="icon-container">
+                    <div className="page-icon-container">
                         <LockIcon sx={{ fontSize: 40, color:"white" }} />
                     </div>
                     <h2>Entrar</h2>
@@ -132,13 +133,13 @@ const SignIn = () => {
                         {!processing && <>ENTRAR</>}
                     </Button>
                 </form>
-                <div className="signin-links">
-                    <p><Link to="/auth/recuperar">Esquecia a senha</Link></p>
-                    <p><Link to="/auth/cadastrar">Não tenho cadastro</Link></p>
+                <div className="login-links-container">
+                    <p><Link to="/recuperar">Esquecia a senha</Link></p>
+                    <p><Link to="/cadastrar">Não tenho cadastro</Link></p>
                 </div>
         
         </motion.div>
     )
 }
 
-export default SignIn
+export default Login;

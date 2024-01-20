@@ -1,31 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-
-// Router
-
-import Home from "./routes/Home"
-import SignIn from "./routes/SignIn"
-import AuthPages from './routes/AuthPages';
-import SignUp from './routes/SignUp';
-import Recover from './routes/Recover';
-import ErrorPage from './routes/ErrorPage';
-
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import AppRouter from './AppRouter';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <BrowserRouter>
-      <Routes>
-        <Route path="/auth/*" element={<AuthPages />} />
-        <Route path="/*" element={<App />} /> 
-      </Routes>
-    </BrowserRouter> */}
-    <App />
+    <AppRouter />
   </React.StrictMode>
 );
 

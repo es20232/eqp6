@@ -6,7 +6,9 @@ import { useAuth } from './AuthContext';
 const ProtectedRoutes = () => {
     const { loggedIn } = useAuth();
     if (!loggedIn) {
-        return <Navigate to="auth/entrar" />;
+        console.log("Não está logado")
+        console.log(loggedIn)
+        return <Navigate to="/entrar" />;
     }
     return(
         <div>

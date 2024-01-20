@@ -8,7 +8,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import styles from "./CustomComponentsStyles.module.css";
 import { motion } from "framer-motion";
 
-const SignUp = () => {
+const Signup = () => {
 
     const [nome, setNome] = useState('');
     const [sobrenome, setSobrenome] = useState('');
@@ -52,20 +52,22 @@ const SignUp = () => {
 
 
     return(
-        <motion.div initial={{ opacity: 0}} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="form-container">
-            <div className="back-arrow">
-                <Link to="/auth/entrar">
+        <motion.div initial={{ opacity: 0}} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="form-container">
+            <div className="backArrow-icon-container">
+                <Link to="/entrar">
                     <IconButton aria-label="delete">
                         <ArrowBackIcon style={{color: "#634B7C" }} />
                     </IconButton>
                 </Link>
             </div>
-            <div className="form">
-                <div className="icon-div">
+            <div className="form-title">
+                <div className="page-icon-container">
                     <LockIcon sx={{ fontSize: 40, color:"white" }} />
                 </div>
                 <h2>Cadastro</h2>
-                <div className="name-fields">
+            </div>
+            <div className="form">
+                <div className="name-fields-container">
                     <TextField required id="outlined-basic" label="Nome" variant="outlined" className={styles.large_field} onChange={handleNomeChange}/>
                     <TextField required id="outlined-basic" label="Sobrenome" variant="outlined" onChange={handleSobrenomeChange} className={styles.large_field}/>
                 </div>
@@ -81,4 +83,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+export default Signup

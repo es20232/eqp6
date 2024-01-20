@@ -1,0 +1,85 @@
+.content{
+    background-image: url("/public/assets/bailey-zindel-NRQV-hBF10M-unsplash.jpg");
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    color: black;
+}
+
+.auth-wrapper-container{
+    background-color: white;
+    height: 100%;
+    width: 30%;
+    min-width: 504px;
+    box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra */
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    
+}
+
+.backArrow-icon-container{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    
+}
+
+.form-container{
+    width: 100%;
+    max-width: 500px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.form-title{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.form-title h2{
+    margin: 10px 0 0 0;
+}
+.page-icon-container{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    background-color: #634B7C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-alert{
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.name-fields-container{
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    gap: 16px
+}
+
+.login-links-container{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
