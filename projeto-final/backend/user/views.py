@@ -6,14 +6,14 @@ from dj_rest_auth.registration.views import LoginView, RegisterView, APIView
 from rest_framework import permissions, viewsets
 from rest_framework.parsers import MultiPartParser, FormParser
 from user.models import User, UserImage
-from tellemgram.serializers import CustomUserSerializer, UserSerializer, CustomLoginSerializer, CustomRegisterSerializer, CustomUserImage
+from tellemgram.serializers import CustomUserSerializer, UserSerializer, CustomLoginSerializer, CustomRegisterSerializer, CustomUserImage, UserVisibleSerializer
 
 from .permissions import IsSelfOrReadOnly
 
 
 class UserList(ListCreateAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserVisibleSerializer
     permission_classes = [IsAuthenticated]
 
 class UserDetail(RetrieveUpdateDestroyAPIView):

@@ -15,6 +15,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'name', 'surname', 'email')
 
+class UserVisibleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'name', 'surname')
+
 class CustomRegisterSerializer(RegisterSerializer):
     name = serializers.CharField(max_length=50)
     surname = serializers.CharField(max_length=50)
@@ -65,6 +70,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class CustomUserImage(serializers.ModelSerializer):
     class Meta:
         model = UserImage
-        
+
         fields = ['image', 'description', 'is_published']
 
