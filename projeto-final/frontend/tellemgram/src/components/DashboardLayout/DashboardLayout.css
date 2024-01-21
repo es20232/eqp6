@@ -1,86 +1,69 @@
-.contentDashb{
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  .dashboard {
+    display: flex;
+  }
+  
+  .menu {
+    width: 200px;
     background-color: #E2E2E5;
+    color: white;
+    padding: 88px;
+  }
+  
+  .menu ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .menu li {
+    margin-bottom: 10px;
+  }
+  
+  .menu a {
+    text-decoration: none;
+    color: #CEA6CE;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .menu a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .menu .active a {
+    color: #995C99
+  }
+  
+  .contentDashboard {
+    background-color: white ;
     background-size: cover;
     height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: flex-end;
     color: black;
-}
+  }
+  /*estilo dos icones*/
 
-.auth-wrapper-container{
-    background-color: white;
-    height: 100%;
-    width: 30%;
-    min-width: 504px;
-    box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra */
+  /*usuario*/
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    
-}
-
-.backArrow-icon-container{
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    
-}
-
-.form-container{
-    width: 100%;
-    max-width: 500px;
+  .menu h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #634B7C; 
     padding: 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-}
-.form-title{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-.form-title h2{
-    margin: 10px 0 0 0;
-}
-.page-icon-container{
-    height: 80px;
-    width: 80px;
-    border-radius: 50%;
-    background-color: #634B7C;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+  }
+ .menuTitle{
+    margin-bottom: 20px;
+ }
+ 
+  .user-info {
+    text-align: center;
+  }
 
-.form-alert{
-    min-height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-form{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-}
-
-.name-fields-container{
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    gap: 16px
-}
-
-.login-links-container{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
+  
+  
