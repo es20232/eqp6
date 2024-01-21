@@ -4,9 +4,14 @@ import Button from '@mui/material/Button';
 
 import { useAuth } from '../AuthContext';
 import axios from 'axios';
+import { fetchUsers } from "../api";
+
+import { useNavigate } from "react-router-dom";
+import { display } from "@mui/system";
 
 const HomePage = () => {
     const [selectedImage, setSelectedImage] = useState(null);
+    const navigate = useNavigate();
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -27,13 +32,14 @@ const HomePage = () => {
           try {
             // Aqui você pode enviar a imagem para a API
             const response = await axios.post(
-                'http://127.0.0.1:8000/upload_image/upload/',
+                'http://127.0.0.1:8000/upload-image/upload/',
                 { image: selectedImage },
                 {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              }
+                    headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                    },
+                }
             );
     
             console.log('Resposta da API:', response.data);
@@ -53,34 +59,39 @@ const HomePage = () => {
         logOut();
     }
 
+    const handleUploadButton = () =>{
+      navigate('/carregar');
+    }
+    const handleTokenButton = () =>{
+      navigate('/token');
+    }
+
     const requestToAPI = async () => {
         try {
-            const response = await axios.get(
-                'http://127.0.0.1:8000/api/users/',  // Substitua pela URL da sua API
-                {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json',
-                        // Adicione outros cabeçalhos conforme necessário
-                    }
-                }
-            );
-
-            console.log('Resposta da requisição:', response.data);
-        } catch (error) {
-            console.error('Erro na requisição:', error);
-        }
+            const result = await fetchUsers(accessToken); // Substitua pela sua URL
+            console.log(result);
+          } catch (error) {
+            // Lidar com o erro, se necessário
+            console.error('Erro ao obter dados:', error);
+          }
     }
+    const estiloDaDiv = {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "32px",
+      // Outros estilos podem ser adicionados aqui
+    };
+  
 
     return(
         <div>
             <h1>Home</h1>
-            {"Acess token:" + accessToken}
-            <Button variant="outlined" onClick={logoutHandler}>LOGOUT</Button>
-            <Button variant="outlined" onClick={requestToAPI}>GET Users</Button>
-            <input type="file" onChange={handleImageChange}></input>
-            <Button variant="outlined" onClick={handleUpload}>POST image</Button>
-            
+            <div style={estiloDaDiv}>
+              <Button variant="outlined" onClick={handleUploadButton}>/carregar</Button>
+              <Button variant="outlined" onClick={handleTokenButton}>/token</Button>
+              <Button variant="outlined" onClick={logoutHandler}>LOGOUT</Button>
+            </div>        
         </div>
     )
 }
