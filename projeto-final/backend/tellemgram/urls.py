@@ -8,6 +8,7 @@ from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, Passwor
 from user.views import CustomLoginView, CustomRegisterView, CustomUploadViewSet, CustomPasswordChangeView
 
 router = routers.DefaultRouter()
+# router.register(r'users', UserRetrieveUpdateDestroyView, basename='user')
 router.register(r'upload', CustomUploadViewSet, basename="upload")
 
 urlpatterns = [

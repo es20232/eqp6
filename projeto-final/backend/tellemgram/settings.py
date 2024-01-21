@@ -153,6 +153,10 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser',  # novo
     ],
+        'DEFAULT_RENDERER_CLASSES': [ # novo
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
 }
 
 # Static files (CSS, JavaScript, Images)

@@ -1,25 +1,18 @@
 from rest_framework import serializers
 from user.models import User, UserImage
 from dj_rest_auth.serializers import UserDetailsSerializer
-from django.conf import settings
-from rest_framework.serializers import Serializer, FileField
-
-from allauth.account.adapter import get_adapter
-from allauth.account.utils import setup_user_email
-
-
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'name', 'surname', 'email')
+        fields = ('username', 'name', 'surname', 'email', 'profile_image')
 
 class UserVisibleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'name', 'surname')
+        fields = ('username', 'name', 'surname', 'profile_image')
 
 class CustomRegisterSerializer(RegisterSerializer):
     name = serializers.CharField(max_length=50)
@@ -71,6 +64,5 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class CustomUserImage(serializers.ModelSerializer):
     class Meta:
         model = UserImage
-
-        fields = ['image', 'description', 'is_published']
+        fields = ('image', 'description', 'is_published')
 
