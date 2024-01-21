@@ -9,9 +9,9 @@ from user.models import User, UserImage
 from tellemgram.serializers import CustomUserSerializer, UserSerializer, CustomLoginSerializer, CustomRegisterSerializer, CustomUserImage, UserVisibleSerializer
 from dj_rest_auth.views import PasswordChangeView
 from rest_framework import status
+import base64, io
 
 from .permissions import IsSelfOrReadOnly
-
 
 class UserList(ListCreateAPIView):
     queryset = User.objects.all()
@@ -44,47 +44,34 @@ class CustomUploadViewSet(viewsets.ViewSet):
             # Serialize the data
             serializer = CustomUserImage(uploaded_files, many=True)
 
-            # Return the serialized data as JSON response
+            # Return the serialized data as a JSON response
             return Response(serializer.data)
         except Exception as e:
             # Handle exceptions appropriately
             return Response(str(e))
-        
+
     def create(self, request):
         try:
-<<<<<<< Updated upstream
-            file_uploaded = request.FILES.get('image')
-            content_type = file_uploaded.content_type
-=======
             # Retrieve the base64 string from the request data
             base64_string = request.data.get('image', '')
-            # user_id = request.data.get('user')
+            user_id = request.data.get('user')
             description = request.data.get('description')
             is_published = request.data.get('is_published')
->>>>>>> Stashed changes
 
-            if not str(content_type).startswith('image'):
-                raise Exception('O arquivo selecionado não é uma imagem')
+            # Convert base64 string to binary data
+            binary_data = base64.b64decode(base64_string)
 
-<<<<<<< Updated upstream
-            if file_uploaded.size > self.MAX_FILE_SIZE_MB * 1024 * 1024:
-                raise Exception('O tamanho máximo do arquivo é de {} MB'.format(self.MAX_FILE_SIZE_MB))
-
-            # Save the file content using Djongo model
-            uploaded_file = UserImage(file_content=file_uploaded.read(), content_type=content_type)
-=======
             current_user = request.user
-            print(current_user)
             uploaded_file = UserImage(user=current_user, image=binary_data, description=description, is_published=is_published)
->>>>>>> Stashed changes
             uploaded_file.save()
 
             response = 'O arquivo foi enviado com sucesso.'
 
-            return Response(response)
+            return Response(response, status=status.HTTP_201_CREATED)
         except Exception as e:
             # Handle exceptions appropriately
-            return Response(str(e))
+            print(e)
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
         
 class CustomPasswordChangeView(PasswordChangeView):
     def post(self, request, *args, **kwargs):
