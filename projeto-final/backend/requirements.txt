@@ -7,7 +7,7 @@ dataclasses==0.6
 defusedxml==0.7.1
 dj-rest-auth==5.0.2
 Django==5.0.1
-django-allauth==0.60.0
+django-allauth==0.60.1
 django-cors-headers==4.3.1
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1

@@ -9,7 +9,6 @@ from user.models import User, UserImage
 from tellemgram.serializers import CustomUserSerializer, UserSerializer, CustomLoginSerializer, CustomRegisterSerializer, CustomUserImage, UserVisibleSerializer
 from dj_rest_auth.views import PasswordChangeView
 from rest_framework import status
-import base64, io
 
 from .permissions import IsSelfOrReadOnly
 

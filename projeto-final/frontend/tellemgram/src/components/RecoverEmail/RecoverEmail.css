@@ -1,0 +1,12 @@
+.form-confirmedConterner h3 {
+	color: #634B7C;
+}
+
+.form-confirmedConterner{
+	display: flex;
+	flex-direction: column;
+	gap:16px;
+}
+.large_field{
+    width: 100%;
+}

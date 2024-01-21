@@ -1,0 +1,13 @@
+.large_button{
+    width: 100%;
+    background-color: #634B7C !important;
+    height: 3rem;;
+}
+
+.large_button:hover{
+    background-color: #4f3c63 !important;
+}
+
+.large_field{
+    width: 100%;
+}

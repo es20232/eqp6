@@ -1,0 +1,21 @@
+.token-manager-container{
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.token-container p{
+    margin: 4px;
+}
+
+.button-container{
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+}
+

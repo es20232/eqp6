@@ -1,0 +1,32 @@
+.signupComplete-container{
+	width: 100%;
+    max-width: 500px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.signupComplete-container .icon-container{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    background-color: #634B7C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signupComplete-container h1{
+    color: #634B7C;
+	margin-bottom: 3px;
+    text-align: center;
+}
+
+.signupComplete-container p{
+    color: #995c99;
+	margin-top: 3px;
+    text-align: center;
+}
