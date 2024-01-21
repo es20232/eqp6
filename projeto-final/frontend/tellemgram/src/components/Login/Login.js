@@ -14,7 +14,7 @@ import styles from "./CustomComponentsStyles.module.css";
 import { useAuth } from "../../AuthContext";
 
 const Login = () => {
-  const { login2, logIn, loggedIn } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [processing, setProcessing] = useState(false);
@@ -31,7 +31,7 @@ const Login = () => {
     console.log("Login submetido:", formData);
 
     setProcessing(true);
-    const responseStatus = await login2(formData);
+    const responseStatus = await login(formData);
     setProcessing(false);
     setFormData({ username: "", password: "" });
     if (responseStatus == 200) {

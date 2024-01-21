@@ -1,85 +1,121 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { refreshAcessToken } from "./api";
-import { api2, endpoints } from "./api2";
+import { createContext, useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import { api, endpoints } from "./apiService";
 
 const AuthContext = createContext();
 
-
 export const AuthProvider = ({ children }) => {
-
-  const [accessToken, setAccessToken] = useState(Cookies.get('accessToken') || null);
-  const [refreshToken, setRefreshToken] = useState(Cookies.get('refreshToken') || null);
+  const [accessToken, setAccessToken] = useState(
+    Cookies.get("accessToken") || null
+  );
+  const [refreshToken, setRefreshToken] = useState(
+    Cookies.get("refreshToken") || null
+  );
   const [loggedIn, setLoggedIn] = useState(accessToken && refreshToken);
-  const [isVerified, setIsVerified] = useState('false')
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
-    setAccessToken(Cookies.get('accessToken'))
-    setRefreshToken(Cookies.get('refreshToken'))
-    setIsVerified(true)
-  }, []);
-
-  useEffect(() => {
-    if (accessToken && refreshToken) {
+    setAccessToken(Cookies.get("accessToken"));
+    setRefreshToken(Cookies.get("refreshToken"));
+    if (refreshToken) {
       setLoggedIn(true);
     }
-  }, [accessToken, refreshToken]);
 
-  const logIn = (access, refresh) => {
-    Cookies.set('accessToken', access, { expires: 1 });
-    Cookies.set('refreshToken', refresh, { expires: 1 });
-    setAccessToken(access)
-    setRefreshToken(refresh)
-    setLoggedIn(true);
-  };
+    setIsVerified(true);
+  }, []);
 
-  const login2 = async ( {username, password} ) => {
-    try{
-      const response = await api2.post(endpoints.loginEndpoint, {"username": username, "password": password});
-      if(response.data.error) {
+  const login = async ({ username, password }) => {
+    try {
+      const response = await api.post(endpoints.loginEndpoint, {
+        username: username,
+        password: password,
+      });
+      if (response.data.error) {
         return response.status;
-      }else{
-        api2.defaults.headers.common["Authorization"] = `Bearer ${response.data.access}`;
-        Cookies.set('accessToken', response.data.access, { expires: 1 });
-        Cookies.set('refreshToken', response.data.refresh, { expires: 1 });
-        setAccessToken(response.data.access)
-        setRefreshToken(response.data.refresh)
+      } else {
+        Cookies.set("accessToken", response.data.access, { expires: 1 });
+        Cookies.set("refreshToken", response.data.refresh, { expires: 1 });
+        setAccessToken(response.data.access);
+        setRefreshToken(response.data.refresh);
         setLoggedIn(true);
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${response.data.access}`;
         return response.status;
       }
-    } catch(err){
+    } catch (err) {
       console.log(err);
-      if('response' in err){
-        return err.response.status
-      } else{
+      if ("response" in err) {
+        return err.response.status;
+      } else {
         return 503;
       }
     }
-  }
+  };
 
-  const logOut  = () => {// Limpar os cookies e redefinir o estado
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
+  const logout = () => {
+    // Limpar os cookies e redefinir o estado
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     setAccessToken(null);
     setRefreshToken(null);
     setLoggedIn(false);
-  }
+  };
 
-  const requestNewAcessToken = async (refreshToken) => {
-    console.log("Função de revalidar o token " + refreshToken)
+  const requestNewAcessToken = async () => {
+    console.log("Atualizando AccessToken...");
     try {
-      const result = await refreshAcessToken(refreshToken); // Substitua pela sua URL
-      console.log(result);
-      Cookies.set('accessToken', result.access, { expires: 1 });
-      setAccessToken(result.access)
+      const response = await api.post(endpoints.refreshTokenEndpoint, {
+        refresh: refreshToken,
+      });
+      console.log(response);
+      Cookies.set("accessToken", response.data.access, { expires: 1 });
+      setAccessToken(response.data.access);
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.access}`;
+      console.log("AcessToken atualizado!");
     } catch (error) {
-      // Lidar com o erro, se necessário
-      console.error('Erro ao obter dados:', error);
+      console.error("Erro ao atualizar AccessToken: ", error);
     }
-  }
+  };
+
+  const getTokenExpirationTime = (token) => {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    if (payload && payload.exp) {
+      const expirationTimeInSeconds = payload.exp;
+      return expirationTimeInSeconds;
+    } else {
+      return null;
+    }
+  };
+
+  const verifyTokenExpirationTime = async () => {
+    console.log("Verificando a validade do AccessToken...");
+    const acessExpirationTime = getTokenExpirationTime(accessToken);
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    if (currentTimestamp > acessExpirationTime) {
+      console.log("AccessToken expirado!");
+      await requestNewAcessToken();
+    } else {
+      console.log("AccessToken válido!");
+    }
+    return true;
+  };
 
   return (
-    <AuthContext.Provider value={{login2, requestNewAcessToken, accessToken, refreshToken, loggedIn, logIn, logOut }}>
+    <AuthContext.Provider
+      value={{
+        verifyTokenExpirationTime,
+        requestNewAcessToken,
+        accessToken,
+        refreshToken,
+        loggedIn,
+        login,
+        logout,
+      }}
+    >
       {isVerified && children}
     </AuthContext.Provider>
   );
