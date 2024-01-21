@@ -52,17 +52,31 @@ class CustomUploadViewSet(viewsets.ViewSet):
         
     def create(self, request):
         try:
+<<<<<<< Updated upstream
             file_uploaded = request.FILES.get('image')
             content_type = file_uploaded.content_type
+=======
+            # Retrieve the base64 string from the request data
+            base64_string = request.data.get('image', '')
+            # user_id = request.data.get('user')
+            description = request.data.get('description')
+            is_published = request.data.get('is_published')
+>>>>>>> Stashed changes
 
             if not str(content_type).startswith('image'):
                 raise Exception('O arquivo selecionado não é uma imagem')
 
+<<<<<<< Updated upstream
             if file_uploaded.size > self.MAX_FILE_SIZE_MB * 1024 * 1024:
                 raise Exception('O tamanho máximo do arquivo é de {} MB'.format(self.MAX_FILE_SIZE_MB))
 
             # Save the file content using Djongo model
             uploaded_file = UserImage(file_content=file_uploaded.read(), content_type=content_type)
+=======
+            current_user = request.user
+            print(current_user)
+            uploaded_file = UserImage(user=current_user, image=binary_data, description=description, is_published=is_published)
+>>>>>>> Stashed changes
             uploaded_file.save()
 
             response = 'O arquivo foi enviado com sucesso.'
