@@ -7,7 +7,9 @@
 .large_button:hover{
     background-color: #4f3c63 !important;
 }
-
+h2{
+    color: #634B7C;
+}
 .large_field{
     width: 100%;
 }

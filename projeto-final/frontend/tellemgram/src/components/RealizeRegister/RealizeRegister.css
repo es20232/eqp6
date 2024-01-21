@@ -1,0 +1,14 @@
+.form-confirmedConterner h3 {
+	color: #634B7C;
+	margin-bottom: 3px;
+}
+.form-confirmedConterner h5 {
+	color: #995c99;
+	margin-top: 3px; 
+}
+
+.form-confirmedConterner{
+	display: flex;
+	flex-direction: column;
+	gap:16px;
+}

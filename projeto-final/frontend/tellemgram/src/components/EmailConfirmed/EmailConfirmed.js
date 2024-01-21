@@ -1,14 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-//import styles from "./CustomComponentsStyles.module.css";
-import IconButton from '@mui/material/IconButton';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import LockIcon from '@mui/icons-material/Lock';
-import CheckIcon from '@mui/icons-material/Check';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import './EmailConfirmed.css'
-
+/*Tela de confirmacao de cadastro do usuário após ele confirmar pelo e-mail seu cadastro.
+Esta tela deve estar ligada pelo com o email, sendo configurada no back-end.*/
 const EmailConfirmed = () => {
 	return (
 	  <div className="form-confirmedConterner">
@@ -16,12 +11,12 @@ const EmailConfirmed = () => {
 		  <div className="page-icon-container">
 			{/* Adicionei um div extra ao redor do ícone para manter a consistência */}
 			<div style={{ textAlign: "center" }}>
-			  <CheckIcon sx={{ fontSize: 60, color: "white" }} />
+			  <TaskAltIcon sx={{ fontSize: 56, color: "white" }} />
 			</div>
 		  </div>
 		</div>
   
-		<h3>Cadastro realizado com sucesso!</h3>
+		<h3>Cadastro confirmado com sucesso!</h3>
 		
 		<div style={{ textAlign: "center" }}>
 		  {/* Adicionei um div extra ao redor do botão para centralizá-lo */}

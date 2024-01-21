@@ -1,13 +1,13 @@
 import React from 'react';
-import AuthLayout from '../components/AuthLayout/AuthLayout';
+import SmallLayout from '../components/SmallLayout/SmallLayout';
 import EmailConfirmed from '../components/EmailConfirmed/EmailConfirmed';
 
 
 const EmailConfirmedPage = () =>{
     return (
-        <AuthLayout>
+        <SmallLayout>
             <EmailConfirmed />
-        </AuthLayout>
+        </SmallLayout>
     )
 }
 
