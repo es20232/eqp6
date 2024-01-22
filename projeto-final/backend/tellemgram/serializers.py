@@ -66,3 +66,4 @@ class CustomUserImage(serializers.ModelSerializer):
         model = UserImage
         fields = ('user', 'image')
 
+

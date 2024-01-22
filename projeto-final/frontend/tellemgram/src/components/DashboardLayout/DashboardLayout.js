@@ -10,43 +10,47 @@ import LogoutIcon from "@mui/icons-material/Logout"; //Logout
 import { useAuth } from "../../AuthContext";
 import { api, endpoints } from "../../apiService";
 
+import Cookies from "js-cookie";
+
+import { useNavigate } from "react-router-dom";
+
 /*Tela de dashboard na qual o usuario logado tem acesso as funcoes da aplicacao
 tal como editar seu perfil*/
 const DashboardLayout = ({ children }) => {
-  const { logout, verifyTokenExpirationTime } = useAuth();
+  const navigate = useNavigate();
+  const [base64String, setBase64String] = useState();
+  const { logout, verifyTokenExpirationTime, myUserId } = useAuth();
   const [currentPage, setCurrentPage] = useState("home");
-  const [userData, setUserData] = useState({
-    username: "", // Nome padrão, pode ser alterado
+  const [myUserData, setMyUserData] = useState({
+    userId: "",
     first_name: "",
-    userAvatar: "", // URL padrão da imagem, pode ser alterada
+    userImage: "",
   });
 
   useEffect(() => {
     const getUserData = async () => {
-      if (sessionStorage.getItem("first_name") !== null) {
-        console.log("Usuário salvo em local storage");
-        setUserData({ first_name: sessionStorage.getItem("first_name") });
-        return;
-      }
+      const newUserData = { userId: Cookies.get("myUserId") };
+      newUserData.first_name = Cookies.get("myFirstName");
+
       try {
         await verifyTokenExpirationTime();
-        const response = await api.get(endpoints.getUsersEndpoint + "9");
-        console.log(response);
-        if ("data" in response) {
-          setUserData({ first_name: response.data.first_name });
-          sessionStorage.setItem("first_name", response.data.first_name);
-        }
+        const response = await api.get(
+          endpoints.uploadImageEndpoint + "?user_id=" + Cookies.get("myUserId")
+        );
+        newUserData.userImage = response.data[0].image;
       } catch (error) {
         console.log(error);
       }
-    };
 
+      setMyUserData(newUserData);
+      console.log("USer data: " + JSON.stringify(myUserData));
+    };
     getUserData();
   }, []);
 
-  const openPage = (pageName) => {
-    setCurrentPage(pageName);
-  };
+  // const openPage = (pageName) => {
+  //   setCurrentPage(pageName);
+  // };
   // const [userData, setUserData] = useState({
   //   username: "UserName", // Nome padrão, pode ser alterado
   //   userAvatar: "URL_DA_IMAGEM_PADRAO", // URL padrão da imagem, pode ser alterada
@@ -57,31 +61,11 @@ const DashboardLayout = ({ children }) => {
   };
 
   const profileButtonHandler = async () => {
-    try {
-      await verifyTokenExpirationTime();
-      const response = await api.get(endpoints.getUsersEndpoint);
-      console.log(response);
-      if ("data" in response) {
-        setUserData({ first_name: response.data.first_name });
-        sessionStorage.setItem("first_name", response.data.first_name);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    navigate("/carregar")
   };
 
   const imageButtonHandler = async () => {
-    try {
-      await verifyTokenExpirationTime();
-      const response = await api.get(endpoints.getUsersEndpoint + "9");
-      console.log(response);
-      if ("data" in response) {
-        setUserData({ first_name: response.data.first_name });
-        sessionStorage.setItem("first_name", response.data.first_name);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    navigate("/carregar")
   };
 
   const imageButton1 = async () => {
@@ -96,7 +80,9 @@ const DashboardLayout = ({ children }) => {
   const imageButton2 = async () => {
     try {
       await verifyTokenExpirationTime();
-      const response = await api.get(endpoints.getUsersEndpoint + "9/");
+      const response = await api.get(
+        endpoints.getUsersEndpoint + myUserId + "/"
+      );
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -106,13 +92,33 @@ const DashboardLayout = ({ children }) => {
   const imageButton3 = async () => {
     try {
       await verifyTokenExpirationTime();
-      const response = await api.put(endpoints.getUsersEndpoint + "9/", {
-        username: "detetivejake",
-        profile_image: "TestString",
-      });
-      console.log(response);
+      const response = await api.get(
+        endpoints.uploadImageEndpoint + "?user_id=" + myUserId
+      );
+      console.log(response.data[0].image);
+      setBase64String(response.data[0].image);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const decodeImage64 = (base64String) => {
+    // Verifica se há uma string base64 válida
+    if (base64String) {
+      // Decodifica a string base64
+      const decodedData = atob(base64String);
+
+      // Converte os dados binários para um array de bytes
+      const byteArray = new Uint8Array(decodedData.length);
+      for (let i = 0; i < decodedData.length; i++) {
+        byteArray[i] = decodedData.charCodeAt(i);
+      }
+
+      // Cria um blob com os dados binários
+      const blob = new Blob([byteArray], { type: "image/*" });
+
+      // Cria uma URL de objeto (blob URL) para a imagem
+      return URL.createObjectURL(blob);
     }
   };
 
@@ -120,10 +126,17 @@ const DashboardLayout = ({ children }) => {
     <section className="container">
       <div className="side-menu">
         <div className="user-profile">
-          <div className="user-profile-image">
-            <PersonIcon sx={{ fontSize: 56, color: "white" }} />
+          <div className="user-profile-image-container">
+            {!myUserData.userImage && <PersonIcon sx={{ fontSize: 90, color: "white" }} />}
+            {myUserData.userImage && (
+          <img
+            src={`data:image/png;base64,${myUserData.userImage}`}
+            alt="Imagem"
+            className="user-image"
+          />
+        )}
           </div>
-          <span className="user-name">{userData.first_name}</span>
+          <span className="user-name">{myUserData.first_name}</span>
         </div>
         <div className="menu-list">
           <div className="list-item active">
@@ -163,75 +176,10 @@ const DashboardLayout = ({ children }) => {
           <LogoutIcon sx={{ fontSize: 32 }} />
           <span>Sair</span>
         </div>
-
-        {/* <ul>
-          <li className={currentPage === "home" ? "active" : ""}>
-            <a
-              href="http://localhost:3000/recuperar#"
-              onClick={() => openPage("home")}
-            >
-              <span className="icon" style={{ verticalAlign: "middle" }}>
-                <HomeIcon sx={{ fontSize: 32 }} />
-              </span>{" "}
-              Home
-            </a>
-          </li>
-          <li className={currentPage === "images" ? "active" : ""}>
-            <a
-              href="http://localhost:3000/recuperar#"
-              onClick={() => openPage("images")}
-            >
-              <span className="icon" style={{ verticalAlign: "middle" }}>
-                <ImageIcon sx={{ fontSize: 32 }} />
-              </span>{" "}
-              Imagem
-            </a>
-          </li>
-          <li className={currentPage === "posts" ? "active" : ""}>
-            <a
-              href="http://localhost:3000/recuperar#"
-              onClick={() => openPage("posts")}
-            >
-              <span className="icon" style={{ verticalAlign: "middle" }}>
-                <PostAddIcon sx={{ fontSize: 32 }} />
-              </span>{" "}
-              Posts
-            </a>
-          </li>
-          <li className={currentPage === "upload" ? "active" : ""}>
-            <a
-              href="http://localhost:3000/recuperar#"
-              onClick={() => openPage("upload")}
-            >
-              <span className="icon" style={{ verticalAlign: "middle" }}>
-                <DownloadIcon sx={{ fontSize: 32 }} />
-              </span>{" "}
-              Upload
-            </a>
-          </li>
-          <li className={currentPage === "profile" ? "active" : ""}>
-            <a
-              href="http://localhost:3000/recuperar#"
-              onClick={() => openPage("profile")}
-            >
-              <span className="icon" style={{ verticalAlign: "middle" }}>
-                <PersonIcon sx={{ fontSize: 32 }} />
-              </span>{" "}
-              Perfil
-            </a>
-          </li>
-          <li className={currentPage === "Logout" ? "active" : ""}>
-            <a
-              href="http://localhost:3000/entrar#"
-              onClick={() => openPage("Logout")}
-            >
-              <span className="icon" style={{ verticalAlign: "middle" }}>
-                <LogoutIcon sx={{ fontSize: 32 }} />
-              </span>{" "}
-              Logout
-            </a>
-          </li>
-        </ul> */}
+      </div>
+      <div>
+        Teste {myUserData.userId}
+        
       </div>
       <div className="contentDashboard">{children}</div>
     </section>

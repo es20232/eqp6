@@ -28,14 +28,22 @@
   gap: 8px;
 }
 
-.side-menu .user-profile .user-profile-image{
-  height: 80px;
-  width: 80px;
-  border-radius: 50%;
+.side-menu .user-profile .user-profile-image-container{
+  height: 150px;
+  width: 150px;
   background-color: var(--primary-main);
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.side-menu .user-profile .user-profile-image-container img{
+  width: 100%;
+  height: 100%;
+  position: absolute;
 }
 
 .side-menu .user-profile .user-name{

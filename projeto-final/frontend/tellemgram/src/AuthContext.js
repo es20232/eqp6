@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.get("refreshToken") || null
   );
   const [loggedIn, setLoggedIn] = useState(accessToken && refreshToken);
+  const [myUserId, setMyUserId] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
@@ -42,9 +43,12 @@ export const AuthProvider = ({ children }) => {
       } else {
         Cookies.set("accessToken", response.data.access, { expires: 1 });
         Cookies.set("refreshToken", response.data.refresh, { expires: 1 });
+        Cookies.set("myUserId", response.data.user.pk, { expires: 1 });
+        Cookies.set("myFirstName", response.data.user.first_name, { expires: 1 });
         setAccessToken(response.data.access);
         setRefreshToken(response.data.refresh);
         setLoggedIn(true);
+        setMyUserId(response.data.user.pk)
         api.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${response.data.access}`;
@@ -121,6 +125,7 @@ export const AuthProvider = ({ children }) => {
         accessToken,
         refreshToken,
         loggedIn,
+        myUserId,
         login,
         logout,
       }}
