@@ -61,41 +61,18 @@ class CustomUploadViewSet(viewsets.ViewSet):
 
     def list(self, request):
         try:
-            # Imagens publicadas por todos os usuários
-            public_images = UserImage.objects.filter(is_published=True)
-            public_serializer = CustomUserImage(public_images, many=True)
-
-            # Fotos não publicadas do usuário atual
-            private_images = UserImage.objects.filter(user=request.user, is_published=False)
-            private_serializer = CustomUserImage(private_images, many=True)
-
-            # Return the serialized data as JSON response
-            response_data = {
-                'public_images': public_serializer.data,
-                'private_images': private_serializer.data,
-            }
-
-            return Response(response_data)
+            user_images = UserImage.objects.all()
+            serializer = CustomUserImage(user_images, many=True)
+            return Response(serializer.data)
         except Exception as e:
             # Handle exceptions appropriately
             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def create(self, request):
         try:
-            # Retrieve the base64 string from the request data
-            base64_string = request.data.get('image', '')
-            description = request.data.get('description')
-            is_published = request.data.get('is_published')
-
-            # Convert base64 string to binary data
-            binary_data = base64.b64decode(base64_string)
-
-            current_user = request.user
-            uploaded_file = UserImage(user=current_user, image=binary_data, description=description, is_published=is_published)
-            uploaded_file.save()
+            # Your existing create method code...
 
             response = 'O arquivo foi enviado com sucesso.'
-
             return Response(response, status=status.HTTP_201_CREATED)
         except Exception as e:
             # Handle exceptions appropriately

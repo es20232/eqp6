@@ -7,12 +7,12 @@ from dj_rest_auth.serializers import LoginSerializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'profile_image')
+        fields = ('username', 'first_name', 'last_name', 'email', 'image')
 
 class UserVisibleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'profile_image')
+        fields = ('username', 'first_name', 'last_name', 'image')
 
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=50)
@@ -40,7 +40,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'profile_image', 'password')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'image', 'password')
         read_only_fields = ('id',)
 
     def create(self, validated_data):
@@ -64,5 +64,5 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class CustomUserImage(serializers.ModelSerializer):
     class Meta:
         model = UserImage
-        fields = ('image', 'description', 'is_published')
+        fields = ('user', 'image')
 
