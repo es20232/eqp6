@@ -7,9 +7,10 @@ from rest_framework import permissions, viewsets
 from rest_framework.parsers import MultiPartParser, FormParser
 from user.models import User, UserImage
 from tellemgram.serializers import CustomUserSerializer, UserSerializer, CustomLoginSerializer, CustomRegisterSerializer, CustomUserImage, UserVisibleSerializer
-from dj_rest_auth.views import PasswordChangeView
+from dj_rest_auth.views import PasswordChangeView, PasswordResetView
 from rest_framework import status
 import base64, io
+from django.http import JsonResponse
 
 from .permissions import IsSelfOrReadOnly
 
@@ -93,3 +94,13 @@ class CustomPasswordChangeView(PasswordChangeView):
 
         return super().post(request, *args, **kwargs)
     
+class CustomPasswordResetView(PasswordResetView):
+    def post(self, request, *args, **kwargs):
+        # Check if the provided email exists in the User model
+        email = request.data.get('email')
+        if User.objects.filter(email=email).exists():
+            # If the email exists, proceed with the default behavior
+            return super().post(request, *args, **kwargs)
+        else:
+            # If the email doesn't exist, return a Response with an error message
+            return Response({'detail': 'User with this email does not exist.'}, status=status.HTTP_400_BAD_REQUEST)

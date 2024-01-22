@@ -6,7 +6,7 @@ from user import views
 from django.urls import path, re_path
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
-from user.views import CustomLoginView, CustomRegisterView, CustomUploadViewSet, CustomPasswordChangeView
+from user.views import CustomLoginView, CustomRegisterView, CustomUploadViewSet, CustomPasswordChangeView, CustomPasswordResetView
 
 router = routers.DefaultRouter()
 # router.register(r'users', UserRetrieveUpdateDestroyView, basename='user')
@@ -18,7 +18,7 @@ urlpatterns = [
     path('api/users/', views.UserList.as_view(), name='user-list'),
     path('api/users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
 
-    path('password-reset/', PasswordResetView.as_view()),
+    path('password-reset/', CustomPasswordResetView.as_view()),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 
     path('password/change/', CustomPasswordChangeView.as_view(), name='password_change'),
