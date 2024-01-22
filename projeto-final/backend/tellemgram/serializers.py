@@ -7,7 +7,7 @@ from dj_rest_auth.serializers import LoginSerializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'firt_name', 'last_name', 'email', 'profile_image')
+        fields = ('username', 'first_name', 'last_name', 'email', 'profile_image')
 
 class UserVisibleSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,7 +40,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'profile_image', 'password')
         read_only_fields = ('id',)
 
     def create(self, validated_data):

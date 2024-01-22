@@ -23,6 +23,28 @@ class UserDetail(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [IsAuthenticated, IsSelfOrReadOnly]
+    MAX_FILE_SIZE_MB = 10  # Specify the maximum file size limit in megabytes
+
+    def create(self, request):
+        try:
+            # Retrieve the base64 string from the request data
+            base64_string = request.data.get('profile_image', '')
+
+            # Convert base64 string to binary data
+            binary_data = base64.b64decode(base64_string)
+
+            current_user = request.user
+            uploaded_file = User(user=current_user, profile_image=binary_data)
+            uploaded_file.save()
+
+            response = 'O arquivo foi enviado com sucesso.'
+
+            return Response(response, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            # Handle exceptions appropriately
+            print(e)
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
 
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
