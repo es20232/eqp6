@@ -3,19 +3,42 @@
   font-family: Arial, sans-serif;
 } */
 
-.dashboard {
+.container {
   display: flex;
+  width: 100vw;
+  height: 100vh;
 }
 
 .side-menu {
   min-width: 250px;
+  height: 100%;
   background-color: var(--background);
   padding: 64px 0px 0px 0px;
   box-sizing: border-box;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 }
 
-.side-menu .user-info .user-name{
+.side-menu .user-profile{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.side-menu .user-profile .user-profile-image{
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-color: var(--primary-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.side-menu .user-profile .user-name{
   color: var(--primary-main);
   font-size: 1.4rem;
   font-weight: bold;
@@ -60,67 +83,4 @@
 }
 .side-menu .logout-button:hover{
   background-color: var(--primary-main);
-}
-
-.menu ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.menu li {
-  margin-bottom: 10px;
-}
-
-.menu a {
-  text-decoration: none;
-  color: #cea6ce;
-  display: block;
-  padding: 10px;
-  border-radius: 5px;
-}
-.menu a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.menu .active a {
-  color: #995c99;
-}
-
-.contentDashboard {
-  background-color: white;
-  background-size: cover;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: flex-end;
-  color: black;
-}
-/*estilo dos icones*/
-
-/*usuario*/
-
-.menu h1 {
-  color: #333; /* Defina a cor desejada para a fonte */
-  text-align: center; /* Centraliza o texto */
-  font-family: "Angelinne", sans-serif;
-}
-
-.menu h3 {
-  font-size: 24px;
-  font-weight: bold;
-  color: #634b7c;
-  padding: 32px;
-}
-.menuTitle {
-  margin-bottom: 20px;
-}
-
-.user-info {
-  text-align: center;
-}
-.user-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%; /* Isso cria a forma redonda */
-  margin-right: 10px;
 }

@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }) => {
     setRefreshToken(null);
     setLoggedIn(false);
     sessionStorage.clear();
+    delete api.defaults.headers.common["Authorization"]
   };
 
   const requestNewAcessToken = async () => {

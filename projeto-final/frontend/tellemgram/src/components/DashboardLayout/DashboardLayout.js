@@ -17,15 +17,15 @@ const DashboardLayout = ({ children }) => {
   const [currentPage, setCurrentPage] = useState("home");
   const [userData, setUserData] = useState({
     username: "", // Nome padrão, pode ser alterado
-    name: "",
+    first_name: "",
     userAvatar: "", // URL padrão da imagem, pode ser alterada
   });
 
   useEffect(() => {
     const getUserData = async () => {
-      if (sessionStorage.getItem("name") !== null) {
+      if (sessionStorage.getItem("first_name") !== null) {
         console.log("Usuário salvo em local storage");
-        setUserData({ name: sessionStorage.getItem("name") });
+        setUserData({ first_name: sessionStorage.getItem("first_name") });
         return;
       }
       try {
@@ -33,8 +33,8 @@ const DashboardLayout = ({ children }) => {
         const response = await api.get(endpoints.getUsersEndpoint + "9");
         console.log(response);
         if ("data" in response) {
-          setUserData({ name: response.data.name });
-          sessionStorage.setItem("name", response.data.name);
+          setUserData({ first_name: response.data.first_name });
+          sessionStorage.setItem("first_name", response.data.first_name);
         }
       } catch (error) {
         console.log(error);
@@ -57,32 +57,73 @@ const DashboardLayout = ({ children }) => {
   };
 
   const profileButtonHandler = async () => {
-    if (sessionStorage.getItem("name") !== null) {
-      console.log("Usuário salvo em local storage");
-      setUserData({ name: sessionStorage.getItem("name") });
-      return;
-    }
     try {
       await verifyTokenExpirationTime();
-      const response = await api.get(endpoints.getUsersEndpoint + "9");
+      const response = await api.get(endpoints.getUsersEndpoint);
       console.log(response);
       if ("data" in response) {
-        setUserData({ name: response.data.name });
-        sessionStorage.setItem("name", response.data.name);
+        setUserData({ first_name: response.data.first_name });
+        sessionStorage.setItem("first_name", response.data.first_name);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  const imageButtonHandler = async () => {
+    try {
+      await verifyTokenExpirationTime();
+      const response = await api.get(endpoints.getUsersEndpoint + "9");
+      console.log(response);
+      if ("data" in response) {
+        setUserData({ first_name: response.data.first_name });
+        sessionStorage.setItem("first_name", response.data.first_name);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const imageButton1 = async () => {
+    try {
+      await verifyTokenExpirationTime();
+      const response = await api.get(endpoints.getUsersEndpoint);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const imageButton2 = async () => {
+    try {
+      await verifyTokenExpirationTime();
+      const response = await api.get(endpoints.getUsersEndpoint + "9/");
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const imageButton3 = async () => {
+    try {
+      await verifyTokenExpirationTime();
+      const response = await api.put(endpoints.getUsersEndpoint + "9/", {
+        username: "detetivejake",
+        profile_image: "TestString",
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <section className="dashboard">
+    <section className="container">
       <div className="side-menu">
-        <div className="user-info">
-          <div style={{ textAlign: "center" }}>
+        <div className="user-profile">
+          <div className="user-profile-image">
             <PersonIcon sx={{ fontSize: 56, color: "white" }} />
           </div>
-          <span className="user-name">{userData.name}</span>
+          <span className="user-name">{userData.first_name}</span>
         </div>
         <div className="menu-list">
           <div className="list-item active">
@@ -104,6 +145,18 @@ const DashboardLayout = ({ children }) => {
           <div className="list-item" onClick={profileButtonHandler}>
             <PersonIcon sx={{ fontSize: 32 }} />
             <span>Perfil</span>
+          </div>
+          <div className="list-item" onClick={imageButton1}>
+            <PersonIcon sx={{ fontSize: 32 }} />
+            <span>GET api/users</span>
+          </div>
+          <div className="list-item" onClick={imageButton2}>
+            <PersonIcon sx={{ fontSize: 32 }} />
+            <span>GET api/users/9/</span>
+          </div>
+          <div className="list-item" onClick={imageButton3}>
+            <PersonIcon sx={{ fontSize: 32 }} />
+            <span>PUT api/users/9/ (img string) </span>
           </div>
         </div>
         <div className="logout-button" onClick={logoutButtonHandler}>

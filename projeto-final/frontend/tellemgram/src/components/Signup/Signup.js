@@ -25,8 +25,8 @@ const Signup = () => {
     email: "",
     password1: "",
     password2: "",
-    name: "",
-    surname: "",
+    first_name: "",
+    last_name: "",
   });
 
   const handleChange = (e) => {
@@ -160,20 +160,20 @@ const Signup = () => {
             <div className="name-fields-container">
               <TextField
                 required
-                id="name"
+                id="first_name"
                 label="Nome"
                 variant="outlined"
-                name="name"
+                name="first_name"
                 onChange={handleChange}
                 disabled={processing}
                 sx={{width: '100%'}}
               />
               <TextField
                 required
-                id="surname"
+                id="last_name"
                 label="Sobrenome"
                 variant="outlined"
-                name="surname"
+                name="last_name"
                 disabled={processing}
                 onChange={handleChange}
                 sx={{width: '100%'}}
