@@ -1,10 +1,10 @@
 :root {
   --primary-main: #634b7c;
-  --secondary-main: #e8d9e8;
+  /* --secondary-main: #e8d9e8; */
+  --secondary-main: #CEA6CE;
   --black: #131320;
   --accent: #995c99;
   --background: #e5e5f0;
-
 }
 
 body {

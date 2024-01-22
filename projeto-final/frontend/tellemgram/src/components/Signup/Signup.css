@@ -35,10 +35,6 @@
   justify-content: center;
 }
 
-/* .signup-container h1 {
-  margin-bottom: 3px;
-  text-align: center;
-} */
 .signup-container .form-alert {
   min-height: 50px;
   display: flex;
