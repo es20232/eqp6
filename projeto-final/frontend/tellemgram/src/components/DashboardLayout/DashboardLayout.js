@@ -9,74 +9,75 @@ import LogoutIcon from '@mui/icons-material/Logout'; //Logout
 /*Tela de dashboard na qual o usuario logado tem acesso as funcoes da aplicacao
 tal como editar seu perfil*/
 const DashboardLayout = ({ children }) => {
-  const [currentPage, setCurrentPage] = useState('home');
-
-  const openPage = (pageName) => {
-    setCurrentPage(pageName);
-  };
-
-  return (
-    <div className="dashboard">
+    const [currentPage, setCurrentPage] = useState('home');
         
-      <div className="menu">
-        <div>
-            <div className="page-icon-container">
-                <div style={{ textAlign: "center" }}>
-                <PersonIcon sx={{ fontSize: 56, color: "white" }} />
+    const openPage = (pageName) => {
+        setCurrentPage(pageName);   
+    };
+    const [userData, setUserData] = useState({
+        username: 'UserName', // Nome padrão, pode ser alterado
+        userAvatar: 'URL_DA_IMAGEM_PADRAO', // URL padrão da imagem, pode ser alterada
+    });
+
+    return (
+        <div className="dashboard">
+            
+        <div className="menu">
+            <div>
+                <div className="page-icon-container">
+                    <div style={{ textAlign: "center" }}>
+                    <PersonIcon sx={{ fontSize: 56, color: "white" }} />
+                    </div>
                 </div>
+                <div className="user-info">
+                    <h3>UserName</h3>
+                </div>
+            
             </div>
-            <div className="user-info">
-                <h3>UserName</h3>
-            </div>
-          
+            <ul>
+            <li className={currentPage === 'home' ? 'active' : ''}>
+                <a href="http://localhost:3000/recuperar#" onClick={() => openPage('home')}> 
+                <span className="icon" style={{ verticalAlign: 'middle' }}>
+                    <HomeIcon sx={{ fontSize: 32}}/></span> Home
+                </a>
+            </li>
+            <li className={currentPage === 'images' ? 'active' : ''}>
+                <a href="http://localhost:3000/recuperar#" onClick={() => openPage('images')}>
+                <span className="icon" style={{ verticalAlign: 'middle' }}>
+                    <ImageIcon sx={{ fontSize: 32}}/></span> Imagem
+                </a>
+            </li>
+            <li className={currentPage === 'posts' ? 'active' : ''}>
+                <a href="http://localhost:3000/recuperar#" onClick={() => openPage('posts')}>
+                <span className="icon" style={{ verticalAlign: 'middle' }}>
+                    <PostAddIcon sx={{ fontSize: 32}}/></span> Posts
+                </a>
+            </li>
+            <li className={currentPage === 'upload' ? 'active' : ''}>
+                <a href="http://localhost:3000/recuperar#" onClick={() => openPage('upload')}>
+                <span className="icon" style={{ verticalAlign: 'middle' }}>
+                    <DownloadIcon sx={{ fontSize: 32}}/></span> Upload
+                </a>
+            </li>
+            <li className={currentPage === 'profile' ? 'active' : ''}>
+                <a href="http://localhost:3000/recuperar#" onClick={() => openPage('profile')}>
+                <span className="icon" style={{ verticalAlign: 'middle' }}>
+                    <PersonIcon sx={{ fontSize: 32}}/></span> Perfil
+                </a>
+            </li>
+            <li className={currentPage === 'Logout' ? 'active' : ''}>
+                <a href="http://localhost:3000/entrar#" onClick={() => openPage('Logout')}>
+                <span className="icon" style={{ verticalAlign: 'middle' }}>
+                    <LogoutIcon sx={{ fontSize: 32}}/></span> Logout
+                </a>
+            </li>
+            </ul>
         </div>
-        <ul>
-          <li className={currentPage === 'home' ? 'active' : ''}>
-            <a href="http://localhost:3000/recuperar#" onClick={() => openPage('home')}> 
-            <span className="icon" style={{ verticalAlign: 'middle' }}>
-                <HomeIcon sx={{ fontSize: 32}}/></span> Home
-            </a>
-          </li>
-          <li className={currentPage === 'images' ? 'active' : ''}>
-            <a href="http://localhost:3000/recuperar#" onClick={() => openPage('images')}>
-            <span className="icon" style={{ verticalAlign: 'middle' }}>
-                <ImageIcon sx={{ fontSize: 32}}/></span> Imagem
-            </a>
-          </li>
-          <li className={currentPage === 'posts' ? 'active' : ''}>
-            <a href="http://localhost:3000/recuperar#" onClick={() => openPage('posts')}>
-            <span className="icon" style={{ verticalAlign: 'middle' }}>
-                <PostAddIcon sx={{ fontSize: 32}}/></span> Posts
-            </a>
-          </li>
-          <li className={currentPage === 'upload' ? 'active' : ''}>
-            <a href="http://localhost:3000/recuperar#" onClick={() => openPage('upload')}>
-            <span className="icon" style={{ verticalAlign: 'middle' }}>
-                <DownloadIcon sx={{ fontSize: 32}}/></span> Upload
-            </a>
-          </li>
-          <li className={currentPage === 'profile' ? 'active' : ''}>
-            <a href="http://localhost:3000/recuperar#" onClick={() => openPage('profile')}>
-            <span className="icon" style={{ verticalAlign: 'middle' }}>
-                <PersonIcon sx={{ fontSize: 32}}/></span> Perfil
-            </a>
-          </li>
-          <li className={currentPage === 'Logout' ? 'active' : ''}>
-            <a href="http://localhost:3000/entrar#" onClick={() => openPage('Logout')}>
-            <span className="icon" style={{ verticalAlign: 'middle' }}>
-                <LogoutIcon sx={{ fontSize: 32}}/></span> Logout
-            </a>
-          </li>
-        </ul>
-      </div>
-      <div className="contentDashboard">
-        <h1 style={{ textAlign: "center" }}>Tellemgram</h1>
-        <div id="pageContentDashboard">
+        <div className="contentDashboard">
             { children }
         </div>
-      </div>
-    </div>
-  );
+        </div>
+    );
 }
 
 export default DashboardLayout;

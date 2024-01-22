@@ -8,7 +8,7 @@ body {
   }
   
   .menu {
-    width: 200px;
+    width: 100px;
     background-color: #E2E2E5;
     color: white;
     padding: 88px;
@@ -50,6 +50,12 @@ body {
   /*estilo dos icones*/
 
   /*usuario*/
+ 
+  .menu h1{
+    color: #333; /* Defina a cor desejada para a fonte */
+    text-align: center; /* Centraliza o texto */
+    font-family: 'Angelinne', sans-serif;
+  }
 
   .menu h3 {
     font-size: 24px;
@@ -64,6 +70,14 @@ body {
   .user-info {
     text-align: center;
   }
+  .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Isso cria a forma redonda */
+    margin-right: 10px;
+  }
+
+  
 
   
   
