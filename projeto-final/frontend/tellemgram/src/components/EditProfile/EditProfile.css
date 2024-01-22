@@ -1,11 +1,7 @@
 .edit-profile h1 {
     color: #634B7C;
     font-family: 'Alatsi', sans-serif;
-    margin-top: 20px; /* Removi as aspas e ajustei para um valor numérico */
-}
-
-.edit-profile-seguranca label {
-    color: #E8D9E8;
+    margin-top: 20px;
 }
 
 .edit-profile form {
@@ -13,18 +9,23 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    width: 100%; /* Removi as aspas */
-    margin-left: 10px; /* Removi as aspas */
+    width: 100%; 
+    margin-left: 80px; 
     align-items: center;
 }
 
 .edit-profile button {
-    margin-top: 20px; /* Removi as aspas */
+    margin-top: 24px;
     margin-bottom: 1rem;
     color: #634B7C;
     background-color: #E8D9E8;
     gap: 1rem;
-	height: '3rem'; 
-	align-self: 'flex-end'; 
-	margin-left: '10px';
+	align-self: 'flex-end';
+    margin-left: 24px ;
+}
+.edit-profile-dados{
+    font-size: 18px;
+}
+.edit-profile-seguranca button{
+    width: 200px;
 }

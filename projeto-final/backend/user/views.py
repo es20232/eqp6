@@ -61,13 +61,22 @@ class CustomUploadViewSet(viewsets.ViewSet):
 
     def list(self, request):
         try:
-            user_images = UserImage.objects.all()
+            # Check if a specific user is specified in the request parameters
+            user_id = request.query_params.get('user_id')
+
+            if user_id:
+                # List images for a specific user
+                #user = get_object_or_404(User, id=user_id)
+                user_images = UserImage.objects.filter(user=user_id)
+            else:
+                # List images for all users
+                user_images = UserImage.objects.all()
+
             serializer = CustomUserImage(user_images, many=True)
             return Response(serializer.data)
         except Exception as e:
             # Handle exceptions appropriately
             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
     def create(self, request):
         try:
             # Retrieve the base64 string from the request data

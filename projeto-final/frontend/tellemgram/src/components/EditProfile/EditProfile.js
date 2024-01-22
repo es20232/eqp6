@@ -88,17 +88,17 @@ const EditProfile = () => {
       };
 
     return (
-        <div className="edit-profile" style={{ display: 'flex' }}>
+        <div className="edit-profile" >
             <h1>Editar Meu Perfil</h1>
             <Button
               variant="contained"
               type="submit"
-              sx={{ width: '50%', height: '3rem', alignSelf: 'flex-end', marginLeft: '10px'  }}
+              sx={{ width: '50%'}}
               disabled={processing}
             >
               {!processing && <>Editar</>}
             </Button>
-            <form className="edit-profile-dados" style={{ flex: 1, marginRight: '10px' }}>
+            <form className="edit-profile-dados" >
 
                 <TextField
                 id="first_name"
@@ -132,9 +132,10 @@ const EditProfile = () => {
                     type="email"
                     onChange={handleChange}
                 />
+                <label>Editar foto</label>
 
             </form>
-            <form  className ="edit-profile-seguranca"  style={{ flex: 1 }}>
+            <form  className ="edit-profile-seguranca"  >
                 <label htmlFor="input2">Segurança</label>
                 <TextField
                     required
@@ -166,20 +167,16 @@ const EditProfile = () => {
                     disabled={processing}
                     onChange={handleChange}
                 />
-
+               <Button
+                variant="contained"
+                type="submit"
+                sx={{ width: '50%'}}
+                disabled={processing}
+              >
+                {!processing && <>Salvar alterações</>}
+              </Button>
             </form>
-           <Button
-              variant="contained"
-              type="submit"
-              sx={{ width: '50%'}}
-              disabled={processing}
-            >
-              {!processing && <>Salvar alterações</>}
-            </Button>
-
         </div>
-        
-        
 
     );
 }
