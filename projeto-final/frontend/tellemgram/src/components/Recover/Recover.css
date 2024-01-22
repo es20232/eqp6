@@ -1,0 +1,51 @@
+.recover-container {
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.recover-container .back-icon-container {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+  }
+  
+
+.recover-container .recover-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-main);
+}
+
+.recover-title .icon-conteiner {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background-color: var(--primary-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recover-container .form-alert {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recover-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}

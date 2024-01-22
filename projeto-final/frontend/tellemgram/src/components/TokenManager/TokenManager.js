@@ -54,7 +54,7 @@ const TokenManager = () => {
   // }
 
   const refreshButtonHandle = async () => {
-    await requestNewAcessToken(refreshToken)
+    await requestNewAcessToken()
   }
 
 //   const requestToAPI = async () => {

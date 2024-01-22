@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import axios from "axios";
 import { useAuth } from "../../AuthContext";
 import "./FileUpload.css";
-import { uploadImage } from "../../api.js";
-import { api2, endpoints } from "../../api2";
+import { api, endpoints } from "../../apiService";
 
 const FileUpload = () => {
-  const { accessToken } = useAuth();
+  const { verifyTokenExpirationTime } = useAuth();
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImageChange = (event) => {
@@ -28,9 +26,14 @@ const FileUpload = () => {
     if (selectedImage) {
       try {
         const base64String = selectedImage.split(",")[1];
-        
-        //const response = await api2.post(endpoints.uploadImageEndpoint, {"username": username, "password": password});
-        uploadImage(base64String);
+        await verifyTokenExpirationTime(); // Verifica se o AccessToken ainda estão válidos e o atualiza caso ano esteja
+        const response = await api.post(endpoints.uploadImageEndpoint, {
+          user: 13,
+          image: base64String,
+          description: "teste",
+          is_published: false,
+        });
+        console.log(response);
       } catch (error) {
         console.error("Erro na requisição:", error);
       }

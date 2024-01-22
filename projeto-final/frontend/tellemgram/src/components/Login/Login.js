@@ -8,13 +8,13 @@ import Alert from "@mui/material/Alert";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import LockIcon from "@mui/icons-material/Lock";
-import styles from "./CustomComponentsStyles.module.css";
 
+import './Login.css'
 // Protected Routes
 import { useAuth } from "../../AuthContext";
 
 const Login = () => {
-  const { login2, logIn, loggedIn } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [processing, setProcessing] = useState(false);
@@ -31,7 +31,7 @@ const Login = () => {
     console.log("Login submetido:", formData);
 
     setProcessing(true);
-    const responseStatus = await login2(formData);
+    const responseStatus = await login(formData);
     setProcessing(false);
     setFormData({ username: "", password: "" });
     if (responseStatus == 200) {
@@ -60,13 +60,13 @@ const Login = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="form-container"
+      className="login-container"
     >
-      <div className="form-title">
-        <div className="page-icon-container">
+      <div className="login-title">
+        <div className="icon-container">
           <LockIcon sx={{ fontSize: 40, color: "white" }} />
         </div>
-        <h2>Entrar</h2>
+        <h1>Entrar</h1>
       </div>
 
       <div className="form-alert">
@@ -92,7 +92,7 @@ const Login = () => {
           disabled={processing}
           value={formData.username}
           onChange={handleChange}
-          className={styles.large_field}
+          sx={{ width: "100%" }}
         />
 
         <TextField
@@ -105,14 +105,14 @@ const Login = () => {
           disabled={processing}
           value={formData.password}
           onChange={handleChange}
-          className={styles.large_field}
+          sx={{ width: "100%" }}
         />
 
         <Button
           variant="contained"
+          sx={{ width: "100%", height: "3rem" }}
           type="submit"
           disabled={processing}
-          className={styles.large_button}
         >
           {processing && <CircularProgress color="inherit" size="2rem" />}
           {!processing && <>ENTRAR</>}
