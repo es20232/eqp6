@@ -7,9 +7,10 @@ from rest_framework import permissions, viewsets
 from rest_framework.parsers import MultiPartParser, FormParser
 from user.models import User, UserImage
 from tellemgram.serializers import CustomUserSerializer, UserSerializer, CustomLoginSerializer, CustomRegisterSerializer, CustomUserImage, UserVisibleSerializer
-from dj_rest_auth.views import PasswordChangeView
+from dj_rest_auth.views import PasswordChangeView, PasswordResetView
 from rest_framework import status
 import base64, io
+from django.http import JsonResponse
 
 from .permissions import IsSelfOrReadOnly
 
@@ -22,6 +23,28 @@ class UserDetail(RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [IsAuthenticated, IsSelfOrReadOnly]
+    MAX_FILE_SIZE_MB = 10  # Specify the maximum file size limit in megabytes
+
+    def create(self, request):
+        try:
+            # Retrieve the base64 string from the request data
+            base64_string = request.data.get('profile_image', '')
+
+            # Convert base64 string to binary data
+            binary_data = base64.b64decode(base64_string)
+
+            current_user = request.user
+            uploaded_file = User(user=current_user, profile_image=binary_data)
+            uploaded_file.save()
+
+            response = 'O arquivo foi enviado com sucesso.'
+
+            return Response(response, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            # Handle exceptions appropriately
+            print(e)
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
 
 class CustomRegisterView(RegisterView):
     serializer_class = CustomRegisterSerializer
@@ -38,23 +61,29 @@ class CustomUploadViewSet(viewsets.ViewSet):
 
     def list(self, request):
         try:
-            # Query all uploaded files
-            uploaded_files = UserImage.objects.all()
+            # Imagens publicadas por todos os usuários
+            public_images = UserImage.objects.filter(is_published=True)
+            public_serializer = CustomUserImage(public_images, many=True)
 
-            # Serialize the data
-            serializer = CustomUserImage(uploaded_files, many=True)
+            # Fotos não publicadas do usuário atual
+            private_images = UserImage.objects.filter(user=request.user, is_published=False)
+            private_serializer = CustomUserImage(private_images, many=True)
 
-            # Return the serialized data as a JSON response
-            return Response(serializer.data)
+            # Return the serialized data as JSON response
+            response_data = {
+                'public_images': public_serializer.data,
+                'private_images': private_serializer.data,
+            }
+
+            return Response(response_data)
         except Exception as e:
             # Handle exceptions appropriately
-            return Response(str(e))
+            return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def create(self, request):
         try:
             # Retrieve the base64 string from the request data
             base64_string = request.data.get('image', '')
-            user_id = request.data.get('user')
             description = request.data.get('description')
             is_published = request.data.get('is_published')
 
@@ -86,3 +115,14 @@ class CustomPasswordChangeView(PasswordChangeView):
             return Response({'detail': 'Senha antiga incorreta.'}, status=status.HTTP_400_BAD_REQUEST)
 
         return super().post(request, *args, **kwargs)
+    
+class CustomPasswordResetView(PasswordResetView):
+    def post(self, request, *args, **kwargs):
+        # Check if the provided email exists in the User model
+        email = request.data.get('email')
+        if User.objects.filter(email=email).exists():
+            # If the email exists, proceed with the default behavior
+            return super().post(request, *args, **kwargs)
+        else:
+            # If the email doesn't exist, return a Response with an error message
+            return Response({'detail': 'User with this email does not exist.'}, status=status.HTTP_400_BAD_REQUEST)

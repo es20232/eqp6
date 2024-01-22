@@ -1,39 +1,32 @@
 from rest_framework import serializers
 from user.models import User, UserImage
 from dj_rest_auth.serializers import UserDetailsSerializer
-from django.conf import settings
-from rest_framework.serializers import Serializer, FileField
-
-from allauth.account.adapter import get_adapter
-from allauth.account.utils import setup_user_email
-
-
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'name', 'surname', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email', 'profile_image')
 
 class UserVisibleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'name', 'surname')
+        fields = ('username', 'first_name', 'last_name', 'profile_image')
 
 class CustomRegisterSerializer(RegisterSerializer):
-    name = serializers.CharField(max_length=50)
-    surname = serializers.CharField(max_length=50)
+    first_name = serializers.CharField(max_length=50)
+    last_name = serializers.CharField(max_length=50)
 
     def get_cleaned_data(self):
         data_dict = super().get_cleaned_data()
-        data_dict['name'] = self.validated_data.get('name', '')
-        data_dict['surname'] = self.validated_data.get('surname', '')
+        data_dict['first_name'] = self.validated_data.get('first_name', '')
+        data_dict['last_name'] = self.validated_data.get('last_name', '')
         return data_dict
 
 class CustomUserDetailsSerializer(UserDetailsSerializer):
     class Meta(UserDetailsSerializer.Meta):
-        fields = UserDetailsSerializer.Meta.fields + ('name', 'surname')
+        fields = UserDetailsSerializer.Meta.fields + ('first_name', 'last_name')
 
 class CustomLoginSerializer(LoginSerializer):
     email = None
@@ -47,7 +40,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'name', 'surname', 'email', 'password')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'profile_image', 'password')
         read_only_fields = ('id',)
 
     def create(self, validated_data):
