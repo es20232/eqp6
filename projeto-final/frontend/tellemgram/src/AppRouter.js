@@ -13,7 +13,8 @@ import ProtectedRoutes from "./ProtectedRoutes";
 import HomePage from "./pages/HomePage";
 import TokenManagerPage from "./pages/TokenManagerPage";
 import FileUploadPage from "./pages/FileUploadPage";
-
+import EditProfile from "./components/EditProfile/EditProfile";
+import Profile from "./components/Profile/Profile";
 function AppRouter() {
   return (
     <ThemeProvider theme={purpleTheme}>
@@ -25,7 +26,11 @@ function AppRouter() {
               <Route path="/cadastrar" element={<SignupPage />} />
               <Route path="/recuperar" element={<RecoverPage />} />
               <Route element={<ProtectedRoutes />}>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<HomePage />} >
+                  <Route path="perfil/:userId" element={<Profile />} />
+                  <Route path="editar-meu-perfil" element={<EditProfile />} />
+                </Route>
+                <Route path="/minhasimagens" element={<HomePage />} />
                 <Route path="/token" element={<TokenManagerPage />} />
                 <Route path="/carregar" element={<FileUploadPage />} />
               </Route>
