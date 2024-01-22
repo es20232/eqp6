@@ -17,9 +17,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     setAccessToken(Cookies.get("accessToken"));
     setRefreshToken(Cookies.get("refreshToken"));
-    api.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${Cookies.get("accessToken")}`;
+    console.log(Cookies.get("accessToken"))
+    if(Cookies.get("accessToken") !== undefined){
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${Cookies.get("accessToken")}`;
+    }
+    
     if (refreshToken) {
       setLoggedIn(true);
     }
