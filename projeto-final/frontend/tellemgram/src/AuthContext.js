@@ -17,6 +17,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     setAccessToken(Cookies.get("accessToken"));
     setRefreshToken(Cookies.get("refreshToken"));
+    console.log(Cookies.get("accessToken"))
+    if(Cookies.get("accessToken") !== undefined){
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${Cookies.get("accessToken")}`;
+    }
+    
     if (refreshToken) {
       setLoggedIn(true);
     }
@@ -60,6 +67,8 @@ export const AuthProvider = ({ children }) => {
     setAccessToken(null);
     setRefreshToken(null);
     setLoggedIn(false);
+    sessionStorage.clear();
+    delete api.defaults.headers.common["Authorization"]
   };
 
   const requestNewAcessToken = async () => {
