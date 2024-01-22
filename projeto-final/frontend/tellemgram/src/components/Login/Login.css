@@ -1,4 +1,4 @@
-.signup-container {
+.login-container {
   width: 100%;
   height: 100%;
   padding: 32px;
@@ -10,43 +10,32 @@
   box-sizing: border-box;
 }
 
-.signup-container .back-icon-container {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-}
-
-.signup-container .signup-title {
+.login-container .login-title {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: var(--primary-main);
-  text-align: center;
+  color: var(--primary-main)
 }
 
-.signup-title .icon-container{
+.login-title .icon-container {
   height: 80px;
   width: 80px;
   border-radius: 50%;
-  background-color: #634b7c;
+  background-color: var(--primary-main);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* .signup-container h1 {
-  margin-bottom: 3px;
-  text-align: center;
-} */
-.signup-container .form-alert {
+.login-container .form-alert {
   min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.signup-container form {
+.login-container form {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -54,8 +43,8 @@
   gap: 16px;
 }
 
-.signup-container .name-fields-container {
+.login-container .login-links-container {
   width: 100%;
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
 }

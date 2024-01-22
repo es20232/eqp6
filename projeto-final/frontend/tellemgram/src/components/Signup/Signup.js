@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import LockIcon from "@mui/icons-material/Lock";
-import styles from "./CustomComponentsStyles.module.css";
 import { motion } from "framer-motion";
 import { api, endpoints } from "../../apiService";
 import Alert from "@mui/material/Alert";
@@ -112,9 +111,9 @@ const Signup = () => {
           transition={{ duration: 0.3 }}
           className="signupComplete-container"
         >
-          <div className="backArrow-icon-container" onClick={iconClickHandler}>
+          <div className="back-icon-container" onClick={iconClickHandler}>
             <Link to="/entrar">
-              <IconButton aria-label="delete">
+              <IconButton >
                 <ArrowBackIcon style={{ color: "#634B7C" }} />
               </IconButton>
             </Link>
@@ -129,15 +128,16 @@ const Signup = () => {
           transition={{ duration: 0.3 }}
           className="signup-container"
         >
-          <div className="backArrow-icon-container">
+          <div className="back-icon-container">
             <Link to="/entrar">
               <IconButton aria-label="delete">
                 <ArrowBackIcon style={{ color: "#634B7C" }} />
               </IconButton>
             </Link>
           </div>
-          <div className="form-title">
-            <div className="page-icon-container">
+
+          <div className="signup-title">
+            <div className="icon-container">
               <LockIcon sx={{ fontSize: 40, color: "white" }} />
             </div>
             <h1>Cadastrar</h1>
@@ -164,8 +164,9 @@ const Signup = () => {
                 label="Nome"
                 variant="outlined"
                 name="name"
-                className={styles.large_field}
                 onChange={handleChange}
+                disabled={processing}
+                sx={{width: '100%'}}
               />
               <TextField
                 required
@@ -173,8 +174,9 @@ const Signup = () => {
                 label="Sobrenome"
                 variant="outlined"
                 name="surname"
+                disabled={processing}
                 onChange={handleChange}
-                className={styles.large_field}
+                sx={{width: '100%'}}
               />
             </div>
             <TextField
@@ -183,8 +185,9 @@ const Signup = () => {
               label="Usuário"
               variant="outlined"
               name="username"
+              disabled={processing}
               onChange={handleChange}
-              className={styles.large_field}
+              sx={{width: '100%'}}
             />
             <TextField
               required
@@ -193,8 +196,9 @@ const Signup = () => {
               variant="outlined"
               name="email"
               type="email"
+              disabled={processing}
               onChange={handleChange}
-              className={styles.large_field}
+              sx={{width: '100%'}}
             />
             <TextField
               required
@@ -203,8 +207,9 @@ const Signup = () => {
               variant="outlined"
               name="password1"
               type="password"
+              disabled={processing}
               onChange={handleChange}
-              className={styles.large_field}
+              sx={{width: '100%'}}
             />
             <TextField
               required
@@ -213,14 +218,15 @@ const Signup = () => {
               variant="outlined"
               name="password2"
               type="password"
+              disabled={processing}
               onChange={handleChange}
-              className={styles.large_field}
+              sx={{width: '100%'}}
             />
 
             <Button
               variant="contained"
               type="submit"
-              className={styles.large_button}
+              sx={{width: '100%', height: '3rem'}}
               disabled={processing}
             >
               {processing && <CircularProgress color="inherit" size="2rem" />}

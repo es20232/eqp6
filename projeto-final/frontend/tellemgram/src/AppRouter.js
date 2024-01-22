@@ -1,17 +1,23 @@
-import{ Route, Routes, BrowserRouter} from 'react-router-dom';
-import { AuthProvider } from './AuthContext';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
-import RecoverPage from './pages/RecoverPage';
+import { ThemeProvider } from "@mui/material/styles";
+import purpleTheme from "./Theme";
+
+import { AuthProvider } from "./AuthContext";
+
 import { AnimatePresence } from "framer-motion";
-import ProtectedRoutes from './ProtectedRoutes';
-import HomePage from './pages/HomePage';
-import TokenManagerPage from './pages/TokenManagerPage';
-import FileUploadPage from './pages/FileUploadPage';
+
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import RecoverPage from "./pages/RecoverPage";
+import ProtectedRoutes from "./ProtectedRoutes";
+import HomePage from "./pages/HomePage";
+import TokenManagerPage from "./pages/TokenManagerPage";
+import FileUploadPage from "./pages/FileUploadPage";
 
 function AppRouter() {
   return (
-    <AuthProvider>
+    <ThemeProvider theme={purpleTheme}>
+      <AuthProvider>
         <AnimatePresence>
           <BrowserRouter>
             <Routes>
@@ -22,11 +28,12 @@ function AppRouter() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/token" element={<TokenManagerPage />} />
                 <Route path="/carregar" element={<FileUploadPage />} />
-              </Route> 
+              </Route>
             </Routes>
           </BrowserRouter>
         </AnimatePresence>
-    </AuthProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
