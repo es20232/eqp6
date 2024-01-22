@@ -28,7 +28,7 @@ class UserDetail(RetrieveUpdateDestroyAPIView):
     def create(self, request):
         try:
             # Retrieve the base64 string from the request data
-            base64_string = request.data.get('profile_image', '')
+            base64_string = request.data.get('image', '')
 
             # Convert base64 string to binary data
             binary_data = base64.b64decode(base64_string)
@@ -70,9 +70,27 @@ class CustomUploadViewSet(viewsets.ViewSet):
 
     def create(self, request):
         try:
-            # Your existing create method code...
+            # Retrieve the base64 string from the request data
+            base64_string = request.data.get('image', '')
+
+            # Convert base64 string to binary data
+            binary_data = base64.b64decode(base64_string)
+
+            current_user = request.user
+
+            # Check if the user already has an image, and delete it
+            try:
+                existing_image = UserImage.objects.get(user=current_user)
+                existing_image.delete()
+            except UserImage.DoesNotExist:
+                pass  # If no existing image, do nothing
+
+            # Save the new user image
+            uploaded_file = UserImage(user=current_user, image=binary_data)
+            uploaded_file.save()
 
             response = 'O arquivo foi enviado com sucesso.'
+
             return Response(response, status=status.HTTP_201_CREATED)
         except Exception as e:
             # Handle exceptions appropriately
