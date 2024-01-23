@@ -1,0 +1,15 @@
+/* BordaLonga.css */
+.borda-longa {
+	height: 1px;
+	background-color: #E8D9E8; 
+	width: 100%;
+  }
+  
+  .borda-longa-topo {
+	margin-bottom: 20px; 
+  }
+  
+  .borda-longa-base {
+	margin-top: 20px; 
+  }
+  

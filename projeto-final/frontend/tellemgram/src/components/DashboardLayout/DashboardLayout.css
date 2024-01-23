@@ -3,10 +3,24 @@
   font-family: Arial, sans-serif;
 } */
 
+  @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+
 .container {
   display: flex;
   width: 100vw;
   height: 100vh;
+}
+.contentDashboard{
+  height: 100%;
+  width: 90%
+}
+
+.contentDashboard h3{
+  color:#634B7C;
+  font-family: 'Allura', cursive;
+    font-size: 30px; 
+    font-weight: bold;
+    text-align: center;
 }
 
 .side-menu {

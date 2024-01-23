@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import TextField from "@mui/material/TextField";
 import { api, endpoints } from "../../apiService";
 import Button from "@mui/material/Button";
-
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 import "./EditProfile.css"
+
 
 const EditProfile = () => {
     const [processing, setProcessing] = useState(false);
@@ -87,19 +88,23 @@ const EditProfile = () => {
         setProcessing(false);
       };
 
-    return (
-        <div className="edit-profile" >
-            <h1>Editar Meu Perfil</h1>
-            <Button
-              variant="contained"
-              type="submit"
-              sx={{ width: '50%'}}
-              disabled={processing}
-            >
-              {!processing && <>Editar</>}
-            </Button>
-            <form className="edit-profile-dados" >
 
+    return (
+        <div className="edit-profile">
+            <h1>Editar Meu Perfil</h1>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ width: '16%', marginRight: '4px' }}
+                disabled={processing}
+              >
+                {!processing && <>Editar Perfil</>}
+              </Button>
+              
+            </div>
+          <div  style={{ display: 'flex', marginTop: '20px' }}>
+            <form className="edit-profile-dados" style={{ marginBottom: '10px', flex: '1' }}> 
                 <TextField
                 id="first_name"
                 label="Nome"
@@ -132,10 +137,17 @@ const EditProfile = () => {
                     type="email"
                     onChange={handleChange}
                 />
-                <label>Editar foto</label>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{ width: '24%' }}
+                  disabled={processing}
+                >
+                  {!processing && <><FileUploadIcon sx={{ fontSize: 24 }} />Editar foto</>}
+                </Button>
 
             </form>
-            <form  className ="edit-profile-seguranca"  >
+            <form  className ="edit-profile-seguranca" style={{ flex: '1' }} >
                 <label htmlFor="input2">Segurança</label>
                 <TextField
                     required
@@ -167,15 +179,26 @@ const EditProfile = () => {
                     disabled={processing}
                     onChange={handleChange}
                 />
+                
                <Button
                 variant="contained"
                 type="submit"
                 sx={{ width: '50%'}}
                 disabled={processing}
               >
+                {!processing && <>Alterar senha</>}
+              </Button>
+              
+            </form>
+            </div>
+            <Button
+                variant="contained"
+                type="submit"
+                sx={{ width: '16%'}}
+                disabled={processing}
+              >
                 {!processing && <>Salvar alterações</>}
               </Button>
-            </form>
         </div>
 
     );

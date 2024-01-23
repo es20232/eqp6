@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./DashboardLayout.css";
 import HomeIcon from "@mui/icons-material/Home";
-import DownloadIcon from "@mui/icons-material/Download"; //upload
+import FileUploadIcon from '@mui/icons-material/FileUpload';//upload
 import ImageIcon from "@mui/icons-material/Image"; //image
 import PostAddIcon from "@mui/icons-material/PostAdd"; //post
 import PersonIcon from "@mui/icons-material/Person"; //profile
 import LogoutIcon from "@mui/icons-material/Logout"; //Logout
+import BordaLonga from './BordaLonga';
 
 import { useAuth } from "../../AuthContext";
 import { api, endpoints } from "../../apiService";
@@ -152,7 +153,7 @@ const DashboardLayout = ({ children }) => {
             <span>Postagem</span>
           </div>
           <div className="list-item">
-            <DownloadIcon sx={{ fontSize: 32 }} />
+            <FileUploadIcon sx={{ fontSize: 32 }} />
             <span>Carregar Imagem</span>
           </div>
           <div className="list-item" onClick={profileButtonHandler}>
@@ -181,7 +182,12 @@ const DashboardLayout = ({ children }) => {
         Teste {myUserData.userId}
         
       </div>
-      <div className="contentDashboard">{children}</div>
+      <div className="contentDashboard">
+        <h3>Tellemgram</h3>
+        <BordaLonga posicao="borda-longa-topo" />
+        {children}
+        
+      </div>
     </section>
   );
 };

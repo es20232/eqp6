@@ -3,7 +3,10 @@
     font-family: 'Alatsi', sans-serif;
     margin-top: 20px;
 }
-
+.edit-profile{
+    border: 1px solid #634B7C;
+    height: 100%;
+}
 .edit-profile form {
     color: #995C99;
     display: flex;
