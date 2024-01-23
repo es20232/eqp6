@@ -45,6 +45,9 @@ export const AuthProvider = ({ children }) => {
         Cookies.set("refreshToken", response.data.refresh, { expires: 1 });
         Cookies.set("myUserId", response.data.user.pk, { expires: 1 });
         Cookies.set("myFirstName", response.data.user.first_name, { expires: 1 });
+        Cookies.set("myLastName", response.data.user.last_name, { expires: 1 });
+        Cookies.set("myUserName", response.data.user.username, { expires: 1 });
+        Cookies.set("myEmail", response.data.user.email, { expires: 1 });
         setAccessToken(response.data.access);
         setRefreshToken(response.data.refresh);
         setLoggedIn(true);

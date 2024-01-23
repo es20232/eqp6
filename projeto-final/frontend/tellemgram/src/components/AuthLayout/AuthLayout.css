@@ -8,7 +8,7 @@
 }
 
 .auth-container {
-  background-color: var(--background);
+  background-color: white;
   height: 100%;
   width: 30%;
   min-width: 504px;

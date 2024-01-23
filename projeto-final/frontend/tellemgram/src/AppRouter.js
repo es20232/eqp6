@@ -15,6 +15,9 @@ import TokenManagerPage from "./pages/TokenManagerPage";
 import FileUploadPage from "./pages/FileUploadPage";
 import EditProfile from "./components/EditProfile/EditProfile";
 import Profile from "./components/Profile/Profile";
+import Initial from "./components/Initial/Initial";
+import EmailConfirmedPage from "./pages/EmailConfirmedPage";
+
 function AppRouter() {
   return (
     <ThemeProvider theme={purpleTheme}>
@@ -25,10 +28,12 @@ function AppRouter() {
               <Route path="/entrar" element={<LoginPage />} />
               <Route path="/cadastrar" element={<SignupPage />} />
               <Route path="/recuperar" element={<RecoverPage />} />
+              <Route path="/email-confirmado" element={<EmailConfirmedPage />} />
               <Route element={<ProtectedRoutes />}>
                 <Route path="/" element={<HomePage />} >
+                  <Route index element={<Initial />} />
                   <Route path="perfil/:userId" element={<Profile />} />
-                  <Route path="editar-meu-perfil" element={<EditProfile />} />
+                  <Route path="perfil/editar" element={<EditProfile />} />
                 </Route>
                 <Route path="/minhasimagens" element={<HomePage />} />
                 <Route path="/token" element={<TokenManagerPage />} />

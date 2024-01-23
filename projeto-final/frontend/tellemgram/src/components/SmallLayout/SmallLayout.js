@@ -3,8 +3,8 @@ import './SmallLayout.css'
 
 const SmallLayout = ({ children }) => {
     return (
-        <div className="content">
-            <div className="auth-wrapper-container">
+        <div className="small-layout-background">
+            <div className="small-layout-container">
                 { children }
             </div>
         </div>

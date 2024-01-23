@@ -6,6 +6,9 @@
   --accent: #995c99;
   --background: #e5e5f0;
 }
+#root{
+  height: 100vh;
+}
 
 body {
   margin: 0;
@@ -14,6 +17,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 code {

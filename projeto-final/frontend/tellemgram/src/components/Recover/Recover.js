@@ -13,6 +13,13 @@ import "./Recover.css";
 const Recover = () => {
   const [processing, setProcessing] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [email, setEmail] = useState();
+
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -55,6 +62,9 @@ const Recover = () => {
           id="outlined-basic"
           label="E-mail"
           variant="outlined"
+          name="email"
+          value={email}
+          onChange={handleChange}
           sx={{ width: "100%" }}
         />
         <Button

@@ -10,4 +10,6 @@ export const endpoints = {
   getUsersEndpoint: "api/users/",
   refreshTokenEndpoint: "token/refresh",
   uploadImageEndpoint: "upload-image/upload/",
+  changePasswordEndpoint: "password/change/",
+  resetPasswordEndpoint: "reset-password/",
 };

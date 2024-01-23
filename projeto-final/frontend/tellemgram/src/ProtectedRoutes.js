@@ -9,9 +9,9 @@ const ProtectedRoutes = () => {
         return <Navigate to="/entrar" />;
     }
     return(
-        <div>
+        <>
             <Outlet />
-        </div>
+        </>
 
     )
 }

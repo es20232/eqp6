@@ -1,27 +1,32 @@
 import React, { useState, useEffect } from "react";
 import "./DashboardLayout.css";
 import HomeIcon from "@mui/icons-material/Home";
-import FileUploadIcon from '@mui/icons-material/FileUpload';//upload
 import ImageIcon from "@mui/icons-material/Image"; //image
 import PostAddIcon from "@mui/icons-material/PostAdd"; //post
 import PersonIcon from "@mui/icons-material/Person"; //profile
 import LogoutIcon from "@mui/icons-material/Logout"; //Logout
-import BordaLonga from './BordaLonga';
+import BordaLonga from "./BordaLonga";
+import Avatar from '@mui/material/Avatar';
 
 import { useAuth } from "../../AuthContext";
 import { api, endpoints } from "../../apiService";
 
 import Cookies from "js-cookie";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 /*Tela de dashboard na qual o usuario logado tem acesso as funcoes da aplicacao
 tal como editar seu perfil*/
 const DashboardLayout = ({ children }) => {
   const navigate = useNavigate();
-  const [base64String, setBase64String] = useState();
-  const { logout, verifyTokenExpirationTime, myUserId } = useAuth();
+  const location = useLocation();
+  const { logout, verifyTokenExpirationTime } = useAuth();
   const [currentPage, setCurrentPage] = useState("home");
+
+  useEffect(() => {
+    setCurrentPage(location.pathname.split("/")[1]);
+  }, [location.pathname]);
+
   const [myUserData, setMyUserData] = useState({
     userId: "",
     first_name: "",
@@ -44,83 +49,20 @@ const DashboardLayout = ({ children }) => {
       }
 
       setMyUserData(newUserData);
-      console.log("USer data: " + JSON.stringify(myUserData));
     };
     getUserData();
   }, []);
 
-  // const openPage = (pageName) => {
-  //   setCurrentPage(pageName);
-  // };
-  // const [userData, setUserData] = useState({
-  //   username: "UserName", // Nome padrão, pode ser alterado
-  //   userAvatar: "URL_DA_IMAGEM_PADRAO", // URL padrão da imagem, pode ser alterada
-  // });
-
-  const logoutButtonHandler = () => {
-    logout();
+  const feedButtonHandler = () => {
+    navigate("/");
   };
 
   const profileButtonHandler = async () => {
-    navigate("/carregar")
+    navigate("/perfil/" + myUserData.userId);
   };
 
-  const imageButtonHandler = async () => {
-    navigate("/carregar")
-  };
-
-  const imageButton1 = async () => {
-    try {
-      await verifyTokenExpirationTime();
-      const response = await api.get(endpoints.getUsersEndpoint);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const imageButton2 = async () => {
-    try {
-      await verifyTokenExpirationTime();
-      const response = await api.get(
-        endpoints.getUsersEndpoint + myUserId + "/"
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const imageButton3 = async () => {
-    try {
-      await verifyTokenExpirationTime();
-      const response = await api.get(
-        endpoints.uploadImageEndpoint + "?user_id=" + myUserId
-      );
-      console.log(response.data[0].image);
-      setBase64String(response.data[0].image);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const decodeImage64 = (base64String) => {
-    // Verifica se há uma string base64 válida
-    if (base64String) {
-      // Decodifica a string base64
-      const decodedData = atob(base64String);
-
-      // Converte os dados binários para um array de bytes
-      const byteArray = new Uint8Array(decodedData.length);
-      for (let i = 0; i < decodedData.length; i++) {
-        byteArray[i] = decodedData.charCodeAt(i);
-      }
-
-      // Cria um blob com os dados binários
-      const blob = new Blob([byteArray], { type: "image/*" });
-
-      // Cria uma URL de objeto (blob URL) para a imagem
-      return URL.createObjectURL(blob);
-    }
+  const logoutButtonHandler = () => {
+    logout();
   };
 
   return (
@@ -128,49 +70,38 @@ const DashboardLayout = ({ children }) => {
       <div className="side-menu">
         <div className="user-profile">
           <div className="user-profile-image-container">
-            {!myUserData.userImage && <PersonIcon sx={{ fontSize: 90, color: "white" }} />}
+            {!myUserData.userImage && (
+              // <PersonIcon sx={{ fontSize: 30, color: "white" }} />
+              <Avatar sx={{ bgcolor: "#CEA6CE"}}>{Cookies.get("myFirstName")[0]}</Avatar>
+            )}
             {myUserData.userImage && (
-          <img
-            src={`data:image/png;base64,${myUserData.userImage}`}
-            alt="Imagem"
-            className="user-image"
-          />
-        )}
+              <Avatar alt="Remy Sharp" src={`data:image/png;base64,${myUserData.userImage}`} className="user-image"/>
+            )}
           </div>
-          <span className="user-name">{myUserData.first_name}</span>
+          <span className="user-name">{Cookies.get("myFirstName")}</span>
         </div>
         <div className="menu-list">
-          <div className="list-item active">
+          <div
+            className={`list-item ${currentPage === "" ? "active" : ""}`}
+            onClick={feedButtonHandler}
+          >
             <HomeIcon sx={{ fontSize: 32 }} />
-            <span>Home</span>
+            <span>Feed</span>
           </div>
           <div className="list-item">
             <ImageIcon sx={{ fontSize: 32 }} />
-            <span>Imagem</span>
+            <span>Minhas imagens</span>
           </div>
           <div className="list-item">
             <PostAddIcon sx={{ fontSize: 32 }} />
-            <span>Postagem</span>
+            <span>Minhas postagens</span>
           </div>
-          <div className="list-item">
-            <FileUploadIcon sx={{ fontSize: 32 }} />
-            <span>Carregar Imagem</span>
-          </div>
-          <div className="list-item" onClick={profileButtonHandler}>
+          <div
+            className={`list-item ${currentPage === "perfil" ? "active" : ""}`}
+            onClick={profileButtonHandler}
+          >
             <PersonIcon sx={{ fontSize: 32 }} />
-            <span>Perfil</span>
-          </div>
-          <div className="list-item" onClick={imageButton1}>
-            <PersonIcon sx={{ fontSize: 32 }} />
-            <span>GET api/users</span>
-          </div>
-          <div className="list-item" onClick={imageButton2}>
-            <PersonIcon sx={{ fontSize: 32 }} />
-            <span>GET api/users/9/</span>
-          </div>
-          <div className="list-item" onClick={imageButton3}>
-            <PersonIcon sx={{ fontSize: 32 }} />
-            <span>PUT api/users/9/ (img string) </span>
+            <span>Meu perfil</span>
           </div>
         </div>
         <div className="logout-button" onClick={logoutButtonHandler}>
@@ -178,15 +109,13 @@ const DashboardLayout = ({ children }) => {
           <span>Sair</span>
         </div>
       </div>
-      <div>
-        Teste {myUserData.userId}
-        
-      </div>
-      <div className="contentDashboard">
-        <h3>Tellemgram</h3>
-        <BordaLonga posicao="borda-longa-topo" />
+      <div></div>
+      <div className="content">
+        <div className="content-title">
+          <h1>Tellemgram</h1>
+          <hr />
+        </div>
         {children}
-        
       </div>
     </section>
   );

@@ -1,15 +1,48 @@
-.form-confirmedConterner h3 {
+/* .form-confirmedConterner h3 {
 	color: #634B7C;
 }
 .form-confirmedConterner button {
 	background-color: #634B7C 
 }
-/* Cor ao passar o mouse sobre o botão */
+
 .form-confirmedConterner button:hover {
-	background-color: #4A3560; /* Cor desejada ao passar o mouse */
+	background-color: #4A3560; 
   }
 .form-confirmedConterner{
 	display: flex;
 	flex-direction: column;
 	gap:16px;
+}
+ */
+
+.email-confirmed-container{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap:16px;
+	padding: 32px;
+}
+
+.email-confirmed-container .email-confirmed-title{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap:8px;
+	text-align: center;
+}
+
+.email-confirmed-container .email-confirmed-title h1{
+	color: var(--primary-main);
+}
+
+.email-confirmed-container .email-confirmed-icon-container{
+	height: 80px;
+	width: 80px;
+	border-radius: 50%;
+	background-color: var(--primary-main);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
