@@ -1,0 +1,36 @@
+.container {
+  height: 300px;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconContainer {
+  height: 80px;
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-main);
+  border-radius: 50%;
+}
+
+.icon {
+  color: white;
+  font-size: 3em !important;
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: var(--primary-main);
+}
+
+p {
+  color: var(--accent);
+  margin: 0px;
+  text-align: center;
+}

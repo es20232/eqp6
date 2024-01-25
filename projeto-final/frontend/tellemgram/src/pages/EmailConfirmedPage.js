@@ -1,5 +1,5 @@
 import React from 'react';
-import SmallLayout from '../components/SmallLayout/SmallLayout';
+import SmallLayout from '../components/MessageLayout/MessageLayout';
 import EmailConfirmed from '../components/EmailConfirmed/EmailConfirmed';
 
 

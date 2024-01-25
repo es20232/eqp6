@@ -1,5 +1,5 @@
 import React from 'react';
-import './SmallLayout.css'
+import './MessageLayout.css'
 
 const SmallLayout = ({ children }) => {
     return (

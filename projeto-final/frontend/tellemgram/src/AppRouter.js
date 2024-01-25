@@ -17,7 +17,7 @@ import EditProfile from "./components/EditProfile/EditProfile";
 import Profile from "./components/Profile/Profile";
 import Initial from "./components/Initial/Initial";
 import EmailConfirmedPage from "./pages/EmailConfirmedPage";
-
+import ErrorPage from "./pages/ErrorPage";
 function AppRouter() {
   return (
     <ThemeProvider theme={purpleTheme}>
@@ -39,6 +39,7 @@ function AppRouter() {
                 <Route path="/token" element={<TokenManagerPage />} />
                 <Route path="/carregar" element={<FileUploadPage />} />
               </Route>
+              <Route path="*" element={<ErrorPage />} />
             </Routes>
           </BrowserRouter>
         </AnimatePresence>
