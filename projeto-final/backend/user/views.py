@@ -14,6 +14,7 @@ from django.http import JsonResponse
 
 from .permissions import IsSelfOrReadOnly
 
+
 class UserList(ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserVisibleSerializer
