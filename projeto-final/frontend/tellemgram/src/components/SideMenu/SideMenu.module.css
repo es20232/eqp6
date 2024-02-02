@@ -1,0 +1,111 @@
+.container {
+  min-width: 280px;
+  margin: 16px;
+  background-color: var(--primary-main) !important;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: stretch;
+  gap: 40px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.userInfoContainer {
+  height: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 16px;
+  padding: 0px 16px 0px 16px;
+  box-sizing: border-box;
+}
+
+.userImageContainer {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: var(--primary-main);
+}
+
+.userNameContainer {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  flex: 1;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.menuLinksContainer {
+  width: 100%;
+  flex: 1;
+  padding: 0px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.link {
+  border: 0px;
+  margin: 0px !important;
+  padding: 0px 16px 0px 16px;
+  height: 48px;
+  border-radius: 8px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 16px;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link:hover {
+  background-color: var(--secondary-main) !important;
+  color: var(--primary-main);
+}
+
+.link.active {
+  background-color: var(--accent);
+}
+.iconContainer {
+  height: 20px;
+  width: 20px;
+}
+.textContainer {
+  font-family: "Inter", sans-serif;
+}
+
+button.logoutButton {
+  border: 0px;
+  margin: 0px !important;
+  padding: 0px 16px 0px 16px;
+  height: 48px;
+  width: 100%;
+  border-radius: 8px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 16px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: var(--secondary-main);
+  color: var(--primary-main);
+}
+
+h1.appTitle {
+  color: white;
+  margin: 0px;
+  padding: 0px;
+  font-size: 36px;
+  font-family: "Allura", cursive;
+  font-weight: 400;
+}

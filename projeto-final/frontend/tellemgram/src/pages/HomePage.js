@@ -1,12 +1,12 @@
 import React from "react";
-import DashboardLayout from "../components/DashboardLayout/DashboardLayout";
+import HomePageLayout from "../components/HomePageLayout/HomePageLayout";
 import { Outlet } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <DashboardLayout>
+    <HomePageLayout>
       <Outlet />
-    </DashboardLayout>
+    </HomePageLayout>
   );
 };
 

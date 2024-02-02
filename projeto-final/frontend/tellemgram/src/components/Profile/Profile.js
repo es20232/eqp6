@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Cookies from "js-cookie";
 import PersonIcon from "@mui/icons-material/Person";
@@ -18,11 +18,14 @@ const Profile = () => {
   const theme = useTheme();
   const { userId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { data: userData, isLoading: isUserDataLoading } = useQuery(
     "getUserData",
     () => {
-      if (isNaN(userId)) {
+      console.log(location.pathname.split("/")[1])
+
+      if (location.pathname.split("/")[1] !== "meu-perfil" && isNaN(userId)) {
         navigate("/error");
       }
       return api.get(endpoints.getUsersEndpoint + userId).then((response) => {
@@ -38,7 +41,7 @@ const Profile = () => {
   const { data: profileImage, isLoading: isProfileImageLoading } = useQuery(
     "getUserProfileImage",
     () => {
-      if (isNaN(userId)) {
+      if (location.pathname.split("/")[1] !== "meu-perfil" && isNaN(userId)) {
         navigate("/error");
       }
       return api
