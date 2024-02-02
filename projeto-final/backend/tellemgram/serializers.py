@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from user.models import User, UserImage
+from user.models import User
 from dj_rest_auth.serializers import UserDetailsSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer
@@ -7,12 +7,12 @@ from dj_rest_auth.serializers import LoginSerializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name', 'email', 'profile_image')
 
 class UserVisibleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name')
+        fields = ('username', 'first_name', 'last_name', 'profile_image')
 
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=50)
@@ -40,7 +40,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password')
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password', 'profile_image')
         read_only_fields = ('id',)
 
     def create(self, validated_data):
@@ -60,10 +60,3 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
             instance.save()
         return instance
-
-class CustomUserImage(serializers.ModelSerializer):
-    class Meta:
-        model = UserImage
-        fields = ('user', 'image')
-
-

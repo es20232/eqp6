@@ -6,7 +6,7 @@ from user import views
 from django.urls import path, re_path
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
-from user.views import CustomLoginView, CustomRegisterView, CustomUploadViewSet, CustomPasswordChangeView, CustomPasswordResetView
+from user.views import CustomLoginView, CustomRegisterView, CustomPasswordChangeView, CustomPasswordResetView
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -27,7 +27,7 @@ schema_view = get_schema_view(
 
 router = routers.DefaultRouter()
 # router.register(r'users', UserRetrieveUpdateDestroyView, basename='user')
-router.register(r'upload', CustomUploadViewSet, basename="upload")
+# router.register(r'upload', CustomUploadViewSet, basename="upload")
 
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),

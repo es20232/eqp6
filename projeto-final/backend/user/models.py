@@ -6,7 +6,4 @@ class User(AbstractUser):
         unique=True,
         blank=True
     )
-
-class UserImage(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.BinaryField()
+    profile_image = models.BinaryField(blank=True, null=True, editable = True)
