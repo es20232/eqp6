@@ -8,8 +8,8 @@ const Error = () => {
       <div className={styles.iconContainer}>
         <PriorityHighIcon className={styles.icon} />
       </div>
-      <h1>Erro 404</h1>
-      <p>Página não encontrada</p>
+      <h1 className={styles.title}>Erro 404</h1>
+      <p className={styles.message}>Página não encontrada</p>
     </div>
   );
 };

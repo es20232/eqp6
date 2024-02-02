@@ -23,13 +23,13 @@
   font-size: 3em !important;
 }
 
-h1 {
+.title {
   font-size: 2em;
   font-weight: bold;
   color: var(--primary-main);
 }
 
-p {
+.message {
   color: var(--accent);
   margin: 0px;
   text-align: center;

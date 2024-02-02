@@ -7,6 +7,7 @@ import PersonIcon from "@mui/icons-material/Person"; //profile
 import LogoutIcon from "@mui/icons-material/Logout"; //Logout
 import BordaLonga from "./BordaLonga";
 import Avatar from '@mui/material/Avatar';
+import Skeleton from '@mui/material/Skeleton';
 
 import { useAuth } from "../../AuthContext";
 import { api, endpoints } from "../../apiService";
@@ -72,7 +73,8 @@ const DashboardLayout = ({ children }) => {
           <div className="user-profile-image-container">
             {!myUserData.userImage && (
               // <PersonIcon sx={{ fontSize: 30, color: "white" }} />
-              <Avatar sx={{ bgcolor: "#CEA6CE"}}>{Cookies.get("myFirstName")[0]}</Avatar>
+              // <Avatar sx={{ bgcolor: "#CEA6CE"}}>{Cookies.get("myFirstName")[0]}</Avatar>
+              <Skeleton variant="circular" width={70} height={70} />
             )}
             {myUserData.userImage && (
               <Avatar alt="Remy Sharp" src={`data:image/png;base64,${myUserData.userImage}`} className="user-image"/>

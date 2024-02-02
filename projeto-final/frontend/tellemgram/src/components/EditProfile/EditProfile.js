@@ -114,10 +114,7 @@ const EditProfile = () => {
         // const base64String = selectedImage.split(",")[1];
         await verifyTokenExpirationTime(); // Verifica se o AccessToken ainda estão válidos e o atualiza caso ano esteja
         const response = await api.post(endpoints.uploadImageEndpoint, {
-          user: 13,
-          image: profileImage,
-          description: "teste",
-          is_published: false,
+          imagem: null// image: profileImage,
         });
         console.log(response);
       } catch (error) {
