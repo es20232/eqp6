@@ -10,79 +10,71 @@ import styles from "./EditProfile.module.css";
 import { useTheme } from "@mui/system";
 import { useQuery } from "react-query";
 import { styled } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const EditProfileImage = () => {
+const EditProfileImage = ({ myUserData, isLoading }) => {
   const hiddenFileInput = useRef(null);
   const { verifyTokenExpirationTime } = useAuth();
   const theme = useTheme();
-  const { userId } = useParams();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [profileImage, setProfileImage] = useState();
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    setProfileImage(myUserData?.profile_image);
+  }, [myUserData]);
 
   const {
-    data: userData,
-    isLoading: isUserDataLoading,
-    error: queryError,
+    data: queryResponse,
+    refetch,
+    isLoading: isSending,
   } = useQuery(
-    ["getUserData", location],
+    "patchProfileImage",
     async () => {
       try {
         await verifyTokenExpirationTime();
-
-        const response = await api.get(
-          endpoints.users + Cookies.get("myUserName") + "/"
+        const response = await api.patch(
+          endpoints.users + Cookies.get("myUserName") + "/",
+          { profile_image: profileImage }
         );
-        setProfileImage(response.data.profile_image);
-        return response.data;
-      } catch (error) {
-        console.error("Erro durante a busca de dados:", error);
-        throw error; // Lançar o erro novamente para que o useQuery o detecte
-      }
+        console.log(response);
+        return response;
+      } catch (error) {}
     },
-    { refetchOnWindowFocus: false }
+    { enabled: false }
   );
 
   const handleImageChange = (event) => {
-    console.log("teste");
     const file = event.target.files[0];
+    console.log(file)
 
     if (file) {
       const reader = new FileReader();
 
       reader.onloadend = () => {
         setProfileImage(reader.result.split(",")[1]);
+        setIsReady(true);
       };
 
       reader.readAsDataURL(file);
+      event.target.value = null;
     }
   };
 
-  const handleClick = (event) => {
+  const handleInputClick = (event) => {
     hiddenFileInput.current.click(); // ADDED
   };
 
   const handleImageCancel = () => {
-    setProfileImage(userData.profile_image);
-  };
-
-  const handleImagePatch = async () => {
-    console.log(profileImage);
-    try {
-      await verifyTokenExpirationTime();
-      const response = await api.patch(
-        endpoints.users + Cookies.get("myUserName") + "/", {profile_image: profileImage}
-      );
-      console.log(response)
-      return
-    } catch (error) {}
+    setProfileImage(myUserData.profile_image);
+    setIsReady(false);
   };
 
   return (
     <>
       <div className={styles.userDataContainer}>
         <div className={styles.userImageContainer}>
-          {isUserDataLoading && (
+          {isLoading && (
             <Skeleton
               variant="circular"
               animation="wave"
@@ -90,10 +82,10 @@ const EditProfileImage = () => {
               height={"100%"}
             />
           )}
-          {!isUserDataLoading && (
+          {!isLoading && (
             <Avatar
-              alt={userData.first_name}
-              src={`data:image/png;base64,${profileImage}`}
+              alt={myUserData.first_name}
+              src={"data:image/png;base64," + profileImage}
               className="user-image"
               sx={{
                 height: "100%",
@@ -106,13 +98,13 @@ const EditProfileImage = () => {
           )}
         </div>
         <div className={styles.userTextInfos}>
-          {userData ? (
+          {myUserData ? (
             <>
               <span className={styles.userOtherInfosContainer}>
-                {userData.username}
+                {myUserData.username}
               </span>
               <span className={styles.userFullNameContainer}>
-                {userData.first_name + " " + userData.last_name}
+                {myUserData.first_name + " " + myUserData.last_name}
               </span>
               <span className={styles.userOtherInfosContainer}>
                 10 postagens
@@ -127,40 +119,48 @@ const EditProfileImage = () => {
           )}
         </div>
       </div>
+      {queryResponse?.status == 200 ? <Alert
+        severity="success"
+        sx={{fontSize: "14px"}}
+      >
+        Foto de perfil alterada. Por favor, recarregue a página!
+      </Alert> : 
       <div className={styles.buttonsContianer}>
-        <Button
-          sx={{ width: "100%", fontSize: "14px" }}
+        {isSending ? (<CircularProgress color="inherit" size="1.5em" />) :
+        (<><Button
+          sx={{ width: "100%"}}
           variant="outlined"
-          onClick={handleClick}
+          onClick={handleInputClick}
         >
-          Carregar Imagem
+          Carregar
         </Button>
         <input
           ref={hiddenFileInput} // ADDED
           type="file"
+          accept="image/jpeg, image/png"
           style={{ display: "none" }}
           onChange={handleImageChange}
         />
 
         <Button
+          disabled={!isReady}
           sx={{ width: "100%" }}
           variant="outlined"
-          onClick={handleImagePatch}
+          onClick={refetch}
         >
-          Enviar
+            Enviar
         </Button>
 
         <Button
+          disabled={!isReady}
           sx={{ width: "100%" }}
           variant="outlined"
           onClick={handleImageCancel}
-          // onClick={() => {
-          //   navigate("/meu-perfil/editar");
-          // }}
         >
           Cancelar
-        </Button>
+        </Button></>)}
       </div>
+}
     </>
   );
 };

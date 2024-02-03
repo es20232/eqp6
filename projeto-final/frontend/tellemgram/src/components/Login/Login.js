@@ -110,7 +110,7 @@ const Login = () => {
 
         <Button
           variant="contained"
-          sx={{ width: "100%", height: "3rem" }}
+          sx={{ width: "100%", height: "48px" }}
           type="submit"
           disabled={processing}
         >

@@ -10,6 +10,14 @@
     flex-direction: column;
     gap: 8px;
 }
+
+.alertContainer{
+    position: absolute;
+    top: '150px';
+    left: '150px';
+    z-index: 3;
+
+}
 .userDataContainer{
     display: flex;
     align-items: center;
@@ -51,6 +59,9 @@
 .buttonsContianer{
     display: flex;
     gap: 16px;
+    justify-content: center;
+    height: 48px;
+    align-items: center;
 
 }
 

@@ -19,32 +19,37 @@ const EditProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedImage, setSelectedImage] = useState(null);
-
+  //const [myUserData, setMyUserData] = useState();
 
   const {
-    data: userData,
+    data: myUserData,
     isLoading: isUserDataLoading,
-    error,
-  } = useQuery(["getUserData", location], async () => {
-    await verifyTokenExpirationTime();
-    if (location.pathname.split("/")[1] === "meu-perfil") {
-      const response = await api.get(
-        endpoints.users + Cookies.get("myUserName") + "/"
-      );
-      return response.data;
-    } else if (isNaN(userId)) {
-      return undefined;
-      // error
-    } else {
-      const response = await api.get(endpoints.users + userId + "/");
-      return response.data;
-    }
-  },{refetchOnWindowFocus: false});
+    error: queryError,
+  } = useQuery(
+    ["getUserData", location],
+    async () => {
+      try {
+        await verifyTokenExpirationTime();
+
+        const response = await api.get(
+          endpoints.users + Cookies.get("myUserName") + "/"
+        );
+        return response.data;
+      } catch (error) {
+        console.error("Erro durante a busca de dados:", error);
+        throw error; // Lançar o erro novamente para que o useQuery o detecte
+      }
+    },
+    { refetchOnWindowFocus: false }
+  );
 
   return (
     <div className={styles.pageContent}>
       <div className={styles.profileContainer}>
-        <EditProfileImage/>
+        <EditProfileImage
+          isLoading={isUserDataLoading}
+          myUserData={myUserData}
+        />
         <hr className={styles.horizontalLine} />
         <div className={styles.personalInfoContainer}>
           <span>Informaçoes Pessoais</span>
