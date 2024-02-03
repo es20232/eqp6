@@ -12,7 +12,7 @@ from dj_rest_auth.serializers import LoginSerializer
 class UserVisibleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'profile_image')
+        fields = ('id','username', 'first_name', 'last_name', 'profile_image')
 
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=50)
@@ -74,8 +74,8 @@ class PostSerializer(serializers.ModelSerializer):
     likes = PostLikeSerializer(many=True, read_only=True)
     class Meta:
         model = Post
-        fields = '__all__'
-        # exclude = ('user',)  # Exclui o campo 'user' da serialização
+        # fields = '__all__'
+        exclude = ('user',)  # Exclui o campo 'user' da serialização
 
 class CommentSerializer(serializers.ModelSerializer):
     likes = CommentLikeSerializer(many=True, read_only=True)
