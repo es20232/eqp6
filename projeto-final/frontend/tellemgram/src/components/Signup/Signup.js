@@ -65,7 +65,7 @@ const Signup = () => {
     }
     console.log("Enviando dados:", formData);
     try {
-      const response = await api.post(endpoints.signupEndpoint, formData);
+      const response = await api.post(endpoints.signup, formData);
       console.log(response);
       setIsSignupComplete(true);
     } catch (error) {

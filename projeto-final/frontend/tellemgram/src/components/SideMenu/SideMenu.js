@@ -1,16 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./SideMenu.module.css";
 import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
 
 import { Link } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
+import Cookies from "js-cookie";
+import { useQuery } from 'react-query';
+import { api, endpoints } from "../../apiService";
 
-const SideMenu = ({ userName, userProfileImage }) => {
+
+
+const SideMenu = () => {
+  const { verifyTokenExpirationTime } = useAuth();
   const { logout } = useAuth();
-  useEffect(() => {
-    console.log("Image " + userProfileImage);
-  }, []);
+
+  const { data, error, isLoading } = useQuery('getMyData', async() => {
+    await verifyTokenExpirationTime();
+    const response = await api.get(endpoints.users + Cookies.get("myUserId") + "/");
+    return response.data;
+  },{refetchOnWindowFocus: false});
 
   const logoutButtonHandler = () => {
     logout();
@@ -21,7 +30,7 @@ const SideMenu = ({ userName, userProfileImage }) => {
       <div className={styles.userInfoContainer}>
         <div className={styles.userImageContainer}>
           <Avatar
-            alt={userName}
+            alt={!isLoading ? data.first_name : undefined}
             color="secondary"
             sx={{
               bgcolor: "secondary.main",
@@ -31,13 +40,13 @@ const SideMenu = ({ userName, userProfileImage }) => {
               width: 48,
               height: 48,
             }}
-            src={`data:image/png;base64,${userProfileImage}`}
+            src={!isLoading ? `data:image/png;base64,${data && data.profile_image}` : ''}
             className="user-image"
           />
         </div>
         <div className={styles.userNameContainer}>
-          {!userName && <Skeleton variant="text" width={100} height={45} />}
-          {userName}
+          {isLoading && <Skeleton variant="text" width={100} height={45} />}
+          {!isLoading && data.first_name}
         </div>
       </div>
       <div className={styles.menuLinksContainer}>

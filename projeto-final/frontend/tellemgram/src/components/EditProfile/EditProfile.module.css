@@ -60,15 +60,8 @@
     background-color: var(--primary-main);
 }
 
-.postsContainer{
-    display: flex;
-    flex-wrap:wrap;
-    gap: 4px;
-
-}
-
-.postPlaceholder{
-    height:156px ;
-    width:156px ;
-    background-color: bisque;
+.profileImageInput{
+    width: 500px;
+    height: 48px;
+    display: none;
 }

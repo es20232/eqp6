@@ -5,11 +5,10 @@ export const api = axios.create({
 });
 
 export const endpoints = {
-  loginEndpoint: "login/?format=json",
-  signupEndpoint: "register/?format=json",
-  getUsersEndpoint: "users/",
-  refreshTokenEndpoint: "token/refresh",
-  uploadImageEndpoint: "upload-image/upload/",
+  login: "login/?format=json",
+  register: "register/?format=json",
+  users: "users/",
+  refreshToken: "token/refresh",
   changePasswordEndpoint: "password/change/",
   resetPasswordEndpoint: "reset-password/",
 };

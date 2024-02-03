@@ -11,125 +11,137 @@ import { api, endpoints } from "../../apiService";
 import "./Profile.css";
 import styles from "./Profile.module.css";
 import { useTheme } from "@mui/system";
-
 import { useQuery } from "react-query";
+import Error from "../Error/Error";
 
 const Profile = () => {
+  const { verifyTokenExpirationTime } = useAuth();
   const theme = useTheme();
   const { userId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { data: userData, isLoading: isUserDataLoading } = useQuery(
-    "getUserData",
-    () => {
-      console.log(location.pathname.split("/")[1])
-
-      if (location.pathname.split("/")[1] !== "meu-perfil" && isNaN(userId)) {
-        navigate("/error");
-      }
-      return api.get(endpoints.getUsersEndpoint + userId).then((response) => {
-        console.log("User data:", response);
-        if (response.data.length == 0) {
-          return null;
-        }
+  const {
+    data: userData,
+    isLoading: isUserDataLoading,
+    error: queryError,
+  } = useQuery(["getUserData", location], async () => {
+    try {
+      await verifyTokenExpirationTime();
+  
+      if (location.pathname.split("/")[1] === "meu-perfil") {
+        const response = await api.get(
+          endpoints.users + Cookies.get("myUserId") + "/"
+        );
+        console.log(response.data);
         return response.data;
-      });
-    }
-  );
-
-  const { data: profileImage, isLoading: isProfileImageLoading } = useQuery(
-    "getUserProfileImage",
-    () => {
-      if (location.pathname.split("/")[1] !== "meu-perfil" && isNaN(userId)) {
-        navigate("/error");
+      } else if (isNaN(userId)) {
+        throw new Error("Erro: userId inválido");
+      } else {
+        const response = await api.get(endpoints.users + userId + "/");
+        console.log(response.data);
+        return response.data;
       }
-      return api
-        .get(endpoints.uploadImageEndpoint + "?user_id=" + userId)
-        .then((response) => {
-          console.log("Profile image:", response);
-          if (response.data.length == 0) {
-            return null;
-          }
-          return response.data[0].image;
-        });
+    } catch (error) {
+      console.error("Erro durante a busca de dados:", error);
+      throw error; // Lançar o erro novamente para que o useQuery o detecte
     }
-  );
+  });
 
-  // const [profileImage, setProfileImage] = useState();
-  const { verifyTokenExpirationTime } = useAuth();
+  if (queryError) {
+    return <Error />;
+  } else {
+    return (
+      <div className={styles.pageContent}>
+        <div className={styles.profileContainer}>
+          <div className={styles.userDataContainer}>
+            <div className={styles.userImageContainer}>
+              {isUserDataLoading && (
+                <Skeleton
+                  variant="circular"
+                  animation="wave"
+                  width={"100%"}
+                  height={"100%"}
+                />
+              )}
+              {!isUserDataLoading && userData && (
+                <Avatar
+                  alt={userData.first_name}
+                  src={`data:image/png;base64,${userData.profile_image}`}
+                  className="user-image"
+                  sx={{
+                    height: "100%",
+                    width: "100%",
+                    fontSize: "66px",
+                    fontWeight: "bold",
+                    backgroundColor: theme.palette.secondary.main,
+                  }}
+                />
+              )}
+            </div>
+            <div className={styles.userTextInfos}>
+              {userData ? (
+                <>
+                  <span className={styles.userOtherInfosContainer}>
+                    {userData.username}
+                  </span>
+                  <span className={styles.userFullNameContainer}>
+                    {userData.first_name + " " + userData.last_name}
+                  </span>
+                  <span className={styles.userOtherInfosContainer}>
+                    10 postagens
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Skeleton variant="text" width={100} height={15} />
+                  <Skeleton variant="text" width={200} height={20} />
+                  <Skeleton variant="text" width={100} height={15} />
+                </>
+              )}
+            </div>
+          </div>
+          <div className={styles.buttonsContianer}>
+            {!isUserDataLoading && userData.id == Cookies.get("myUserId") && (
+              <Button
+                sx={{ width: "100%" }}
+                variant="outlined"
+                onClick={() => {
+                  navigate("/meu-perfil/editar");
+                }}
+              >
+                Editar Perfil
+              </Button>
+            )}
 
-  // useEffect(() => {
-  //   const getUserImage = async () => {
-  //     try {
-  //       await verifyTokenExpirationTime();
-  //       const response = await api.get(
-  //         endpoints.uploadImageEndpoint + "?user_id=" + Cookies.get("myUserId")
-  //       );
-  //       setProfileImage(response.data[0].image);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   getUserImage();
-  // },[]);
+            <Button
+              sx={{ width: "100%" }}
+              variant="outlined"
+              // onClick={() => {
+              //   navigate("/meu-perfil/editar");
+              // }}
+            >
+              Compartilhar
+            </Button>
+          </div>
 
-  return (
-    <div className="profile-container">
-      <div className="user-data-container">
-        <div className={`${styles.userImageContainer}`}>
-          {isProfileImageLoading && (
-            <Skeleton
-              variant="circular"
-              animation="wave"
-              width={"100%"}
-              height={"100%"}
-            />
-          )}
-          {!isProfileImageLoading && (
-            <Avatar
-              alt={isUserDataLoading ? "" : userData.first_name.toUpperCase()}
-              src={`data:image/png;base64,${profileImage}`}
-              className="user-image"
-              sx={{
-                height: "100%",
-                width: "100%",
-                fontSize: "6em",
-                fontWeight: "bold",
-                backgroundColor: theme.palette.secondary.main,
-              }}
-            />
-          )}
-        </div>
-        <div className="user-strings-container">
-          {userData ? (
-            <>
-              <p className="user-username">{userData.username}</p>
-              <p className="user-name">
-                {" "}
-                {userData.first_name + " " + userData.last_name}
-              </p>
-            </>
-          ) : (
-            <>
-              <Skeleton variant="text" width={100} height={23} />
-              <Skeleton variant="text" width={200} height={45} />
-            </>
-          )}
+          <hr className={styles.horizontalLine} />
+          <div className={styles.postsContainer}>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+            <div className={styles.postPlaceholder}></div>
+          </div>
         </div>
       </div>
-      {(userId == Cookies.get("myUserId")) && <Button
-        sx={{ width: "300px" }}
-        variant="contained"
-        onClick={() => {
-          navigate("/perfil/editar");
-        }}
-      >
-        Editar Perfil
-      </Button>
-    }
-    </div>
-  );
+    );
+  }
 };
 
 export default Profile;

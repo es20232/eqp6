@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     setAccessToken(Cookies.get("accessToken"));
     setRefreshToken(Cookies.get("refreshToken"));
-    console.log(Cookies.get("accessToken"))
     if(Cookies.get("accessToken") !== undefined){
       api.defaults.headers.common[
         "Authorization"
@@ -34,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async ({ username, password }) => {
     try {
-      const response = await api.post(endpoints.loginEndpoint, {
+      const response = await api.post(endpoints.login, {
         username: username,
         password: password,
       });
@@ -79,18 +78,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const requestNewAcessToken = async () => {
-    console.log("Atualizando AccessToken...");
     try {
-      const response = await api.post(endpoints.refreshTokenEndpoint, {
+      const response = await api.post(endpoints.refreshToken, {
         refresh: refreshToken,
       });
-      console.log(response);
       Cookies.set("accessToken", response.data.access, { expires: 1 });
       setAccessToken(response.data.access);
       api.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${response.data.access}`;
-      console.log("AcessToken atualizado!");
     } catch (error) {
       console.error("Erro ao atualizar AccessToken: ", error);
     }
@@ -108,14 +104,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const verifyTokenExpirationTime = async () => {
-    console.log("Verificando a validade do AccessToken...");
     const acessExpirationTime = getTokenExpirationTime(accessToken);
     const currentTimestamp = Math.floor(Date.now() / 1000);
     if (currentTimestamp > acessExpirationTime) {
-      console.log("AccessToken expirado!");
       await requestNewAcessToken();
-    } else {
-      console.log("AccessToken válido!");
     }
     return true;
   };
