@@ -51,6 +51,7 @@
 .buttonsContianer{
     display: flex;
     gap: 16px;
+    height: 48px;
 
 }
 
@@ -67,7 +68,7 @@
 
 }
 
-.postPlaceholder{
+.postImage{
     height:156px ;
     width:156px ;
     background-color: bisque;

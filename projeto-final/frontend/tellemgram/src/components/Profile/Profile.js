@@ -17,7 +17,7 @@ import Error from "../Error/Error";
 const Profile = () => {
   const { verifyTokenExpirationTime } = useAuth();
   const theme = useTheme();
-  const { userId } = useParams();
+  const { userName } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -28,17 +28,40 @@ const Profile = () => {
   } = useQuery(["getUserData", location], async () => {
     try {
       await verifyTokenExpirationTime();
-  
+
       if (location.pathname.split("/")[1] === "meu-perfil") {
         const response = await api.get(
           endpoints.users + Cookies.get("myUserName") + "/"
         );
         console.log(response.data);
         return response.data;
-      } else if (isNaN(userId)) {
-        throw new Error("Erro: userId inválido");
       } else {
-        const response = await api.get(endpoints.users + userId + "/");
+        const response = await api.get(endpoints.users + userName + "/");
+        console.log(response.data);
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Erro durante a busca de dados:", error);
+      throw error; // Lançar o erro novamente para que o useQuery o detecte
+    }
+  });
+
+  const {
+    data: postsData,
+    isLoading: isPostsDataLoading,
+    error: postsQueryError,
+  } = useQuery(["getPostsData", location], async () => {
+    try {
+      await verifyTokenExpirationTime();
+
+      if (location.pathname.split("/")[1] === "meu-perfil") {
+        const response = await api.get(
+          endpoints.posts + Cookies.get("myUserName") + "/"
+        );
+        console.log(response.data);
+        return response.data;
+      } else {
+        const response = await api.get(endpoints.posts + userName + "/");
         console.log(response.data);
         return response.data;
       }
@@ -83,7 +106,7 @@ const Profile = () => {
               {userData ? (
                 <>
                   <span className={styles.userOtherInfosContainer}>
-                    {userData.username}
+                    {userData?.username}
                   </span>
                   <span className={styles.userFullNameContainer}>
                     {userData.first_name + " " + userData.last_name}
@@ -102,41 +125,44 @@ const Profile = () => {
             </div>
           </div>
           <div className={styles.buttonsContianer}>
-            {!isUserDataLoading && userData.username == Cookies.get("myUserName") && (
-              <Button
-                sx={{ width: "100%" }}
-                variant="outlined"
-                onClick={() => {
-                  navigate("/meu-perfil/editar");
-                }}
-              >
-                Editar Perfil
-              </Button>
+            {isUserDataLoading ? (
+              <Skeleton variant="rectangular" width="100%" height="100%" />
+            ) : (
+              <React.Fragment>
+                {userData?.username == Cookies.get("myUserName") && (
+                  <Button
+                    sx={{ width: "100%" }}
+                    variant="outlined"
+                    onClick={() => {
+                      navigate("/meu-perfil/editar");
+                    }}
+                  >
+                    Editar Perfil
+                  </Button>
+                )}
+                <Button sx={{ width: "100%" }} variant="outlined">
+                  Compartilhar
+                </Button>
+              </React.Fragment>
             )}
-
-            <Button
-              sx={{ width: "100%" }}
-              variant="outlined"
-              // onClick={() => {
-              //   navigate("/meu-perfil/editar");
-              // }}
-            >
-              Compartilhar
-            </Button>
           </div>
 
           <hr className={styles.horizontalLine} />
+
           <div className={styles.postsContainer}>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
-            <div className={styles.postPlaceholder}></div>
+            {isPostsDataLoading ? (
+              <Skeleton variant="rectangular" width="100%" height={320} />
+            ) : (
+              <React.Fragment>
+                {postsData.map((post, index) => (
+                  <img
+                  key={index}
+                    className={styles.postImage}
+                    src={"data:image/png;base64," + post.image}
+                  />
+                ))}
+              </React.Fragment>
+            )}
           </div>
         </div>
       </div>

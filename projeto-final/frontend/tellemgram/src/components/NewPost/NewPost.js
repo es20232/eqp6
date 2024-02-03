@@ -14,8 +14,6 @@ const NewPost = () => {
   const [formData, setFormData] = useState({
     caption: "",
     image: "",
-    user: 2,
-    likes: [2],
   });
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,7 +28,7 @@ const NewPost = () => {
     try {
       setProcessing(true);
       // await verifyTokenExpirationTime();
-      const response = await api.post(endpoints.posts, formData);
+      const response = await api.post(endpoints.createPost, formData);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -46,7 +44,6 @@ const NewPost = () => {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        //setProfileImage(reader.result.split(",")[1]);
         setFormData((prevData) => ({
           ...prevData,
           image: reader.result.split(",")[1],
@@ -68,9 +65,17 @@ const NewPost = () => {
       <div className={styles.profileContainer}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div onClick={handleInputClick} className={styles.imageContainer}>
-		  	{formData.image ? (<img src={"data:image/png;base64," + formData.image}/>) :
-			<div className={styles.imagePlaceholder}> Clique aqui para escolher uma imagem</div>}
-            
+            {formData.image ? (
+              <img
+                className={styles.image}
+                src={"data:image/png;base64," + formData.image}
+              />
+            ) : (
+              <div className={styles.imagePlaceholder}>
+                Clique aqui para escolher uma imagem
+              </div>
+            )}
+
             {/* <div className={styles.postPlaceholder}></div> */}
           </div>
           <input
@@ -84,6 +89,9 @@ const NewPost = () => {
             required
             label="Descrição"
             variant="outlined"
+            multiline
+            maxRows={4}
+            rows={2}
             placeholder="Escreva aqui"
             name="caption"
             onChange={handleChange}

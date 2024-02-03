@@ -43,7 +43,7 @@ function AppRouter() {
                   <Route path="/" element={<HomePage />}>
                     <Route index element={<Initial />} />
                     <Route path="nova-postagem" element={<NewPost />} />
-                    <Route path="perfil/:userId" element={<Profile />} />
+                    <Route path="perfil/:userName" element={<Profile />} />
                     <Route path="meu-perfil" element={<Profile />} />
                     <Route path="meu-perfil/editar" element={<EditProfile />} />
                   </Route>
