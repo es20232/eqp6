@@ -30,7 +30,6 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
 class CustomLoginSerializer(LoginSerializer):
     email = None
-
     def get_cleaned_data(self):
         data_dict = super().get_cleaned_data()
         return data_dict
@@ -40,8 +39,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'password', 'profile_image')
-        read_only_fields = ('id',)
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'profile_image')
+        read_only_fields = ('email',)
 
     def create(self, validated_data):
         # Custom logic to create a user with a hashed password

@@ -37,11 +37,12 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # path('api/', include(router.urls))
     path('users/', views.UserList.as_view(), name='user-list'),
-    path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
+    # path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
+    path('users/<str:username>/', views.UserDetail.as_view(), name='user-detail'),
 
     path('password-reset/', CustomPasswordResetView.as_view()),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('upload-image/', include(router.urls), name='upload'),
+    # path('upload-image/', include(router.urls), name='upload'),
 
     path('password/change/', CustomPasswordChangeView.as_view(), name='password_change'),
 
