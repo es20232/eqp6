@@ -11,17 +11,22 @@
     flex-direction: column;
     gap: 8px;
 }
-.imageComponent{
+.imageContainer{
+    width: 476px;
+    height: 476px;
 	display: flex;
 	flex-direction: column;
-	gap: 4x;
-  	height: 100%; 
 	align-items: center;
+    cursor: pointer;
 }
-.postPlaceholder{
-    height:456px ;
-    width:100%;
-    background-color: bisque;
+.imagePlaceholder{
+    width: 100%;
+    height: 100%;
+    background-color: var(--secondary-main);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .textComponent{
 	display: flex;
@@ -31,4 +36,11 @@
 .buttonComponent{
 	background-color: bisque;
 	align-items: center;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
 }

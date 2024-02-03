@@ -11,4 +11,5 @@ export const endpoints = {
   refreshToken: "token/refresh",
   changePasswordEndpoint: "password/change/",
   resetPasswordEndpoint: "reset-password/",
+  posts: "posts/",
 };

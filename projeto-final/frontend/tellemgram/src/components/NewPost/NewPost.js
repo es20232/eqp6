@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 import Cookies from "js-cookie";
@@ -6,70 +6,103 @@ import { api, endpoints } from "../../apiService";
 import Button from "@mui/material/Button";
 import styles from "./NewPost.module.css";
 
-
 const NewPost = () => {
-	const [processing, setProcessing] = useState(false);
-	const [serverError, setServerError] = useState("");
-	const [form, setForm] = useState({
-		description : "",
-	});
-	const handleChange = (event) => {
-		const { name, value } = event.target;
-		setForm((prevData) => ({
-		...prevData,
-		[name]: value,
-		}));
-	};
+  const hiddenFileInput = useRef(null);
+  const [processing, setProcessing] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [isReady, setIsReady] = useState(false);
+  const [formData, setFormData] = useState({
+    caption: "",
+    image: "",
+    user: 2,
+    likes: [2],
+  });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		try {
-		setProcessing(true);
-		// await verifyTokenExpirationTime();
-		const response = await api.put(
-			endpoints.getUsersEndpoint + Cookies.get("myUserName") + "/",
-			form
-		);
-		console.log(response.data);
-		} catch (error) {
-		console.log(error);
-		}
-		setProcessing(false);
-	};
-	
- return(
-	<div className={styles.pageContent}>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setProcessing(true);
+      // await verifyTokenExpirationTime();
+      const response = await api.post(endpoints.posts, formData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    setProcessing(false);
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    console.log(file);
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        //setProfileImage(reader.result.split(",")[1]);
+        setFormData((prevData) => ({
+          ...prevData,
+          image: reader.result.split(",")[1],
+        }));
+        setIsReady(true);
+      };
+
+      reader.readAsDataURL(file);
+      event.target.value = null;
+    }
+  };
+
+  const handleInputClick = (event) => {
+    hiddenFileInput.current.click(); // ADDED
+  };
+
+  return (
+    <div className={styles.pageContent}>
       <div className={styles.profileContainer}>
-		<form onSubmit={handleSubmit}>
-			<div className={styles.imageComponent}>
-				<div className={styles.postPlaceholder}></div>
-			</div>
-			<div className={styles.textComponent}>
-				<TextField
-				required
-				label="Descrição"
-				variant="outlined"
-				placeholder="Escreva aqui"
-				onChange={handleChange}
-				value={form.description}
-				sx={{ width: "100%" }}
-				/>
-			</div>
-			<div className={styles.buttonComponent}>
-				<Button
-				variant="contained"
-				type="submit"
-				disabled={processing}
-				sx={{ width: "300px", height: "3rem" }}
-				>
-				{processing && <CircularProgress color="inherit" size="2rem" />}
-				{!processing && <>POSTAR</>}
-				</Button>
-			</div>
-		</form>
-	  </div>
-	</div>
- );
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <div onClick={handleInputClick} className={styles.imageContainer}>
+		  	{formData.image ? (<img src={"data:image/png;base64," + formData.image}/>) :
+			<div className={styles.imagePlaceholder}> Clique aqui para escolher uma imagem</div>}
+            
+            {/* <div className={styles.postPlaceholder}></div> */}
+          </div>
+          <input
+            ref={hiddenFileInput} // ADDED
+            type="file"
+            accept="image/jpeg, image/png"
+            style={{ display: "none" }}
+            onChange={handleImageChange}
+          />
+          <TextField
+            required
+            label="Descrição"
+            variant="outlined"
+            placeholder="Escreva aqui"
+            name="caption"
+            onChange={handleChange}
+            value={formData.caption}
+            sx={{ width: "100%" }}
+          />
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={processing}
+            sx={{ width: "100%", height: "3rem" }}
+          >
+            {processing && <CircularProgress color="inherit" size="2rem" />}
+            {!processing && <>POSTAR</>}
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default NewPost;
