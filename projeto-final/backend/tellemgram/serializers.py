@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from user.models import User, Post , Comment
+from user.models import User, Post , Comment, PostLike, CommentLike
 from dj_rest_auth.serializers import UserDetailsSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer
@@ -60,12 +60,28 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.save()
         return instance
 
+class PostLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostLike
+        fields = '__all__'
+
+class CommentLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CommentLike
+        fields = '__all__'
+
 class PostSerializer(serializers.ModelSerializer):
+    likes = PostLikeSerializer(many=True, read_only=True)
     class Meta:
         model = Post
         fields = '__all__'
+        # exclude = ('user',)  # Exclui o campo 'user' da serialização
 
 class CommentSerializer(serializers.ModelSerializer):
+    likes = CommentLikeSerializer(many=True, read_only=True)
     class Meta:
-        model: Comment
+        model = Comment
         fields = '__all__'
+
+
+
