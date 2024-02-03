@@ -17,7 +17,7 @@ const SideMenu = () => {
 
   const { data, error, isLoading } = useQuery('getMyData', async() => {
     await verifyTokenExpirationTime();
-    const response = await api.get(endpoints.users + Cookies.get("myUserId") + "/");
+    const response = await api.get(endpoints.users + Cookies.get("myUserName") + "/");
     return response.data;
   },{refetchOnWindowFocus: false});
 

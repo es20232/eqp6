@@ -31,7 +31,7 @@ const EditProfileImage = () => {
         await verifyTokenExpirationTime();
 
         const response = await api.get(
-          endpoints.users + Cookies.get("myUserId") + "/"
+          endpoints.users + Cookies.get("myUserName") + "/"
         );
         setProfileImage(response.data.profile_image);
         return response.data;
@@ -71,7 +71,7 @@ const EditProfileImage = () => {
     try {
       await verifyTokenExpirationTime();
       const response = await api.patch(
-        endpoints.users + Cookies.get("myUserId") + "/", {profile_image: profileImage}
+        endpoints.users + Cookies.get("myUserName") + "/", {profile_image: profileImage}
       );
       console.log(response)
       return

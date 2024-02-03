@@ -31,7 +31,7 @@ const Profile = () => {
   
       if (location.pathname.split("/")[1] === "meu-perfil") {
         const response = await api.get(
-          endpoints.users + Cookies.get("myUserId") + "/"
+          endpoints.users + Cookies.get("myUserName") + "/"
         );
         console.log(response.data);
         return response.data;
@@ -102,7 +102,7 @@ const Profile = () => {
             </div>
           </div>
           <div className={styles.buttonsContianer}>
-            {!isUserDataLoading && userData.id == Cookies.get("myUserId") && (
+            {!isUserDataLoading && userData.username == Cookies.get("myUserName") && (
               <Button
                 sx={{ width: "100%" }}
                 variant="outlined"

@@ -29,7 +29,7 @@ const EditProfile = () => {
     await verifyTokenExpirationTime();
     if (location.pathname.split("/")[1] === "meu-perfil") {
       const response = await api.get(
-        endpoints.users + Cookies.get("myUserId") + "/"
+        endpoints.users + Cookies.get("myUserName") + "/"
       );
       return response.data;
     } else if (isNaN(userId)) {
