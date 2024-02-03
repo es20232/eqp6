@@ -20,6 +20,8 @@ import Profile from "./components/Profile/Profile";
 import Initial from "./components/Initial/Initial";
 import EmailConfirmedPage from "./pages/EmailConfirmedPage";
 import ErrorPage from "./pages/ErrorPage";
+import NewPost from "./components/NewPost/NewPost";
+
 
 function AppRouter() {
   const queryClient = new QueryClient();
@@ -40,6 +42,7 @@ function AppRouter() {
                 <Route element={<ProtectedRoutes />}>
                   <Route path="/" element={<HomePage />}>
                     <Route index element={<Initial />} />
+                    <Route path="nova-postagem" element={<NewPost />} />
                     <Route path="perfil/:userId" element={<Profile />} />
                     <Route path="meu-perfil" element={<Profile />} />
                     <Route path="meu-perfil/editar" element={<EditProfile />} />

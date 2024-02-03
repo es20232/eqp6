@@ -1,0 +1,34 @@
+.pageContent{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+	align-items: center;
+}
+.profileContainer{
+    width: 476px;
+    padding: 32px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.imageComponent{
+	display: flex;
+	flex-direction: column;
+	gap: 4x;
+  	height: 100%; 
+	align-items: center;
+}
+.postPlaceholder{
+    height:456px ;
+    width:100%;
+    background-color: bisque;
+}
+.textComponent{
+	display: flex;
+	height: 100%;
+	margin-bottom: 10px;
+}
+.buttonComponent{
+	background-color: bisque;
+	align-items: center;
+}
