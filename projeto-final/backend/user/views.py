@@ -1,14 +1,17 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from dj_rest_auth.registration.views import LoginView, RegisterView
 from rest_framework import permissions
-from user.models import User
-from tellemgram.serializers import CustomUserSerializer, UserSerializer, CustomLoginSerializer, CustomRegisterSerializer, UserVisibleSerializer
+from user.models import User, Post, Comment
+from tellemgram.serializers import CustomUserSerializer, CustomLoginSerializer, CustomRegisterSerializer, UserVisibleSerializer, PostSerializer , CommentSerializer
 from dj_rest_auth.views import PasswordChangeView, PasswordResetView
 from rest_framework import status
 import base64
 from .permissions import IsSelfOrReadOnly
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 class UserList(ListCreateAPIView):
     queryset = User.objects.all()
@@ -75,7 +78,52 @@ class CustomPasswordResetView(PasswordResetView):
             # If the email doesn't exist, return a Response with an error message
             return Response({'detail': 'User with this email does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
         
-        
+class PostList(ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    # permission_classes = [IsSelfOrReadOnly]
+
+def PostLike(request, pk):
+    post = get_object_or_404(Post, id=request.POST.get('liked_posts'))
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return HttpResponseRedirect(reverse('gpost-detail', args=[str(pk)]))
+
+class PostDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsSelfOrReadOnly]
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        likes_connected = get_object_or_404(Post, id=self.kwargs['pk'])
+        liked = False
+        if likes_connected.likes.filter(id=self.request.user.id).exists():
+            liked = True
+        data['number_of_likes'] = likes_connected.number_of_likes()
+        data['post_is_liked'] = liked
+        return data
+
+class CommentList(ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+class CommentDetail(RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+class UserPostList(ListCreateAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        user = User.objects.get(username=username)
+        return Post.objects.filter(user=user)
+
 # class CustomUploadViewSet(viewsets.ViewSet):
 #     permission_classes = [IsAuthenticated]
 #     serializer_class = CustomUserImage

@@ -6,7 +6,7 @@ from user import views
 from django.urls import path, re_path
 from dj_rest_auth.registration.views import RegisterView, VerifyEmailView, ConfirmEmailView
 from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetConfirmView, PasswordChangeView
-from user.views import CustomLoginView, CustomRegisterView, CustomPasswordChangeView, CustomPasswordResetView
+from user.views import CustomLoginView, CustomRegisterView, CustomPasswordChangeView, CustomPasswordResetView, PostList, PostDetail, UserPostList
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -39,6 +39,10 @@ urlpatterns = [
     path('users/', views.UserList.as_view(), name='user-list'),
     # path('users/<int:pk>/', views.UserDetail.as_view(), name='user-detail'),
     path('users/<str:username>/', views.UserDetail.as_view(), name='user-detail'),
+
+    path('posts/', PostList.as_view(), name='post-list'),
+    path('posts/<int:pk>/', PostDetail.as_view(), name='post-detail'),
+    path('posts/user/<str:username>/', UserPostList.as_view(), name='user-post-list'),
 
     path('password-reset/', CustomPasswordResetView.as_view()),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
