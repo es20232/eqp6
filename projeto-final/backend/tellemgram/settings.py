@@ -179,6 +179,10 @@ REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'tellemgram.serializers.CustomRegisterSerializer',
 }
 
+SIMPLE_JWT = {
+    'USER_ID_FIELD': 'user_id',  # Use o nome do seu campo de identificação primária personalizado
+}
+
 # Custom Application Configuration
 ACCOUNT_ADAPTER = 'tellemgram.adapter.CustomAccountAdapter'
 AUTH_USER_MODEL = 'user.User'

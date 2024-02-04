@@ -9,9 +9,8 @@ from dj_rest_auth.views import LoginView, LogoutView, PasswordResetView, Passwor
 from user.views import ( 
     CustomLoginView, CustomRegisterView, CustomPasswordChangeView, 
     CustomPasswordResetView, PostListView, PostDetailView, UserPostListView,
-    PostLikeCreateView, PostCreateView
+   #   PostCreateView
     )
-
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -30,9 +29,6 @@ schema_view = get_schema_view(
 )
 
 router = routers.DefaultRouter()
-# router.register(r'users', UserRetrieveUpdateDestroyView, basename='user')
-# router.register(r'upload', CustomUploadViewSet, basename="upload")
-# router.register(r'posts', PostDetailView, basename="posts")
 
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
@@ -40,20 +36,18 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
      
     path("admin/", admin.site.urls),
-    # path('api/', include(router.urls))
     path('users/', views.UserListView.as_view(), name='user-list'),
     path('users/<int:pk>/', views.UserDetailIDView.as_view(), name='user-detail'),
     path('users/<str:username>/', views.UserDetailView.as_view(), name='user-detail'),
 
     path('posts/', PostListView.as_view(), name='post-list'),
-    path('posts/create/', PostCreateView.as_view(), name='post-list'),
+   #  path('posts/create/', PostCreateView.as_view(), name='post-list'),
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('posts/<str:username>/', UserPostListView.as_view(), name='user-post-list'),
-    path('post-like/', PostLikeCreateView.as_view(), name='post-like-create'),
+    path('posts/<int:post_id>/like/', views.like_post, name='like-post'),
 
     path('password-reset/', CustomPasswordResetView.as_view()),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    # path('upload-image/', include(router.urls), name='upload'),
 
     path('password/change/', CustomPasswordChangeView.as_view(), name='password_change'),
 
