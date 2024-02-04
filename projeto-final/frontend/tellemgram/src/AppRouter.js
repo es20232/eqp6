@@ -21,7 +21,8 @@ import Initial from "./components/Initial/Initial";
 import EmailConfirmedPage from "./pages/EmailConfirmedPage";
 import ErrorPage from "./pages/ErrorPage";
 import NewPost from "./components/NewPost/NewPost";
-import Post from "./components/Post/Post";
+import Post from "./components/PostsList/Post";
+import PostsList from "./components/PostsList/PostsList";
 
 
 function AppRouter() {
@@ -42,7 +43,7 @@ function AppRouter() {
                 />
                 <Route element={<ProtectedRoutes />}>
                   <Route path="/" element={<HomePage />}>
-                    <Route index element={<Initial />} />
+                    <Route index element={<PostsList />} />
                     <Route path="nova-postagem" element={<NewPost />} />
                     <Route path="perfil/:userName" element={<Profile />} />
                     <Route path="meu-perfil" element={<Profile />} />

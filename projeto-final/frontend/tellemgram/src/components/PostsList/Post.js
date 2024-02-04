@@ -12,7 +12,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 
-const Post = ({postIdFromList, idFullPost}) => {
+const Post = ({ postDataFromList }) => {
   const { verifyTokenExpirationTime } = useAuth();
   const { postId } = useParams();
 
@@ -21,15 +21,20 @@ const Post = ({postIdFromList, idFullPost}) => {
     isLoading: isPostDataLoading,
     error: postQueryError,
   } = useQuery(
-    ["getPostData"],
+    ["getPostData", postDataFromList],
     async () => {
       try {
-        await verifyTokenExpirationTime();
-        let id;
-        postIdFromList ? id = postIdFromList : id = postId
-        const response = await api.get(endpoints.posts + id + "/");
-        response.data.created_at = formatDate(response.data.created_at);
-        return response.data;
+        if (postDataFromList) {
+          console.log(postDataFromList?.post_id);
+          //postDataFromList.created_at = formatDate(postDataFromList.created_at);
+          return postDataFromList;
+        } else {
+          await verifyTokenExpirationTime();
+          const response = await api.get(endpoints.posts + postId + "/");
+          response.data.created_at = formatDate(response.data.created_at);
+          console.log("from request");
+          return response.data;
+        }
       } catch (error) {
         console.error("Erro durante a busca de dados:", error);
         throw error; // Lançar o erro novamente para que o useQuery o detecte
@@ -46,7 +51,7 @@ const Post = ({postIdFromList, idFullPost}) => {
     error: userQueryError,
     refetch: refetchUserData,
   } = useQuery(
-    ["getUserData"],
+    ["getUserData", postedBy],
     async () => {
       try {
         await verifyTokenExpirationTime();
@@ -188,7 +193,15 @@ const Post = ({postIdFromList, idFullPost}) => {
           <Skeleton variant="rectangular" width="100%" height="100px" />
         ) : (
           <div className={styles.captionContainer}>
-            <Link className={styles.linksUnderlineHover}to={"/perfil/" + userData?.username}> <span className={styles.captionUsername}>{userData?.username}</span></Link>
+            <Link
+              className={styles.linksUnderlineHover}
+              to={"/perfil/" + userData?.username}
+            >
+              {" "}
+              <span className={styles.captionUsername}>
+                {userData?.username}
+              </span>
+            </Link>
             <span>{": " + postData?.caption}</span>
           </div>
         )}
