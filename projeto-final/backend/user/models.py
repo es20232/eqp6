@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
+    user_id = models.AutoField(primary_key=True, db_column='user_id')
     email = models.EmailField(
         unique=True,
         blank=True
@@ -9,21 +10,18 @@ class User(AbstractUser):
     profile_image = models.BinaryField(blank=True, null=True, editable = True)
 
 class Post(models.Model):
+    post_id = models.AutoField(primary_key=True, db_column='post_id')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.BinaryField(editable=True)
+    post_image = models.BinaryField(editable=True)
     caption = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    likes = models.ManyToManyField(User, related_name='liked_posts')
+    likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     def number_of_likes(self):
         return self.likes.count()
-    
-class PostLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
 
 class Comment(models.Model):
+    comment_id = models.AutoField(primary_key=True, db_column='comment_id')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
@@ -31,8 +29,3 @@ class Comment(models.Model):
     likes = models.ManyToManyField(User, related_name='liked_comments')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-
-class CommentLike(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)

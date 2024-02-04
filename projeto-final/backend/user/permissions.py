@@ -20,3 +20,19 @@ class IsSelfOrReadOnly(BasePermission):
             return True
 
         return False
+
+class IsPostOwnerOrReadOnly(BasePermission):
+    """
+    Custom permission to only allow post owners to modify their own posts.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Check if the request method is safe (GET, HEAD, OPTIONS)
+        if request.method in ['GET', 'HEAD', 'OPTIONS']:
+            return True
+
+        # Check if the user making the request is the owner of the post
+        elif obj.user == request.user:
+            return True
+
+        return False

@@ -1,18 +1,14 @@
 from rest_framework import serializers
-from user.models import User, Post , Comment, PostLike, CommentLike
+from user.models import User, Post , Comment
 from dj_rest_auth.serializers import UserDetailsSerializer
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from dj_rest_auth.serializers import LoginSerializer
 
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ('username', 'first_name', 'last_name', 'email', 'profile_image')
 
 class UserVisibleSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','username', 'first_name', 'last_name', 'profile_image')
+        fields = ('user_id','username', 'first_name', 'last_name', 'profile_image')
 
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(max_length=50)
@@ -30,8 +26,14 @@ class CustomUserDetailsSerializer(UserDetailsSerializer):
 
 class CustomLoginSerializer(LoginSerializer):
     email = None
+
     def get_cleaned_data(self):
         data_dict = super().get_cleaned_data()
+        user = self.user
+
+        # Ajuste para acessar o campo de identificação primária correto
+        data_dict['user_id'] = user.user_id if hasattr(user, 'user_id') else user.id
+
         return data_dict
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -60,25 +62,24 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.save()
         return instance
 
-class PostLikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PostLike
-        fields = '__all__'
-
-class CommentLikeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CommentLike
-        fields = '__all__'
-
 class PostSerializer(serializers.ModelSerializer):
-    likes = PostLikeSerializer(many=True, read_only=True)
+    # likes_count = serializers.SerializerMethodField()
+    number_of_likes = serializers.IntegerField(source='likes.count', read_only=True)
+
     class Meta:
         model = Post
-        # fields = '__all__'
-        exclude = ('user',)  # Exclui o campo 'user' da serialização
+        fields = '__all__'
+        # exclude = ('user',)  # Exclui o campo 'user' da serialização
+    def get_likes(self, obj):
+        return obj.number_of_likes()
+    
+class CustomPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('post_image', 'caption')
 
 class CommentSerializer(serializers.ModelSerializer):
-    likes = CommentLikeSerializer(many=True, read_only=True)
+    # likes = CommentLikeSerializer(many=True, read_only=True)
     class Meta:
         model = Comment
         fields = '__all__'

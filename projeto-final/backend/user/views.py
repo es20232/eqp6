@@ -1,19 +1,18 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, CreateAPIView, ListAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from dj_rest_auth.registration.views import LoginView, RegisterView
 from rest_framework import permissions
-from user.models import User, Post, Comment, PostLike
+from user.models import User, Post, Comment
 from tellemgram.serializers import (
     CustomUserSerializer, CustomLoginSerializer, CustomRegisterSerializer, 
-    UserVisibleSerializer, PostSerializer , PostLikeSerializer)
+    UserVisibleSerializer, PostSerializer, CustomPostSerializer )
 from dj_rest_auth.views import PasswordChangeView, PasswordResetView
 from rest_framework import status
 import base64
-from .permissions import IsSelfOrReadOnly
+from .permissions import IsSelfOrReadOnly, IsPostOwnerOrReadOnly
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from rest_framework.decorators import api_view, permission_classes
 
 class UserListView(ListAPIView):
     queryset = User.objects.all()
@@ -109,93 +108,55 @@ class CustomPasswordResetView(PasswordResetView):
 class PostListView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    # permission_classes = [IsSelfOrReadOnly]
 
-class PostCreateView(CreateAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+# class PostCreateView(CreateAPIView):
+#     queryset = Post.objects.all()
+#     serializer_class = PostSerializer
+#     permission_classes = [IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)
     
 class PostDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    permission_classes = [IsSelfOrReadOnly]
+    serializer_class = CustomPostSerializer
+    permission_classes = [IsPostOwnerOrReadOnly]
 
-    # def perform_create(self, serializer):
-    #     serializer.save(user=self.request.user)
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
 
-class PostLikeCreateView(CreateAPIView):
-    queryset = PostLike.objects.all()
-    serializer_class = PostLikeSerializer
+        likes_connected = get_object_or_404(Post, post_id=self.kwargs['pk'])
+        liked = False
+        if likes_connected.likes.filter(post_id=self.request.user.id).exists():
+            liked = True
+        data['number_of_likes'] = likes_connected.number_of_likes()
+        data['post_is_liked'] = liked
+        return data
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, post_id):
+    user = request.user
+    post = get_object_or_404(Post, post_id=post_id)
+
+    # Verifica se o usuário já curtiu o post
+    if user in post.likes.all():
+        return Response({"detail": "Você já curtiu este post."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Adiciona o usuário aos likes do post
+    post.likes.add(user)
+    post.save()
+
+    return Response({"detail": "Post curtido com sucesso."}, status=status.HTTP_200_OK)
 
 class UserPostListView(ListCreateAPIView):
-    serializer_class = PostSerializer
+    serializer_class = CustomPostSerializer
 
     def get_queryset(self):
         username = self.kwargs['username']
         user = User.objects.get(username=username)
         return Post.objects.filter(user=user)
-
-# class CommentList(ListCreateAPIView):
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
-
-# class CommentDetail(RetrieveUpdateDestroyAPIView):
-#     queryset = Comment.objects.all()
-#     serializer_class = CommentSerializer
-
-# class CustomUploadViewSet(viewsets.ViewSet):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = CustomUserImage
-#     MAX_FILE_SIZE_MB = 10  # Specify the maximum file size limit in megabytes
-
-#     def list(self, request):
-#         try:
-#             # Check if a specific user is specified in the request parameters
-#             user_id = request.query_params.get('user_id')
-
-#             if user_id:
-#                 # List images for a specific user
-#                 #user = get_object_or_404(User, id=user_id)
-#                 user_images = UserImage.objects.filter(user=user_id)
-#             else:
-#                 # List images for all users
-#                 user_images = UserImage.objects.all()
-
-#             serializer = CustomUserImage(user_images, many=True)
-#             return Response(serializer.data)
-#         except Exception as e:
-#             # Handle exceptions appropriately
-#             return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-#     def create(self, request):
-#         try:
-#             # Retrieve the base64 string from the request data
-#             base64_string = request.data.get('image', '')
-
-#             # Convert base64 string to binary data
-#             binary_data = base64.b64decode(base64_string)
-
-#             current_user = request.user
-
-#             # Check if the user already has an image, and delete it
-#             try:
-#                 existing_image = UserImage.objects.get(user=current_user)
-#                 existing_image.delete()
-#             except UserImage.DoesNotExist:
-#                 pass  # If no existing image, do nothing
-
-#             # Save the new user image
-#             uploaded_file = UserImage(user=current_user, image=binary_data)
-#             uploaded_file.save()
-
-#             response = 'O arquivo foi enviado com sucesso.'
-
-#             return Response(response, status=status.HTTP_201_CREATED)
-#         except Exception as e:
-#             # Handle exceptions appropriately
-#             print(e)
-#             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
-        
+    
+    def perform_create(self, serializer):
+        # Antes de salvar o Post, associe o usuário autenticado ao campo user
+        serializer.save(user=self.request.user)
