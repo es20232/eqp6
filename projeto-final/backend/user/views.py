@@ -119,7 +119,7 @@ class PostListView(ListAPIView):
     
 class PostDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
-    serializer_class = CustomPostSerializer
+    serializer_class = PostSerializer
     permission_classes = [IsPostOwnerOrReadOnly]
 
     def get_context_data(self, **kwargs):
@@ -141,7 +141,8 @@ def like_post(request, post_id):
 
     # Verifica se o usuário já curtiu o post
     if user in post.likes.all():
-        return Response({"detail": "Você já curtiu este post."}, status=status.HTTP_400_BAD_REQUEST)
+        post.likes.remove(user)
+        return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
 
     # Adiciona o usuário aos likes do post
     post.likes.add(user)
