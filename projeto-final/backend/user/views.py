@@ -6,7 +6,8 @@ from rest_framework import permissions
 from user.models import User, Post, Comment
 from tellemgram.serializers import (
     CustomUserSerializer, CustomLoginSerializer, CustomRegisterSerializer, 
-    UserVisibleSerializer, PostSerializer, CustomPostSerializer )
+    UserVisibleSerializer, PostSerializer, CustomPostSerializer,
+    CommentSerializer )
 from dj_rest_auth.views import PasswordChangeView, PasswordResetView
 from rest_framework import status
 import base64
@@ -108,6 +109,7 @@ class CustomPasswordResetView(PasswordResetView):
 class PostListView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
 
 # class PostCreateView(CreateAPIView):
 #     queryset = Post.objects.all()
@@ -120,7 +122,7 @@ class PostListView(ListAPIView):
 class PostDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsPostOwnerOrReadOnly]
+    permission_classes = [IsPostOwnerOrReadOnly, IsAuthenticated]
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -161,3 +163,45 @@ class UserPostListView(ListCreateAPIView):
     def perform_create(self, serializer):
         # Antes de salvar o Post, associe o usuário autenticado ao campo user
         serializer.save(user=self.request.user)
+
+class CommentListCreateView(ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        post_id = self.kwargs['post_id']
+        return Comment.objects.filter(post_id=post_id)
+
+    def perform_create(self, serializer):
+        post_id = self.kwargs['post_id']
+        post = get_object_or_404(Post, post_id=post_id)
+        serializer.save(user=self.request.user, post=post)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_comment(request, post_id, comment_id):
+    user = request.user
+
+    comment = get_object_or_404(Comment, post_id=post_id, comment_id=comment_id)
+    # Verifica se o usuário já curtiu o post
+    if user in comment.likes.all():
+        comment.likes.remove(user)
+        return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
+
+    # Adiciona o usuário aos likes do post
+    comment.likes.add(user)
+    comment.save()  
+
+    return Response({"detail": "Comentario curtido com sucesso."}, status=status.HTTP_200_OK)
+
+
+class CommentDetailUpdateDeleteView(RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated, IsPostOwnerOrReadOnly]
+
+    def get_queryset(self):
+        post_id = self.kwargs['post_id']
+        return Comment.objects.filter(post_id=post_id)
+    

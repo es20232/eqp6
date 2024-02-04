@@ -79,7 +79,7 @@ class CustomPostSerializer(serializers.ModelSerializer):
         fields = ('post_image', 'caption')
 
 class CommentSerializer(serializers.ModelSerializer):
-    # likes = CommentLikeSerializer(many=True, read_only=True)
+    number_of_likes = serializers.IntegerField(source='likes.count', read_only=True)
     class Meta:
         model = Comment
         fields = '__all__'
