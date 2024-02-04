@@ -17,8 +17,12 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
+    class Meta: 
+        ordering = ('post_id',) 
+
     def number_of_likes(self):
         return self.likes.count()
+    
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True, db_column='comment_id')
@@ -26,6 +30,13 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
     # parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
-    likes = models.ManyToManyField(User, related_name='liked_comments')
+    likes = models.ManyToManyField(User, related_name='liked_comments', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    class Meta: 
+        ordering = ('created_at',) 
+    def __str__(self): 
+        return 'Comment by {} on {}'.format(self.name, self.post) 
+    
+    def number_of_likes(self):
+            return self.likes.count()
