@@ -47,11 +47,13 @@ urlpatterns = [
     path('posts/<str:username>/', UserPostListView.as_view(), name='user-post-list'),
     path('posts/<int:post_id>/like/', views.like_post, name='like-post'),
 
-    path('posts/<int:post_id>/comments/', CommentListCreateView.as_view(), name='comment-list'),
+   #  path('posts/<int:post_id>/comments/', CommentListCreateView.as_view(), name='comment-list'),
+   #  path('posts/<int:post_id>/comments/<int:pk>/', CommentDetailUpdateDeleteView.as_view(), name='comment-detail'),
+   #  path('posts/<int:post_id>/comments/<int:pk>/like/', views.liked_comment, name='comment-detail'),
 
-    path('posts/<int:post_id>/comments/<int:pk>/', CommentDetailUpdateDeleteView.as_view(), name='comment-detail'),
-
-    path('posts/<int:post_id>/comments/<int:pk>/like/', views.liked_comment, name='comment-detail'),
+    path('comments/<int:post_id>/', CommentListCreateView.as_view(), name='comment-list'),
+    path('comments/<int:post_id>/<int:pk>/', CommentDetailUpdateDeleteView.as_view(), name='comment-detail'),
+    path('comments/<int:post_id>/<int:comment_id>/like/', views.like_comment, name='like-comment'),
 
     path('password-reset/', CustomPasswordResetView.as_view()),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),

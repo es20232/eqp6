@@ -180,10 +180,10 @@ class CommentListCreateView(ListCreateAPIView):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def liked_comment(request, post_id, pk):
+def like_comment(request, post_id, comment_id):
     user = request.user
 
-    comment = get_object_or_404(Comment, post_id=post_id, comment_id=pk)
+    comment = get_object_or_404(Comment, post_id=post_id, comment_id=comment_id)
     # Verifica se o usuário já curtiu o post
     if user in comment.likes.all():
         comment.likes.remove(user)
