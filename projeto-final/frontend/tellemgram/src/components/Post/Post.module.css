@@ -3,13 +3,20 @@
     display: flex;
     justify-content: center;
 }
-.profileContainer{
+.postContainer{
     width: 476px;
     padding: 40px 0px;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
+
+.headerContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .imageContainer{
     width: 476px;
     height: 476px;
@@ -18,31 +25,83 @@
 	align-items: center;
     overflow: hidden;
     border-radius: 8px;
-}
-.imagePlaceholder{
-    width: 100%;
-    height: 100%;
-    background-color: var(--secondary-main);
-    
-    display: flex;
     justify-content: center;
-    align-items: center;
-}
-.textComponent{
-	display: flex;
-	height: 100%;
-	margin-bottom: 10px;
-}
-
-.form{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
+    background-color: var(--secondary-main);
 }
 
 .image{
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+.userInfoContainer{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.userInfoContainer:hover{
+    text-decoration: underline;
+}
+
+.usernameContainer{
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--primary-main);
+}
+
+.date{
+    color: var(--primary-main);
+    font-size: 16px;
+}
+
+.link{
+    text-decoration: none;
+}
+
+.captionContainer{
+    color: var(--primary-main);
+    font-size: 14px;
+}
+
+.likesAndComments{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.likes{
+    display: flex;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--primary-main);
+    align-items: center;
+}
+
+.likesIcon{
+    width: 20px;
+    height: 18px;
+}
+
+.comments{
+    display: flex;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--primary-main);
+    align-items: center;
+}
+
+.commentsIcon{
+    width: 20px;
+    height: 18px;
+}
+
+.captionUsername{
+    font-weight: bold;
+}
+
+.linksUnderlineHover{
+    text-decoration: none;
+    color: inherit;
+}
+.linksUnderlineHover:hover{
+    text-decoration: underline;
 }

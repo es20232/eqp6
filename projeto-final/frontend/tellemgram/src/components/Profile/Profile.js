@@ -13,6 +13,7 @@ import styles from "./Profile.module.css";
 import { useTheme } from "@mui/system";
 import { useQuery } from "react-query";
 import Error from "../Error/Error";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { verifyTokenExpirationTime } = useAuth();
@@ -155,11 +156,12 @@ const Profile = () => {
             ) : (
               <React.Fragment>
                 {postsData.map((post, index) => (
+                  <Link className={styles.link} to={"/postagens/"+ post.post_id}>
                   <img
                   key={index}
                     className={styles.postImage}
-                    src={"data:image/png;base64," + post.image}
-                  />
+                    src={"data:image/png;base64," + post.post_image}
+                  /></Link>
                 ))}
               </React.Fragment>
             )}

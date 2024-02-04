@@ -5,15 +5,18 @@ import Cookies from "js-cookie";
 import { api, endpoints } from "../../apiService";
 import Button from "@mui/material/Button";
 import styles from "./NewPost.module.css";
+import { useAuth } from "../../AuthContext";
+
 
 const NewPost = () => {
+  const { verifyTokenExpirationTime } = useAuth();
   const hiddenFileInput = useRef(null);
   const [processing, setProcessing] = useState(false);
   const [serverError, setServerError] = useState("");
   const [isReady, setIsReady] = useState(false);
   const [formData, setFormData] = useState({
     caption: "",
-    image: "",
+    post_image: "",
   });
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -27,8 +30,8 @@ const NewPost = () => {
     e.preventDefault();
     try {
       setProcessing(true);
-      // await verifyTokenExpirationTime();
-      const response = await api.post(endpoints.createPost, formData);
+      await verifyTokenExpirationTime();
+      const response = await api.post(endpoints.posts + Cookies.get("myUserName") +"/", formData);
       console.log(response);
     } catch (error) {
       console.log(error);
@@ -38,7 +41,6 @@ const NewPost = () => {
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    console.log(file);
 
     if (file) {
       const reader = new FileReader();
@@ -46,7 +48,7 @@ const NewPost = () => {
       reader.onloadend = () => {
         setFormData((prevData) => ({
           ...prevData,
-          image: reader.result.split(",")[1],
+          post_image: reader.result.split(",")[1],
         }));
         setIsReady(true);
       };
@@ -65,10 +67,10 @@ const NewPost = () => {
       <div className={styles.profileContainer}>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div onClick={handleInputClick} className={styles.imageContainer}>
-            {formData.image ? (
+            {formData.post_image ? (
               <img
                 className={styles.image}
-                src={"data:image/png;base64," + formData.image}
+                src={"data:image/png;base64," + formData.post_image}
               />
             ) : (
               <div className={styles.imagePlaceholder}>
@@ -90,8 +92,7 @@ const NewPost = () => {
             label="Descrição"
             variant="outlined"
             multiline
-            maxRows={4}
-            rows={2}
+            minRows={2}
             placeholder="Escreva aqui"
             name="caption"
             onChange={handleChange}

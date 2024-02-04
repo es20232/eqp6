@@ -9,8 +9,6 @@ import Cookies from "js-cookie";
 import { useQuery } from 'react-query';
 import { api, endpoints } from "../../apiService";
 
-
-
 const SideMenu = () => {
   const { verifyTokenExpirationTime } = useAuth();
   const { logout } = useAuth();
@@ -40,7 +38,7 @@ const SideMenu = () => {
               width: 48,
               height: 48,
             }}
-            src={!isLoading ? `data:image/png;base64,${data && data.profile_image}` : ''}
+            src={!isLoading ? `data:image/png;base64,${data?.profile_image}` : ''}
             className="user-image"
           />
         </div>
