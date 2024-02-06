@@ -2,5 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 476px;
+    gap: 16px;
+    min-height: 100%;
+    color: var(--primary-main);
+}
+
+.horizontalDivider{
     width: 100%;
+    background-color: var(--primary-main);
+    height: 1px;
+    border: none; 
 }

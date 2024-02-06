@@ -5,8 +5,8 @@ import ImageIcon from "@mui/icons-material/Image"; //image
 import PostAddIcon from "@mui/icons-material/PostAdd"; //post
 import PersonIcon from "@mui/icons-material/Person"; //profile
 import LogoutIcon from "@mui/icons-material/Logout"; //Logout
-import Avatar from '@mui/material/Avatar';
-import Skeleton from '@mui/material/Skeleton';
+import Avatar from "@mui/material/Avatar";
+import Skeleton from "@mui/material/Skeleton";
 import styles from "./HomePageLayout.module.css";
 import { useAuth } from "../../AuthContext";
 import { api, endpoints } from "../../apiService";
@@ -27,13 +27,10 @@ const DashboardLayout = ({ children }) => {
     setCurrentPage(location.pathname.split("/")[1]);
   }, [location.pathname]);
 
-
-
-
   return (
     <section className={styles.container}>
-      <SideMenu userName={Cookies.get("myFirstName")}/>
-      {children}
+      <SideMenu userName={Cookies.get("myFirstName")} />
+      <section className={styles.contentContainer}>{children}</section>
     </section>
   );
 };

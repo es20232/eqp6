@@ -1,6 +1,14 @@
 .container {
-  min-width: 280px;
-  margin: 16px;
+  height:100vh;
+  min-width: 312px;
+  padding: 16px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.background {
+  height: calc(100vh - 32px);
+  max-height: 1000px;
   background-color: var(--primary-main) !important;
   border-radius: 8px;
   padding: 16px;
@@ -12,6 +20,8 @@
   gap: 40px;
   font-size: 14px;
   box-sizing: border-box;
+  position: fixed;
+  width: 280px;
 }
 
 .userInfoContainer {

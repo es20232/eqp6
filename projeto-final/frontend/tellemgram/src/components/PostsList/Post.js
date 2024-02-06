@@ -21,13 +21,13 @@ const Post = ({ postDataFromList }) => {
     isLoading: isPostDataLoading,
     error: postQueryError,
   } = useQuery(
-    ["getPostData", postDataFromList],
+    ["getPostData", postDataFromList, postId],
     async () => {
       try {
         if (postDataFromList) {
-          console.log(postDataFromList?.post_id);
-          //postDataFromList.created_at = formatDate(postDataFromList.created_at);
-          return postDataFromList;
+          const modifiedPostData = { ...postDataFromList };
+          modifiedPostData.created_at = formatDate(modifiedPostData.created_at);
+          return modifiedPostData;
         } else {
           await verifyTokenExpirationTime();
           const response = await api.get(endpoints.posts + postId + "/");
@@ -94,13 +94,18 @@ const Post = ({ postDataFromList }) => {
     const newDate = new Date(date).toLocaleDateString("pt-BR", options);
     return newDate;
   };
-
+  // userData
   return (
-    <div className={styles.pageContent}>
-      <div className={styles.postContainer}>
-        {!userData ? (
+    <div className={styles.postContainer}>
+      {!userData ? (
+        <>
           <Skeleton variant="rectangular" width="100%" height="48px" />
-        ) : (
+          <Skeleton variant="rectangular" width="476px" height="476px" />
+          <Skeleton variant="rectangular" width="100%" height="20px" />
+          <Skeleton variant="rectangular" width="100%" height="100px" />
+        </>
+      ) : (
+        <>
           <div className={styles.headerContainer}>
             <Link className={styles.link} to={"/perfil/" + userData?.username}>
               <div className={styles.userInfoContainer}>
@@ -131,24 +136,23 @@ const Post = ({ postDataFromList }) => {
             </Link>
             <span className={styles.date}>{postData?.created_at}</span>
           </div>
-        )}
-        {isPostDataLoading ? (
-          <Skeleton variant="rectangular" width="476px" height="476px" />
-        ) : (
-          <div className={styles.imageContainer}>
-            {postData.post_image ? (
-              <img
-                className={styles.image}
-                src={"data:image/png;base64," + postData?.post_image}
-              />
-            ) : (
-              "Postagem sem foto"
-            )}
-          </div>
-        )}
-        {isPostDataLoading ? (
-          <Skeleton variant="rectangular" width="100%" height="20px" />
-        ) : (
+          {postData ? (
+            <>
+              {postData?.post_image ? (
+                <div className={styles.imageContainer}>
+                  <img
+                    className={styles.image}
+                    src={"data:image/png;base64," + postData?.post_image}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+            </>
+          ) : (
+            <Skeleton variant="rectangular" width="476px" height="476px" />
+          )}
+
           <div className={styles.iconsContainer}>
             <div className={styles.likesAndComments}>
               <div className={styles.likes}>
@@ -188,10 +192,7 @@ const Post = ({ postDataFromList }) => {
             </div>
             <div className={styles.editDelete}></div>
           </div>
-        )}
-        {isPostDataLoading ? (
-          <Skeleton variant="rectangular" width="100%" height="100px" />
-        ) : (
+
           <div className={styles.captionContainer}>
             <Link
               className={styles.linksUnderlineHover}
@@ -204,29 +205,11 @@ const Post = ({ postDataFromList }) => {
             </Link>
             <span>{": " + postData?.caption}</span>
           </div>
-        )}
-        <div className={styles.commentsContainer}>Comentarios</div>
-        {/* <TextField
-          required
-          label="Descrição"
-          variant="outlined"
-          multiline
-          rows={2}
-          disabled
-          value={postData?.caption}
-          placeholder="Escreva aqui"
-          name="caption"
-          sx={{ width: "100%" }}
-        />
-        <Button
-          variant="contained"
-          disabled={processing}
-          sx={{ width: "100%", height: "3rem" }}
-          onClick={refetch}
-        >
-          APAGAR
-        </Button> */}
-      </div>
+          {postId && (
+            <div className={styles.commentsContainer}>Comentarios</div>
+          )}
+        </>
+      )}
     </div>
   );
 };

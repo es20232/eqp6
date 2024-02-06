@@ -24,6 +24,7 @@ const SideMenu = () => {
   };
   return (
     <div className={styles.container}>
+    <div className={styles.background}>
       <h1 className={styles.appTitle}>Tellemgram</h1>
       <div className={styles.userInfoContainer}>
         <div className={styles.userImageContainer}>
@@ -135,6 +136,7 @@ const SideMenu = () => {
         </div>
         <span className={styles.textContainer}>Sair</span>
       </button>
+    </div>
     </div>
   );
 };

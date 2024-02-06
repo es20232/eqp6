@@ -26,7 +26,7 @@ const Profile = () => {
     data: userData,
     isLoading: isUserDataLoading,
     error: queryError,
-  } = useQuery(["getUserData", location], async () => {
+  } = useQuery(["getUserData", userName], async () => {
     try {
       await verifyTokenExpirationTime();
 
@@ -51,7 +51,7 @@ const Profile = () => {
     data: postsData,
     isLoading: isPostsDataLoading,
     error: postsQueryError,
-  } = useQuery(["getPostsData", location], async () => {
+  } = useQuery(["getPostsData", userName], async () => {
     try {
       await verifyTokenExpirationTime();
 
@@ -156,12 +156,18 @@ const Profile = () => {
             ) : (
               <React.Fragment>
                 {postsData.map((post, index) => (
-                  <Link className={styles.link} to={"/postagens/"+ post.post_id}>
-                  <img
-                  key={index}
-                    className={styles.postImage}
-                    src={"data:image/png;base64," + post.post_image}
-                  /></Link>
+                  <Link
+                    className={styles.link}
+                    to={"/postagem/" + post.post_id}
+                  >
+                    <div className={styles.imageContainer}>
+                      <img
+                        key={index}
+                        className={styles.postImage}
+                        src={"data:image/png;base64," + post.post_image}
+                      />
+                    </div>
+                  </Link>
                 ))}
               </React.Fragment>
             )}
