@@ -76,7 +76,7 @@ class PostSerializer(serializers.ModelSerializer):
 class CustomPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('post_image', 'caption')
+        fields = ('post_id', 'post_image', 'caption')
 
 class CommentSerializer(serializers.ModelSerializer):
     number_of_likes = serializers.IntegerField(source='likes.count', read_only=True)
