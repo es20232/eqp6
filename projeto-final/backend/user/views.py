@@ -107,9 +107,25 @@ class CustomPasswordResetView(PasswordResetView):
             return Response({'detail': 'User with this email does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
         
 class PostListView(ListAPIView):
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Post.objects.all()
+
+        # Order by creation time (default order)
+        queryset = queryset.order_by('-created_at')
+
+        # Filter by the number of posts requested (default: all)
+        n = self.request.query_params.get('n')
+        if n is not None:
+            try:
+                n = int(n)
+                queryset = queryset[:n]
+            except ValueError:
+                pass  # Handle the case when 'n' is not an integer
+
+        return queryset
 
 # class PostCreateView(CreateAPIView):
 #     queryset = Post.objects.all()
