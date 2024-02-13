@@ -22,7 +22,7 @@ schema_view = get_schema_view(
       default_version='v1',
       description="API description",
       terms_of_service="https://www.yourapp.com/terms/",
-      contact=openapi.Contact(email="ellemalmeidaamorim@ufpi.edu.br"),
+      contact=openapi.Contact(email="emprv@gmail.com"),
       license=openapi.License(name="Your License"),
    ),
    public=True,
@@ -46,6 +46,7 @@ urlpatterns = [
     path('posts/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('posts/<str:username>/', UserPostListView.as_view(), name='user-post-list'),
     path('posts/<int:post_id>/like/', views.like_post, name='like-post'),
+    path('posts/<int:post_id>/dislike/', views.dislike_post, name='dislike-post'),
 
    #  path('posts/<int:post_id>/comments/', CommentListCreateView.as_view(), name='comment-list'),
    #  path('posts/<int:post_id>/comments/<int:pk>/', CommentDetailUpdateDeleteView.as_view(), name='comment-detail'),
@@ -54,6 +55,7 @@ urlpatterns = [
     path('comments/<int:post_id>/', CommentListCreateView.as_view(), name='comment-list'),
     path('comments/<int:post_id>/<int:pk>/', CommentDetailUpdateDeleteView.as_view(), name='comment-detail'),
     path('comments/<int:post_id>/<int:comment_id>/like/', views.like_comment, name='like-comment'),
+    path('comments/<int:post_id>/<int:comment_id>/dislike/', views.dislike_comment, name='dislike-comment'),
 
     path('password-reset/', CustomPasswordResetView.as_view()),
     path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
@@ -62,8 +64,8 @@ urlpatterns = [
 
     path('account-confirm-email/<str:key>/', ConfirmEmailView.as_view()),
     path('register/', CustomRegisterView.as_view()),
-    path('login/', CustomLoginView.as_view()),
-    path('logout/', LogoutView.as_view()),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),

@@ -161,12 +161,31 @@ def like_post(request, post_id):
     if user in post.likes.all():
         post.likes.remove(user)
         return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
-
+    elif user in post.dislikes.all():
+        post.dislikes.remove(user)
     # Adiciona o usuário aos likes do post
     post.likes.add(user)
     post.save()
 
     return Response({"detail": "Post curtido com sucesso."}, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def dislike_post(request, post_id):
+    user = request.user
+    post = get_object_or_404(Post, post_id=post_id)
+
+    # Verifica se o usuário já curtiu o post
+    if user in post.dislikes.all():
+        post.dislikes.remove(user)
+        return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
+    elif user in post.likes.all():
+        post.likes.remove(user)
+    # Adiciona o usuário aos likes do post
+    post.dislikes.add(user)
+    post.save()
+
+    return Response({"detail": "Deslike adicionado com sucesso."}, status=status.HTTP_200_OK)
 
 class UserPostListView(ListCreateAPIView):
     serializer_class = CustomPostSerializer
@@ -204,13 +223,33 @@ def like_comment(request, post_id, comment_id):
     if user in comment.likes.all():
         comment.likes.remove(user)
         return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
-
+    # Verifica se o usuário já descurtiu o comentário, se sim, remove o deslike
+    elif user in comment.dislikes.all():
+        comment.dislikes.remove(user)
     # Adiciona o usuário aos likes do post
     comment.likes.add(user)
     comment.save()  
 
     return Response({"detail": "Comentario curtido com sucesso."}, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def dislike_comment(request, post_id, comment_id):
+    user = request.user
+
+    comment = get_object_or_404(Comment, post_id=post_id, comment_id=comment_id)
+    # Verifica se o usuário já curtiu o post
+    if user in comment.dislikes.all():
+        comment.dislikes.remove(user)
+        return Response({"detail": "Dislike removido com sucesso."}, status=status.HTTP_200_OK)
+     # Verifica se o usuário já curtiu o comentário, se sim, remove o like
+    elif user in comment.likes.all():
+        comment.likes.remove(user)
+    # Adiciona o usuário aos likes do post
+    comment.dislikes.add(user)
+    comment.save()  
+
+    return Response({"detail": "Deslike adicionado com sucesso."}, status=status.HTTP_200_OK)
 
 class CommentDetailUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
@@ -218,6 +257,10 @@ class CommentDetailUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsPostOwnerOrReadOnly]
 
     def get_queryset(self):
-        post_id = self.kwargs['post_id']
-        return Comment.objects.filter(post_id=post_id)
+        try:
+            post_id = self.kwargs['post_id']
+            return Comment.objects.filter(post_id=post_id)
+        except KeyError:
+            # Trate o erro de forma adequada, como retornar um queryset vazio ou levantar uma exceção
+            return Comment.objects.none()  # Retorna um queryset vazio
     

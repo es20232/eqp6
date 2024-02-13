@@ -204,6 +204,10 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
 }
+SWAGGER_SETTINGS = {
+    # 'LOGIN_URL': 'http://127.0.0.1:8000/login/',
+    # 'LOGOUT_URL': 'http://127.0.0.1:8000/logout/'
+}
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"

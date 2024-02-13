@@ -65,7 +65,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     # likes_count = serializers.SerializerMethodField()
     number_of_likes = serializers.IntegerField(source='likes.count', read_only=True)
-
+    number_of_dislikes = serializers.IntegerField(source='dislikes.count', read_only=True)
     class Meta:
         model = Post
         fields = '__all__'
@@ -80,6 +80,7 @@ class CustomPostSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     number_of_likes = serializers.IntegerField(source='likes.count', read_only=True)
+    number_of_dislikes = serializers.IntegerField(source='dislikes.count', read_only=True)
     class Meta:
         model = Comment
         fields = '__all__'
