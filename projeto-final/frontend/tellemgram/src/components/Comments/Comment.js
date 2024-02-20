@@ -4,11 +4,11 @@ import styles from "./Comment.module.css";
 import Avatar from "@mui/material/Avatar";
 import Skeleton from "@mui/material/Skeleton";
 
-
 import { Link } from "react-router-dom";
 import { api, endpoints } from "../../apiService";
 import { useQuery } from "react-query";
 import { useAuth } from "../../AuthContext";
+import ButtonsRow from "../PostsList/ButtonsRow";
 
 const Comment = ({ data }) => {
   const { verifyTokenExpirationTime } = useAuth();
@@ -57,13 +57,24 @@ const Comment = ({ data }) => {
             </div>
           </div>
           <div className={styles.text}>
-            <Link
-              className={styles.link}
-              to={"/perfil/" + authorData?.username}
-            >
-              {authorData?.username}
-            </Link>
-            <span>{": " + data?.text}</span>
+            <span>
+              <Link
+                className={styles.link}
+                to={"/perfil/" + authorData?.username}
+              >
+                {authorData?.username}
+              </Link>
+              <span>{": " + data?.text}</span>
+            </span>
+            
+            <ButtonsRow
+              likes={null}
+              dislikes={null}
+              comments={null}
+              postedBy={data.user}
+              postId={data.post}
+              commentId={data.comment_id}
+            />
           </div>
         </>
       )}

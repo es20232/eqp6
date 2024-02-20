@@ -153,7 +153,7 @@ const Post = ({ postDataFromList }) => {
                     <>
                       <Link
                         className={styles.link}
-                        to={"/postagem/" + postData.post_id}
+                        to={"/postagem/" + postData?.post_id}
                       >
                         {postData?.post_image ? (
                           <div className={styles.imageContainer}>
@@ -195,7 +195,7 @@ const Post = ({ postDataFromList }) => {
                 setIDisliked={setIDisliked}
                 IDisliked={IDisliked}
                 setIsDeleting={setIsDeleting}
-                postId={postData.post_id}
+                postId={postData?.post_id}
                 postedBy={postedBy}
                 dislikes={postData?.number_of_dislikes}
                 likes={postData?.number_of_likes}

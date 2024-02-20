@@ -10,9 +10,13 @@ import Skeleton from "@mui/material/Skeleton";
 import { api, endpoints } from "../../apiService";
 import { useMutation, useQuery } from "react-query";
 import { useAuth } from "../../AuthContext";
+import Cookies from "js-cookie";
+
 
 const CommetsList = ({ postId, userId, setCommentsNumber }) => {
   const { verifyTokenExpirationTime } = useAuth();
+
+  const[canIComment, setCanIComment] = useState(true);
 
   const {
     isLoading: isCommentsListLoading,
@@ -25,6 +29,14 @@ const CommetsList = ({ postId, userId, setCommentsNumber }) => {
         await verifyTokenExpirationTime();
         const response = await api.get(endpoints.comments + postId);
         console.log(response.data);
+        setCanIComment(true)
+        for (let i = 0; i < response.data.length; i++) {
+          if (response.data[i].user == Cookies.get("myUserId")) {
+              // Faça algo com o objeto encontrado
+              setCanIComment(false)
+              break; // Para o loop assim que encontrar o objeto
+          }
+      }
         setCommentsNumber(response.data.length);
         return response.data;
       } catch (error) {}
@@ -83,7 +95,7 @@ const CommetsList = ({ postId, userId, setCommentsNumber }) => {
             ))}
         </div>
       ) : null}
-      <div className={styles.newCommentContainer}>
+      {canIComment? <div className={styles.newCommentContainer}>
         <TextField
           required
           label="Novo Comentário"
@@ -107,7 +119,8 @@ const CommetsList = ({ postId, userId, setCommentsNumber }) => {
           )}
           {!mutation.isLoading && <>POSTAR COMENTÁRIO</>}
         </Button>
-      </div>
+      </div>: null}
+      
     </div>
   );
 };

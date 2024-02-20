@@ -24,7 +24,7 @@ const PostsList = () => {
 
   return (
     <div className={styles.postsListContainer}>
-      {isLoading ? (
+      {isLoading || !postsList? (
         <CircularProgress color="inherit" size="50px" />
       ) : (
         postsList
