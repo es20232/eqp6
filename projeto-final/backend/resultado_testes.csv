@@ -1,0 +1,13 @@
+ID,Caso de Teste,Tipo de Teste,Protótipo,Resultado
+CT-TU-O1-c1, Testar o método cadastrar_usuario para garantir que um usuário seja inserido corretamente no banco de dados,Unitário,P2,Passou
+CT-TU-02-c1,Testar se as credenciais de um usuário válido são validadas corretamente,Unitário,P2,Passou
+CT-TU-02-c2,Testar se as credenciais de um usuário inválido são rejeitadas corretamente,Unitário,P2,Passou
+CT-TU-03-c1,Testar se uma postagem do usuario foi feita corretamente, Unitário,P2,Passou
+CT-TU-03-c2,Testar se uma postagem do usuario foi invalida, Unitário,P2,Passou
+CT-TU-04-c1,Testar se as postagem estão sendo listadas corretamente, Unitário,P2,Passou
+CT-TU-05-c1,Testar se os usuarios cadastrados no banco estão sendo listados corretamentes,Unitário,P2,Passou
+CT-TU-06-c1,Testar se os comentarios estão sendo feitos,Unitário,P2,Passou
+CT-TU-06-c2,Testar a listagem de comentarios,Unitário,P2,Passou
+CT-TU-06-c1,Testar se os likes nos comentarios estão sendo armazenados no banco de dados corretamente,Unitário,P2,Passou
+CT-TI-01-c1,Testar se um usuario consegue logar com suas credenciais e visualizar as postagens do feed,Integração,P2,Passou
+CT-TI-O6-c1,Testar se os comentarios de uma postagem estão corretas e válidadas no banco de dados,Integração,P2,Passou
