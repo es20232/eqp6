@@ -7,6 +7,7 @@ Equipe 6
     <a href="https://github.com/rfsousa"><img src="https://badgen.net/badge/icon/Ryan%20Sousa/yellow?icon=github&label" alt="Creator badge" /></a>
     <a href="https://github.com/viniciusmra"><img src="https://badgen.net/badge/icon/Vinícius%20Alves/blue?icon=github&label" alt="Creator badge" /></a>
 </p>
+
 # Projeto
 Estudos das tecnologias, ferramentas e elaboração dos tutoriais das respectivas tecnologias/ferramentas usadas no projeto.
 
