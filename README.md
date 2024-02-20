@@ -1,5 +1,4 @@
 # eqp6
-Equipe 6
 <p align="center">
     <a href="https://github.com/Ellemaamorim"><img src="https://badgen.net/badge/icon/Ellem%20Almeida/pink?icon=github&label" alt="Creator badge" /></a>
     <a href="https://github.com/arysam"><img src="https://badgen.net/badge/icon/Milena%20Arysa/red?icon=github&label" alt="Creator badge" /></a>
