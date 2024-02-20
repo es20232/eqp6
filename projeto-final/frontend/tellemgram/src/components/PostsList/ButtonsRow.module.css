@@ -1,0 +1,51 @@
+.iconsContainer{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .likesAndComments {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .likes {
+    display: flex;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--primary-main);
+    align-items: center;
+  }
+  
+  .likesIcon {
+    width: 20px;
+    height: 18px;
+  }
+  
+  .comments {
+    display: flex;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--primary-main);
+    align-items: center;
+  }
+  
+  .commentsIcon {
+    width: 20px;
+    height: 18px;
+  }
+
+  .button{
+    padding: 8px;
+    display: flex;
+    gap: 4px;
+    font-size: 14px;
+    color: var(--primary-main);
+    align-items: center;
+    border-radius: 4px;
+  }
+
+  .button:hover{
+    background-color: var(--background);
+    cursor: pointer;
+  }

@@ -1,0 +1,50 @@
+/*Comentários*/
+
+.commentsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+}
+
+.publishedCommentsContainer {
+  max-height: 500px;
+  overflow-y: scroll;
+  background-color: var(--background);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.newCommentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px; /* diminui a espessura */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--accent); /* roxo */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-main); /* roxo mais escuro */
+}
+
+.horizontalDivider{
+    width: 100%;
+    background-color: var(--primary-main);
+    height: 1px;
+    border: none; 
+}

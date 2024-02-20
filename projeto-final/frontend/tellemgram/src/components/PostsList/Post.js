@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import TextField from "@mui/material/TextField";
-import CircularProgress from "@mui/material/CircularProgress";
-import Cookies from "js-cookie";
 import { api, endpoints } from "../../apiService";
-import Button from "@mui/material/Button";
+
 import styles from "./Post.module.css";
 import { useQuery } from "react-query";
 import { useAuth } from "../../AuthContext";
@@ -12,9 +9,20 @@ import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 
+import CircularProgress from "@mui/material/CircularProgress";
+
+import CommetsList from "../Comments/CommentsList";
+import ButtonsRow from "./ButtonsRow";
+import Cookies from "js-cookie";
+
 const Post = ({ postDataFromList }) => {
   const { verifyTokenExpirationTime } = useAuth();
   const { postId } = useParams();
+
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [ILiked, setILiked] = useState(false);
+  const [IDisliked, setIDisliked] = useState(false);
+  const [commentsNumber, setCommentsNumber] = useState(0);
 
   const {
     data: postData,
@@ -27,12 +35,12 @@ const Post = ({ postDataFromList }) => {
         if (postDataFromList) {
           const modifiedPostData = { ...postDataFromList };
           modifiedPostData.created_at = formatDate(modifiedPostData.created_at);
+
           return modifiedPostData;
         } else {
           await verifyTokenExpirationTime();
           const response = await api.get(endpoints.posts + postId + "/");
           response.data.created_at = formatDate(response.data.created_at);
-          console.log("from request");
           return response.data;
         }
       } catch (error) {
@@ -42,6 +50,20 @@ const Post = ({ postDataFromList }) => {
     },
     { refetchOnWindowFocus: false }
   );
+
+  useEffect(() => {
+    if(postData){
+    if (postData.likes.includes(parseInt(Cookies.get("myUserId"), 10))) {
+      setILiked(true);
+    } else {
+      setILiked(false);
+    }
+    if (postData.dislikes.includes(parseInt(Cookies.get("myUserId"), 10))) {
+      setIDisliked(true);
+    } else {
+      setIDisliked(false);
+    }}
+  }, [postData]);
 
   const postedBy = postData?.user;
 
@@ -65,26 +87,6 @@ const Post = ({ postDataFromList }) => {
     { enabled: !!postedBy, refetchOnWindowFocus: false }
   );
 
-  const {
-    isLoading: isDeleting,
-    error: deleteQueryError,
-    refetch,
-  } = useQuery(
-    ["deletePost"],
-    async () => {
-      try {
-        await verifyTokenExpirationTime();
-        const response = await api.delete(endpoints.posts + postId + "/");
-        console.log(response.data);
-        return response.data;
-      } catch (error) {
-        console.error("Erro durante a busca de dados:", error);
-        throw error; // Lançar o erro novamente para que o useQuery o detecte
-      }
-    },
-    { enabled: false }
-  );
-
   const formatDate = (date) => {
     const options = {
       year: "numeric",
@@ -97,116 +99,129 @@ const Post = ({ postDataFromList }) => {
   // userData
   return (
     <div className={styles.postContainer}>
-      {!userData ? (
-        <>
-          <Skeleton variant="rectangular" width="100%" height="48px" />
-          <Skeleton variant="rectangular" width="476px" height="476px" />
-          <Skeleton variant="rectangular" width="100%" height="20px" />
-          <Skeleton variant="rectangular" width="100%" height="100px" />
-        </>
+      {isDeleting ? (
+        <div style={{ textAlign: "center" }}>Excluindo...</div>
       ) : (
         <>
-          <div className={styles.headerContainer}>
-            <Link className={styles.link} to={"/perfil/" + userData?.username}>
-              <div className={styles.userInfoContainer}>
-                <div className={styles.userImageContainer}>
-                  <Avatar
-                    alt={!isUserDataLoading ? userData?.first_name : undefined}
-                    color="secondary"
-                    sx={{
-                      bgcolor: "secondary.main",
-                      color: "primary.main",
-                      fontWeight: "bold",
-                      fontSize: "26px",
-                      width: 48,
-                      height: 48,
-                    }}
-                    src={
-                      !isUserDataLoading
-                        ? `data:image/png;base64,${userData?.profile_image}`
-                        : ""
-                    }
-                    className="user-image"
-                  />
-                </div>
-                <span className={styles.usernameContainer}>
-                  {userData?.username}
-                </span>
-              </div>
-            </Link>
-            <span className={styles.date}>{postData?.created_at}</span>
-          </div>
-          {postData ? (
+          {!userData ? (
             <>
-              {postData?.post_image ? (
-                <div className={styles.imageContainer}>
-                  <img
-                    className={styles.image}
-                    src={"data:image/png;base64," + postData?.post_image}
-                  />
-                </div>
-              ) : (
-                ""
-              )}
+              <Skeleton variant="rectangular" width="100%" height="48px" />
+              <Skeleton variant="rectangular" width="476px" height="476px" />
+              <Skeleton variant="rectangular" width="100%" height="20px" />
+              <Skeleton variant="rectangular" width="100%" height="100px" />
             </>
           ) : (
-            <Skeleton variant="rectangular" width="476px" height="476px" />
-          )}
-
-          <div className={styles.iconsContainer}>
-            <div className={styles.likesAndComments}>
-              <div className={styles.likes}>
-                <div className={styles.likesIcon}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="1 1 22 22"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M23 10a2 2 0 0 0-2-2h-6.32l.96-4.57c.02-.1.03-.21.03-.32c0-.41-.17-.79-.44-1.06L14.17 1L7.59 7.58C7.22 7.95 7 8.45 7 9v10a2 2 0 0 0 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73zM1 21h4V9H1z"
-                    />
-                  </svg>
-                </div>
-
-                <span>{postData?.number_of_likes} curtidas</span>
+            <>
+              <div className={styles.headerContainer}>
+                <Link
+                  className={styles.link}
+                  to={"/perfil/" + userData?.username}
+                >
+                  <div className={styles.userInfoContainer}>
+                    <div className={styles.userImageContainer}>
+                      <Avatar
+                        alt={
+                          !isUserDataLoading ? userData?.first_name : undefined
+                        }
+                        color="secondary"
+                        sx={{
+                          bgcolor: "secondary.main",
+                          color: "primary.main",
+                          fontWeight: "bold",
+                          fontSize: "26px",
+                          width: 48,
+                          height: 48,
+                        }}
+                        src={
+                          !isUserDataLoading
+                            ? `data:image/png;base64,${userData?.profile_image}`
+                            : ""
+                        }
+                        className="user-image"
+                      />
+                    </div>
+                    <span className={styles.usernameContainer}>
+                      {userData?.username}
+                    </span>
+                  </div>
+                </Link>
+                <span className={styles.date}>{postData?.created_at}</span>
               </div>
-              <div className={styles.comments}>
-                <div className={styles.commentsIcon}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="1 1 22 22"
-                  >
-                    <path
-                      fill="currentColor"
-                      d="M12 23a1 1 0 0 1-1-1v-3H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-4.1l-3.7 3.71c-.2.18-.44.29-.7.29zm-9-8H1V3a2 2 0 0 1 2-2h16v2H3z"
-                    />
-                  </svg>
-                </div>
+              {postData ? (
+                <>
+                  {postDataFromList ? (
+                    <>
+                      <Link
+                        className={styles.link}
+                        to={"/postagem/" + postData.post_id}
+                      >
+                        {postData?.post_image ? (
+                          <div className={styles.imageContainer}>
+                            <img
+                              className={styles.postImage}
+                              src={
+                                "data:image/png;base64," + postData?.post_image
+                              }
+                            />
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      {postData?.post_image ? (
+                        <div className={styles.imageContainer}>
+                          <img
+                            className={styles.image}
+                            src={
+                              "data:image/png;base64," + postData?.post_image
+                            }
+                          />
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  )}
+                </>
+              ) : (
+                <Skeleton variant="rectangular" width="476px" height="476px" />
+              )}
+              <ButtonsRow
+                setILiked={setILiked}
+                ILiked={ILiked}
+                setIDisliked={setIDisliked}
+                IDisliked={IDisliked}
+                setIsDeleting={setIsDeleting}
+                postId={postData.post_id}
+                postedBy={postedBy}
+                dislikes={postData?.number_of_dislikes}
+                likes={postData?.number_of_likes}
+                comments={postData?.number_of_comments}
+              />
 
-                <span>8 comentários</span>
+              <div className={styles.captionContainer}>
+                <Link
+                  className={styles.linksUnderlineHover}
+                  to={"/perfil/" + userData?.username}
+                >
+                  {" "}
+                  <span className={styles.captionUsername}>
+                    {userData?.username}
+                  </span>
+                </Link>
+                <span>{": " + postData?.caption}</span>
               </div>
-            </div>
-            <div className={styles.editDelete}></div>
-          </div>
-
-          <div className={styles.captionContainer}>
-            <Link
-              className={styles.linksUnderlineHover}
-              to={"/perfil/" + userData?.username}
-            >
-              {" "}
-              <span className={styles.captionUsername}>
-                {userData?.username}
-              </span>
-            </Link>
-            <span>{": " + postData?.caption}</span>
-          </div>
-          {postId && (
-            <div className={styles.commentsContainer}>Comentarios</div>
+              {postId && (
+                <CommetsList
+                  setCommentsNumber={setCommentsNumber}
+                  postId={postId}
+                  userId={postedBy}
+                />
+              )}
+            </>
           )}
         </>
       )}

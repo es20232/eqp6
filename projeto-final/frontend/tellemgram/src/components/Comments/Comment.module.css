@@ -1,0 +1,21 @@
+.commentContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: 8px;
+}
+
+.authorProfileImage{
+    height: 36px;
+    width: 36px;
+
+}
+.text{
+    font-size: 14px;
+    color: var(--primary-main);
+}
+.link{
+    text-decoration: none;
+    font-weight: bold;
+}
+

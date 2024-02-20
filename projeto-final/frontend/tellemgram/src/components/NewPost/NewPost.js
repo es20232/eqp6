@@ -6,7 +6,9 @@ import { api, endpoints } from "../../apiService";
 import Button from "@mui/material/Button";
 import styles from "./NewPost.module.css";
 import { useAuth } from "../../AuthContext";
+import { useNavigate } from 'react-router-dom';
 
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const NewPost = () => {
   const { verifyTokenExpirationTime } = useAuth();
@@ -14,6 +16,10 @@ const NewPost = () => {
   const [processing, setProcessing] = useState(false);
   const [serverError, setServerError] = useState("");
   const [isReady, setIsReady] = useState(false);
+  const navigate = useNavigate();
+  const client = useQueryClient();
+
+
   const [formData, setFormData] = useState({
     caption: "",
     post_image: "",
@@ -33,6 +39,8 @@ const NewPost = () => {
       await verifyTokenExpirationTime();
       const response = await api.post(endpoints.posts + Cookies.get("myUserName") +"/", formData);
       console.log(response);
+      await client.refetchQueries(["postsListQuery"]);
+      navigate('/');
     } catch (error) {
       console.log(error);
     }

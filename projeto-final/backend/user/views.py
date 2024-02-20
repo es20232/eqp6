@@ -158,11 +158,11 @@ def like_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
 
     # Verifica se o usuário já curtiu o post
-    if user in post.likes.all():
-        post.likes.remove(user)
-        return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
-    elif user in post.dislikes.all():
-        post.dislikes.remove(user)
+    # if user in post.likes.all():
+    #     post.likes.remove(user)
+    #     return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
+    # elif user in post.dislikes.all():
+    #     post.dislikes.remove(user)
     # Adiciona o usuário aos likes do post
     post.likes.add(user)
     post.save()
@@ -176,11 +176,11 @@ def dislike_post(request, post_id):
     post = get_object_or_404(Post, post_id=post_id)
 
     # Verifica se o usuário já curtiu o post
-    if user in post.dislikes.all():
-        post.dislikes.remove(user)
-        return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
-    elif user in post.likes.all():
-        post.likes.remove(user)
+    # if user in post.dislikes.all():
+    #     post.dislikes.remove(user)
+    #     return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
+    # elif user in post.likes.all():
+    #     post.likes.remove(user)
     # Adiciona o usuário aos likes do post
     post.dislikes.add(user)
     post.save()
@@ -220,12 +220,12 @@ def like_comment(request, post_id, comment_id):
 
     comment = get_object_or_404(Comment, post_id=post_id, comment_id=comment_id)
     # Verifica se o usuário já curtiu o post
-    if user in comment.likes.all():
-        comment.likes.remove(user)
-        return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
-    # Verifica se o usuário já descurtiu o comentário, se sim, remove o deslike
-    elif user in comment.dislikes.all():
-        comment.dislikes.remove(user)
+    # if user in comment.likes.all():
+    #     comment.likes.remove(user)
+    #     return Response({"detail": "Like removido com sucesso."}, status=status.HTTP_200_OK)
+    # # Verifica se o usuário já descurtiu o comentário, se sim, remove o deslike
+    # elif user in comment.dislikes.all():
+    #     comment.dislikes.remove(user)
     # Adiciona o usuário aos likes do post
     comment.likes.add(user)
     comment.save()  
@@ -239,12 +239,12 @@ def dislike_comment(request, post_id, comment_id):
 
     comment = get_object_or_404(Comment, post_id=post_id, comment_id=comment_id)
     # Verifica se o usuário já curtiu o post
-    if user in comment.dislikes.all():
-        comment.dislikes.remove(user)
-        return Response({"detail": "Dislike removido com sucesso."}, status=status.HTTP_200_OK)
-     # Verifica se o usuário já curtiu o comentário, se sim, remove o like
-    elif user in comment.likes.all():
-        comment.likes.remove(user)
+    # if user in comment.dislikes.all():
+    #     comment.dislikes.remove(user)
+    #     return Response({"detail": "Dislike removido com sucesso."}, status=status.HTTP_200_OK)
+    #  # Verifica se o usuário já curtiu o comentário, se sim, remove o like
+    # elif user in comment.likes.all():
+    #     comment.likes.remove(user)
     # Adiciona o usuário aos likes do post
     comment.dislikes.add(user)
     comment.save()  
