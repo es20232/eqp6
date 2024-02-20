@@ -166,7 +166,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 # ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True # se der erro descomenta
-# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 # https://docs.allauth.org/en/latest/account/configuration.html
