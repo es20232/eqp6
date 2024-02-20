@@ -1,5 +1,6 @@
 ID,Caso de Teste,Tipo de Teste,Protótipo,Resultado
-CT-TU-O1-c1, Testar o método cadastrar_usuario para garantir que um usuário seja inserido corretamente no banco de dados,Unitário,P2,Passou
+CT-TU-O1-c1,Testar o cadastro do usuario para garantir que um usuário seja inserido corretamente no banco de dados,Unitário,P2,Passou
+CT-TU-O1-c2,Testar a autenticação do usuario no banco de dados,Unitário,P2,Passou
 CT-TU-02-c1,Testar se as credenciais de um usuário válido são validadas corretamente,Unitário,P2,Passou
 CT-TU-02-c2,Testar se as credenciais de um usuário inválido são rejeitadas corretamente,Unitário,P2,Passou
 CT-TU-03-c1,Testar se uma postagem do usuario foi feita corretamente, Unitário,P2,Passou
@@ -11,3 +12,10 @@ CT-TU-06-c2,Testar a listagem de comentarios,Unitário,P2,Passou
 CT-TU-06-c1,Testar se os likes nos comentarios estão sendo armazenados no banco de dados corretamente,Unitário,P2,Passou
 CT-TI-01-c1,Testar se um usuario consegue logar com suas credenciais e visualizar as postagens do feed,Integração,P2,Passou
 CT-TI-O6-c1,Testar se os comentarios de uma postagem estão corretas e válidadas no banco de dados,Integração,P2,Passou
+CT-TS-01-c1,Cenário de teste 1: Fluxo Principal - Login de usuário válido,Sistema,P2,Passou
+CT-TS-01-c2,Cenário de teste 2: Fluxo de Exceção - Login de usuário inválido,Sistema,P2,Passou
+CT-TS-02-c1,Cenário de teste: Fluxo Principal - Logout de usuário,Sistema,P2,Passou
+CT-TS-03-c1,Cenário de teste: Fluxo Principal - Registro de novo usuário,Sistema,P2,Passou
+CT-TS-04-c1,Cenário de teste: Fluxo principal - Publicar uma imagem no Dashboard do usuário,Sistema,P2,Passou
+CT-TS-05-c1,Cenário de teste: Fluxo principal - Realizar upload de imagem,Sistema,P2,Passou
+CT-TS-06-c1,Cenário de teste: Fluxo principal - Excluir imagens publicadas,Sistema,P2,Passou
