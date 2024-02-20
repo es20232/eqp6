@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import sys
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -113,15 +114,32 @@ WSGI_APPLICATION = "tellemgram.wsgi.application"
 
 # Database
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': os.getenv("DB_NAME"),
+    #     'USER': os.getenv("DB_USERNAME"),
+    #     'PASSWORD': os.getenv("DB_PASSWORD"),
+    #     'HOST': os.getenv("DB_HOST"),
+    #     'PORT': os.getenv("DB_PORT"),
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USERNAME"),
-        'PASSWORD': os.getenv("DB_PASSWORD"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': os.getenv("DB_PORT"),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'pedro.sqlite3'),
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'pedrinho.sqlite3'),
     }
 }
+# if 'test' in sys.argv:
+#     DATABASES['default'] = {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv("DB_NAME"),
+#         'USER': os.getenv("DB_USERNAME"),
+#         'PASSWORD': os.getenv("DB_PASSWORD"),
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -147,8 +165,8 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 # ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True # se der erro descomenta
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 # https://docs.allauth.org/en/latest/account/configuration.html

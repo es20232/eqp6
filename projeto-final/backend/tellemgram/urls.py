@@ -63,7 +63,7 @@ urlpatterns = [
     path('password/change/', CustomPasswordChangeView.as_view(), name='password_change'),
 
     path('account-confirm-email/<str:key>/', ConfirmEmailView.as_view()),
-    path('register/', CustomRegisterView.as_view()),
+    path('register/', CustomRegisterView.as_view(), name='register'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     
